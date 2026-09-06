@@ -69,3 +69,29 @@ __pycache__ 指定がないため組み立てツリーどおり収載。改変�
   manuscript/overleaf_upload.zip を削除（NAS 側削除の同期）。同コミットに
   NAS 側更新 3 件（cover_letter_pnasnexus.md、notes/15、notes/19 の §更新記録）を同梱。
   チェック 4 項目すべて合格、tar.gz 再作成なし、fast-forward push。
+
+## 再作成 2026-09-06(投稿版)
+
+指示書: `repo_prep/github_refresh_instructions.md` v2.0。ユーザが旧リポジトリを退避し
+空の private リポジトリを再作成済み(isEmpty: true, isPrivate: true を確認してから実行)。
+
+- 新コミット: **`c576a639d901f1f5524c9e6d10225b1bd0906599`**(単一コミット、
+  fast-forward 相当の新規 push、force なし)。Author/Committer 本人名義・トレーラなし。
+- 公開ツリー: `../AI_agent_crowding_publish_v2`(旧ツリーは tar.gz 再利用元として保持)。
+  追跡ファイル数 **266**、総サイズ **120 MB**。
+- 除外(指示書 §1 の理由どおり): cover letter・推薦査読者リスト・所属ロゴ(投稿事務用)、
+  外部レビュー文書と再解析指示書(作業文書)、notes/20(別論文の私的メモ)、
+  01_draft.md(tex に置換済みの旧鏡像)、__pycache__(.gitignore にも追記)、
+  .smbdelete*、LaTeX 中間物。
+- 図の整理: fig3_single_agent.{pdf,png} を削除(旧 SI Fig. S1。png は指示書に明記が
+  ないが同一理由で削除と判断・記録)、fig1_framework.png / fig3_neuron.png /
+  fig6_generality.png を削除(PDF の重複)。**fig3_panel_a.png は scripts/41 の入力
+  (著者作画、mpimg.imread で読み込み)と確認し保持**。tables/ は 22 個を確認。
+- tar.gz: episodes 2,633 件・8/29 以降の更新 0 を確認し、旧ツリーからコピーで**再利用**
+  (再圧縮なし)。
+- MANIFEST: `data/MANIFEST.md` が無かったため新規作成(67 ファイルの相対パス・バイト数・
+  SHA-256 と tar.gz の展開説明)。
+- チェック: >90M なし / external 不在 / serve ログなし / トークン様文字列なし /
+  投稿事務ファイルなし / __pycache__ なし / scripts 50–57 + hmf_lib 9 本 /
+  results r1・r23・r34・r4・r5・r6・r8 揃い / main.pdf 20 頁 / si.pdf 12 頁 /
+  "Claim-induced fields" が README と main.tex に各 1 — **全項目合格**。

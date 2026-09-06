@@ -2,8 +2,8 @@
 
 Code, data, and working notes for:
 
-> M. Fukushima, *Claim-induced fields and message-capacity limits set the
-> transition points of collective truth-finding in language-model networks* (2026).
+> M. Fukushima, *Message capacity and claim wording set the transition points
+> of collective truth-finding in language-model networks* (2026).
 > arXiv: [to be added]
 
 Collectives of LLM agents exchange messages and update binary judgments on

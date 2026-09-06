@@ -733,3 +733,55 @@ x* の定義句、§1 第 2 段落を分割、ハードコード相互参照 2 �
   → "would say"、ダッシュ二重挿入 4 箇所をコンマ句・コロン・括弧に。Methods 忠実性チェックに
   数値(1.00 対 0.875、0.44 対 0.38)。
 - main 20 頁、エラー 0。
+
+## 追記その 27(2026-09-06): 生成 AI 利用開示を Methods に追加(本人の文面)
+
+- Methods 末尾、Data and code availability の直前に "Use of generative AI" 節を追加
+  (本人指定の文: Anthropic の Claude をコード生成・デバッグ、事前規定パイプラインの実行、
+  文章の草稿・編集、文献検索に使用。研究課題・理論・実験計画・事前登録予測・解釈は著者の
+  もの、AI 出力はすべて点検・事実確認済み、報告数値は公開スクリプトでログから再計算。
+  研究対象の LLM は道具ではない)。投稿フォームの開示欄にも同文を使う。
+- main 20 頁、エラー 0。NAS・Overleaf・GitHub(第 2 コミット)に反映。
+
+## 追記その 28(2026-09-06): Abstract の語数(PNAS Nexus フォームで 251 語 → 超過)
+
+- フォームのカウンタは TeX 換算より 2 語ほど多く数える(α* = 0.435 等の記号を分割)。
+  3 語削減: "a further input" → "an input"、"lay far below" → "lay below"、"only 28–45%" →
+  "28–45%"、"(fan-in 6.4 of 31 sources)" → "(6.4 of 31 sources read)"(同語数)。
+  pdftotext 換算 245 語、TeX 換算 244 語、フォーム換算(推定)≈ 247 語。
+- NAS・Overleaf・投稿フォルダ(01_main_manuscript.pdf、source.zip)・GitHub(第 3 コミット)に反映。
+
+## 追記その 29(2026-09-06): 8 点の疑問への対応(本人指示で全反映)
+
+1. タイトルの主張の二層(境界の位置 = 検証済み / 存否 = fold は理論)を Discussion 教訓段落に明記。
+2. Abstract 冒頭 "Whether human or large language model (LLM), …"(絶対構文の二重主語を解消)。
+3. 残差(0.05–0.17、11/12 セル同符号)を「反復単一則を超える集団固有の寄与」と位置づけ、対抗仮説
+   (ラウンドを通じたメッセージ内容の進化; SI の β_T×(t−1) = +0.026)と検証法(round 別バンクの再生)を
+   Discussion 末尾に追加。
+4. §2.3: divisive 結合では Kδg(K) → δ/γ に飽和し、K ≈ 3–10 で Kg(K) は 0.82–1.0 → 閾値位置の α 依存は
+   弱い。qwen の弱い α 依存(1239 は δ = −6.9 でも不変、6 は緩やか)と整合、零交差自体は未検証と明記。
+5. 位置依存形の敗北は「順序をランダム化した本プロトコル下」に限定(§4・Discussion)。
+6. §5.2: 反事実 surrogate で field と horizon を分離(盲 field で α ≤ 0.55 は horizon だけで 20% 規則を
+   満たさず、α = 1.0 では誤答 0.1% 予測対 75% 観測 = field)。field が窓全体の棄却の原因、horizon は
+   α* 近傍で判定基準の感度を奪った原因。
+7. §5.3: 送信側対抗仮説(否定側メッセージが弱い文)を、空 inbox での傾きと、同一 8B バンクを読んだ
+   70B の比 1.03 [0.66, 1.64] で排除する文を追加。
+8. §5.4 冒頭: 12 claim の単一エージェントデータは集団前に取得、固定点は最終推定法で事後計算(集団
+   結果は不使用の out-of-sample)、8 claim の選定規則が前向き、と順序を明示。Abstract は
+   "predicted" → "predicts"(語数不変)。
+- main 21 頁(article 書式)、エラー 0。本文語数(Abstract〜Methods、キャプション込み)約 9,700。
+
+## 追記その 30(2026-09-06): タイトル変更と用語統一(本人指示)
+
+- タイトル: "Message capacity and claim wording set the transition points of collective
+  truth-finding in language-model networks"(main / si / cover letter md・tex・pdf / README /
+  投稿フォルダの form answers)。旧 "Claim-induced fields and message-capacity limits …" は
+  "claim-induced field" が abstract 段階で意味を取れないため差し替え。
+- 用語: "claim-induced field"(本文 6 箇所)を廃止。タイトル・Abstract・Significance は
+  "claim wording"、本文では "the tilt each claim's wording induces (its field)"(§1)、
+  "wording-induced field" または "the claim's field"(§5.2・Discussion)。§2 の場の定義に
+  「claim の文言が各読み取りに誘導する傾き、claim ごとに測る」を添えて理論の field と
+  タイトル語を接続。"field transport"(失敗モード名)は維持。Discussion の題意の文を
+  「capacity は境界の位置、wording は相を決める」に。
+- Abstract: 冗長("identified its origin")を解消し、TeX 換算 244 語 / 1,588 字、フォーム換算 246 語。
+- main 21 頁・SI 12 頁・cover letter 1 頁、エラー 0。
