@@ -1,0 +1,4 @@
+alpha,n,wrong_rate_lowx0,ci_lo,ci_hi,absorbing,verdict
+0.6,40,0.975,0.925,1.0,True,saturating-rule (absorption up to 0.9+)
+0.9,40,1.0,1.0,1.0,True,saturating-rule (absorption up to 0.9+)
+1.3,40,0.975,0.925,1.0,True,saturating-rule (absorption up to 0.9+)

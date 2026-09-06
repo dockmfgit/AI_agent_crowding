@@ -1,0 +1,56 @@
+per-k rule: k [1, 2, 3, 5, 8, 12] bT [3.074, 1.706, 1.126, 0.64, 0.45, 0.327] bF [-0.779, -0.763, -0.743, -0.537, -0.416, -0.331]
+1414 episodes loaded
+block  arm  alpha
+B1     A    0.30      96
+            0.38      96
+            0.45      96
+            0.55      96
+B2     B    0.60     100
+            0.90     100
+            1.30     100
+B3     A    0.30      96
+B4     A    0.20      96
+            1.00      96
+B5     A    0.30      10
+B6     A    0.20      72
+            0.30      72
+            0.38      72
+            0.45      72
+            0.55      72
+            1.00      72
+dtype: int64
+
+alpha*_emp = nan (crossings in 0/2000 bootstraps)
+ alpha  n  wrong_rate    ci_lo  ci_hi
+  0.20 56    0.982143 0.946429    1.0
+  0.30 56    0.964286 0.892857    1.0
+  0.38 32    0.968750 0.906250    1.0
+  0.45 80    0.912500 0.775000    1.0
+  0.55 32    0.906250 0.718750    1.0
+  1.00 32    0.750000 0.437500    1.0
+
+arm B: saturating-rule (absorption up to 0.9+)
+ alpha  n  wrong_rate_lowx0  ci_lo  ci_hi  absorbing                                 verdict
+   0.6 40             0.975  0.925    1.0       True saturating-rule (absorption up to 0.9+)
+   0.9 40             1.000  1.000    1.0       True saturating-rule (absorption up to 0.9+)
+   1.3 40             0.975  0.925    1.0       True saturating-rule (absorption up to 0.9+)
+
+rho control (alpha=0.30):
+ x0_n  q_rho0  q_rho1      dq
+    4   0.000  0.0000  0.0000
+    8   0.000  0.0000  0.0000
+   12   0.000  0.0000  0.0000
+   16   0.000  0.0000  0.0000
+   20   0.075  0.0625 -0.0125
+   24   0.400  0.3125 -0.0875
+
+one-step calibration:
+ alpha  n_transitions  brier  brier_climatology    ece
+  0.20          43008 0.1028             0.1735 0.0519
+  0.30          67584 0.1149             0.1931 0.0591
+  0.38          43008 0.1298             0.2123 0.0757
+  0.45          43008 0.1193             0.1984 0.0629
+  0.55          43008 0.1384             0.2247 0.0851
+  1.00          43008 0.1581             0.2465 0.1014
+
+figures written

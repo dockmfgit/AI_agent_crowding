@@ -1,0 +1,13 @@
+4 claims: [2070, 382, 6, 1569]
+10 episodes in plan, 10 to run
+[1/10] B5_armA_a0.30_x16_r01_5s 541s (avg 541s/ep, ETA 1.4h)
+[2/10] B5_armA_a0.30_x16_r00_5s 556s (avg 278s/ep, ETA 0.6h)
+[3/10] B5_armA_a0.30_x16_r02_5s 580s (avg 193s/ep, ETA 0.4h)
+[4/10] B5_armA_a0.30_x16_r03_5s 526s (avg 267s/ep, ETA 0.4h)
+[5/10] B5_armA_a0.30_x16_r04_5s 566s (avg 224s/ep, ETA 0.3h)
+[6/10] B5_armA_a0.30_x16_r05_5s 584s (avg 194s/ep, ETA 0.2h)
+[7/10] B5_armA_a0.30_x16_r06_5s 571s (avg 234s/ep, ETA 0.2h)
+[8/10] B5_armA_a0.30_x16_r07_5s 597s (avg 215s/ep, ETA 0.1h)
+[9/10] B5_armA_a0.30_x16_r08_5s 570s (avg 193s/ep, ETA 0.1h)
+[10/10] B5_armA_a0.30_x16_r09_5s 329s (avg 197s/ep, ETA 0.0h)
+finished 10 episodes in 0.55h

@@ -1,0 +1,5 @@
+rule,alpha_star
+"identified per-k (variant A), c0=mean FE, power",0.47000000000000025
+"identified per-k (variant A), c0=mean FE, flat",0.47000000000000025
+"identified per-k slopes + pooled c0=0.725 (mismatch, for record)",0.7000000000000004
+pooled constant (Stage 1 coefficients),0.4300000000000002

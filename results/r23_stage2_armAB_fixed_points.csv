@@ -1,0 +1,82 @@
+arm,claim_id,model,alpha,fps,class,xc,lowest_stable
+A,6,identified constant (per claim),0.2,0.0054(s); 0.6768(u); 0.9745(s),bistable,0.6767670606062239,0.005441394994432936
+A,6,identified constant (per claim),0.3,0.0183(s); 0.7484(u); 0.9100(s),bistable,0.7483992582133625,0.01829099016300574
+A,6,identified constant (per claim),0.38,0.0359(s),mono_wrong,,0.035922328022523264
+A,6,identified constant (per claim),0.45,0.0577(s),mono_wrong,,0.0577132771481899
+A,6,identified constant (per claim),0.55,0.1005(s),mono_wrong,,0.1005073848769179
+A,6,identified constant (per claim),1.0,0.3513(s),mono_wrong,,0.3512834716278027
+A,6,identified divisive (per claim),0.2,0.0336(s),mono_wrong,,0.03362604981910912
+A,6,identified divisive (per claim),0.3,0.0396(s),mono_wrong,,0.03963607852975044
+A,6,identified divisive (per claim),0.38,0.0449(s),mono_wrong,,0.04490305239179826
+A,6,identified divisive (per claim),0.45,0.0499(s),mono_wrong,,0.04991798121028643
+A,6,identified divisive (per claim),0.55,0.0578(s),mono_wrong,,0.0578410479567871
+A,6,identified divisive (per claim),1.0,0.1077(s),mono_wrong,,0.10765595990521087
+A,382,identified constant (per claim),0.2,0.0001(s); 0.8312(u); 0.9911(s),bistable,0.8312326534019374,7.022663705911548e-05
+A,382,identified constant (per claim),0.3,0.0006(s); 0.8553(u); 0.9728(s),bistable,0.85534264367224,0.0006164308611077338
+A,382,identified constant (per claim),0.38,0.0019(s); 0.8970(u); 0.9324(s),bistable,0.8970056666534547,0.0019115537911566904
+A,382,identified constant (per claim),0.45,0.0041(s),mono_wrong,,0.004072562547551005
+A,382,identified constant (per claim),0.55,0.0096(s),mono_wrong,,0.009560538239052997
+A,382,identified constant (per claim),1.0,0.1172(s),mono_wrong,,0.11721401945966733
+A,382,identified divisive (per claim),0.2,0.0040(s),mono_wrong,,0.003981908721209945
+A,382,identified divisive (per claim),0.3,0.0052(s),mono_wrong,,0.005229349533479446
+A,382,identified divisive (per claim),0.38,0.0064(s),mono_wrong,,0.006395100864334901
+A,382,identified divisive (per claim),0.45,0.0076(s),mono_wrong,,0.007565890276519542
+A,382,identified divisive (per claim),0.55,0.0095(s),mono_wrong,,0.00953839419577604
+A,382,identified divisive (per claim),1.0,0.0261(s),mono_wrong,,0.026083778736596924
+A,1569,identified constant (per claim),0.2,0.0029(s); 0.5667(u); 0.9944(s),bistable,0.5666670264660867,0.002926010647346199
+A,1569,identified constant (per claim),0.3,0.0115(s); 0.5635(u); 0.9822(s),bistable,0.5635354876750913,0.011538289165340426
+A,1569,identified constant (per claim),0.38,0.0249(s); 0.5597(u); 0.9655(s),bistable,0.5596663074700763,0.024941998199579325
+A,1569,identified constant (per claim),0.45,0.0435(s); 0.5546(u); 0.9445(s),bistable,0.5546088828895457,0.043467897568129646
+A,1569,identified constant (per claim),0.55,0.0868(s); 0.5419(u); 0.9008(s),bistable,0.5418823572698948,0.08682939207624552
+A,1569,identified constant (per claim),1.0,0.6229(s),mono_correct,,0.6229242834058675
+A,1569,identified divisive (per claim),0.2,0.0266(s); 0.5487(u); 0.9628(s),bistable,0.5486960899892881,0.026595468991275316
+A,1569,identified divisive (per claim),0.3,0.0322(s); 0.5461(u); 0.9568(s),bistable,0.5460824973014762,0.032241552732567236
+A,1569,identified divisive (per claim),0.38,0.0374(s); 0.5434(u); 0.9515(s),bistable,0.5433616008554987,0.03744946843090556
+A,1569,identified divisive (per claim),0.45,0.0427(s); 0.5405(u); 0.9463(s),bistable,0.5404627375864772,0.042652670280036636
+A,1569,identified divisive (per claim),0.55,0.0514(s); 0.5353(u); 0.9381(s),bistable,0.5353269900645232,0.051402983431518806
+A,1569,identified divisive (per claim),1.0,0.1285(s); 0.4830(u); 0.8833(s),bistable,0.4830253093331971,0.1284663542356394
+A,2070,identified constant (per claim),0.2,0.0002(s); 0.8597(u); 0.9770(s),bistable,0.8596961346467062,0.0002420424564699906
+A,2070,identified constant (per claim),0.3,0.0016(s),mono_wrong,,0.001626905447126128
+A,2070,identified constant (per claim),0.38,0.0044(s),mono_wrong,,0.004429340878572762
+A,2070,identified constant (per claim),0.45,0.0087(s),mono_wrong,,0.008708066753039805
+A,2070,identified constant (per claim),0.55,0.0188(s),mono_wrong,,0.018837757372055702
+A,2070,identified constant (per claim),1.0,0.1883(s),mono_wrong,,0.18834680850002689
+A,2070,identified divisive (per claim),0.2,0.0126(s),mono_wrong,,0.012569331995267122
+A,2070,identified divisive (per claim),0.3,0.0152(s),mono_wrong,,0.015220815023126652
+A,2070,identified divisive (per claim),0.38,0.0176(s),mono_wrong,,0.01756533503383212
+A,2070,identified divisive (per claim),0.45,0.0198(s),mono_wrong,,0.019818850041153746
+A,2070,identified divisive (per claim),0.55,0.0234(s),mono_wrong,,0.02342888773503573
+A,2070,identified divisive (per claim),1.0,0.0481(s),mono_wrong,,0.04807289439493492
+A,all17,"identified joint per-k (Stage 1, 17 claims)",0.2,0.0476(s); 0.4783(u); 0.9593(s),bistable,0.47832083551539384,0.047591027716130066
+A,all17,"identified joint per-k (Stage 1, 17 claims)",0.3,0.0788(s); 0.4194(u); 0.9509(s),bistable,0.41938724674907457,0.07875088243435927
+A,all17,"identified joint per-k (Stage 1, 17 claims)",0.38,0.1162(s); 0.3614(u); 0.9445(s),bistable,0.36136062575442573,0.11615923273636716
+A,all17,"identified joint per-k (Stage 1, 17 claims)",0.45,0.1838(s); 0.2751(u); 0.9394(s),bistable,0.27509791178236,0.18378043994752863
+A,all17,"identified joint per-k (Stage 1, 17 claims)",0.55,0.9335(s),mono_correct,,0.9335369927620469
+A,all17,"identified joint per-k (Stage 1, 17 claims)",1.0,0.9297(s),mono_correct,,0.9297493339347085
+B,6,identified constant (per claim),0.6,0.3277(s),mono_wrong,,0.32770775786647455
+B,6,identified constant (per claim),0.9,0.4060(s),mono_wrong,,0.40597330533670506
+B,6,identified constant (per claim),1.3,0.4300(s),mono_wrong,,0.43001113892448994
+B,6,identified divisive (per claim),0.6,0.1150(s); 0.6590(u); 0.7797(s),bistable,0.6590348642447661,0.11498589821093105
+B,6,identified divisive (per claim),0.9,0.1458(s),mono_wrong,,0.1457657427637859
+B,6,identified divisive (per claim),1.3,0.1909(s),mono_wrong,,0.19087915840317143
+B,382,identified constant (per claim),0.6,0.0757(s),mono_wrong,,0.07566876199716102
+B,382,identified constant (per claim),0.9,0.1862(s),mono_wrong,,0.18623376402944836
+B,382,identified constant (per claim),1.3,0.3468(s),mono_wrong,,0.34679388060062133
+B,382,identified divisive (per claim),0.6,0.0236(s); 0.7279(u); 0.9049(s),bistable,0.7278625850170624,0.023606643920482423
+B,382,identified divisive (per claim),0.9,0.0324(s); 0.7589(u); 0.8639(s),bistable,0.7589127202807395,0.03239435596796482
+B,382,identified divisive (per claim),1.3,0.0478(s),mono_wrong,,0.04777463095566205
+B,1569,identified constant (per claim),0.6,0.7985(s),mono_correct,,0.7985125294558384
+B,1569,identified constant (per claim),0.9,0.6995(s),mono_correct,,0.6995402165293563
+B,1569,identified constant (per claim),1.3,0.6506(s),mono_correct,,0.6505998219110074
+B,1569,identified divisive (per claim),0.6,0.1880(s); 0.2899(u); 0.9297(s),bistable,0.289909901785655,0.1880395441511945
+B,1569,identified divisive (per claim),0.9,0.9138(s),mono_correct,,0.9138349791660323
+B,1569,identified divisive (per claim),1.3,0.8916(s),mono_correct,,0.891578924182167
+B,2070,identified constant (per claim),0.6,0.0285(s),mono_wrong,,0.028544711836387696
+B,2070,identified constant (per claim),0.9,0.0776(s),mono_wrong,,0.07764188769040714
+B,2070,identified constant (per claim),1.3,0.1758(s),mono_wrong,,0.17577641868070348
+B,2070,identified divisive (per claim),0.6,0.0146(s),mono_wrong,,0.014609071612448583
+B,2070,identified divisive (per claim),0.9,0.0199(s),mono_wrong,,0.01988486496917636
+B,2070,identified divisive (per claim),1.3,0.0288(s),mono_wrong,,0.028806482847284404
+B,all17,"identified joint per-k (Stage 1, 17 claims)",0.6,0.0957(s); 0.4600(u); 0.9217(s),bistable,0.4599707994094957,0.09567662901224197
+B,all17,"identified joint per-k (Stage 1, 17 claims)",0.9,0.1251(s); 0.4107(u); 0.9181(s),bistable,0.4106563400706176,0.12507369306611177
+B,all17,"identified joint per-k (Stage 1, 17 claims)",1.3,0.2052(s); 0.3028(u); 0.9134(s),bistable,0.30276217072165124,0.20524973890363768

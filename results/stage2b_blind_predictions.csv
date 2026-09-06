@@ -1,0 +1,11 @@
+claim_id,set,alpha,c0_pooled,fixed_points,n_stable,separation_flag
+993,A1_supports,0.3,0.335,0.998(stable),1,False
+993,A1_supports,0.55,0.335,0.995(stable),1,False
+1103,A1_supports,0.3,-0.529,0.901(stable),1,False
+1103,A1_supports,0.55,-0.529,0.305(stable),1,False
+1239,A1_supports,0.3,0.341,0.999(stable),1,False
+1239,A1_supports,0.55,0.341,0.996(stable),1,False
+90006,A2_paraphrase,0.3,0.286,0.999(stable),1,False
+90382,A2_paraphrase,0.3,0.624,0.998(stable),1,False
+91569,A2_paraphrase,0.3,1.005,0.997(stable),1,False
+92070,A2_paraphrase,0.3,3.03,,0,True

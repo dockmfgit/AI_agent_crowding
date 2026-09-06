@@ -1,0 +1,12 @@
+claim_id,claim,truth,set
+2070,"When life is considered, ocean acidification is often found to be a non-problem, or even a benefit.",FALSE,orig
+382,The amount of energy used to construct solar and wind facilities is greater than they produce in their working lives.,FALSE,orig
+6,The polar bear population has been growing.,FALSE,orig
+1569,Sea level rise is decelerating.,FALSE,orig
+993,"While there has been a mean rise of a little more than 3mm per year worldwide since the 1990s, in the last decade, the NOAA Virginia Key tide gauge just south of Miami Beach has measured a 9mm rise annually.”",TRUE,A1_supports
+1103,[ocean acidification was ] First referenced in a peer-reviewed study in Nature in 2003,TRUE,A1_supports
+1239,"Through decades of research, it has become clear that human civilization, roughly 6,000 years old, developed during an unusually stable period for global sea levels.",TRUE,A1_supports
+90006,The polar bear population has not been growing.,TRUE,A2_paraphrase
+91569,Sea level rise is not decelerating.,TRUE,A2_paraphrase
+90382,The amount of energy used to construct solar and wind facilities is not greater than they produce in their working lives.,TRUE,A2_paraphrase
+92070,"When life is considered, ocean acidification is often found to be a problem, and not a benefit.",TRUE,A2_paraphrase

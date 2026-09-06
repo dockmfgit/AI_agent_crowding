@@ -1,0 +1,468 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[round]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black]{hyperref}
+\usepackage{longtable}
+\usepackage{xcolor}
+
+\newcommand{\astar}{\alpha^{*}}
+\graphicspath{{figs/}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\title{Supplementary Information:\\Claim-induced fields and message-capacity limits set the transition points of collective truth-finding in language-model networks}
+\author{Makoto Fukushima}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Reanalysis of the public dataset}
+
+\subsection{Endogeneity of the initial fraction}
+
+Variance decomposition of $x_0$ and within/between-question outcome
+correlations (random-graph family, $\delta = 0.1$), computed over the 6{,}400
+objective communities of El et al.:
+
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+model & between-question share of $\mathrm{var}(x_0)$ &
+$\mathrm{corr}(x_0,\text{outcome})$ & between & \textbf{within} \\
+\midrule
+Gemma-3n     & 0.995 & 0.802 & 0.852 & \textbf{0.041} \\
+Llama-3-8B   & 0.936 & 0.659 & 0.721 & \textbf{0.162} \\
+Qwen3.5-9B   & 0.861 & 0.277 & 0.351 & \textbf{0.132} \\
+GPT-4o-mini  & 0.503 & 0.298 & 0.321 & \textbf{0.273} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Question-clustered versus i.i.d.\ bootstrap intervals for the fitted
+$q(x_0)$ crossing (random family):
+
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+model & crossing & i.i.d.\ CI & width & question-clustered CI & ratio \\
+\midrule
+GPT-4o-mini & 0.494 & $[0.477, 0.513]$ & 0.036 & $[0.404, 0.583]$ & 4.9$\times$ \\
+Gemma-3n    & 0.285 & $[0.251, 0.315]$ & 0.065 & $[0.163, 0.419]$ & 3.9$\times$ \\
+Qwen3.5-9B  & 0.142 & $[0.059, 0.206]$ & 0.147 & $[-1.049, 0.367]$ & 9.6$\times$ \\
+Llama-3-8B  & 0.459 & $[0.441, 0.480]$ & 0.039 & $[0.370, 0.564]$ & 5.0$\times$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Message-level coefficients and the truth asymmetry}
+
+Question-clustered 95\% intervals for the per-message truth asymmetry $w_T$
+(43{,}500 observations per model):
+
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+model & $w_T$ & cluster 95\% CI & Ising-coupling estimate & contains 1 \\
+\midrule
+GPT-4o-mini & 1.055 & $[0.996, 1.114]$ & 1.16 & yes (boundary) \\
+Gemma-3n    & 1.179 & $[0.731, 1.628]$ & 1.71 & yes \\
+Qwen3.5-9B  & 0.900 & $[0.759, 1.041]$ & 1.33 & yes \\
+Llama-3-8B  & 1.144 & $[0.972, 1.316]$ & 1.38 & yes \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The label attenuation $\lambda_{\mathrm{lab}}$ (per-message weight of
+``disagree''-labeled edges relative to ``agree''-labeled ones) is
+$0.080 \pm 0.044$ (GPT-4o-mini), $0.555 \pm 0.078$ (Gemma), $0.294 \pm 0.051$
+(Qwen), $0.288 \pm 0.041$ (Llama); $\theta$ is nonzero in all four models
+($t \ge 3.4$, question-clustered).
+
+\section{Single-agent measurement (llama3.1:8b)}
+
+\subsection{Response coefficients}
+\begin{center}
+\input{tables/t_stage1_coeffs}
+\end{center}
+
+\subsection{Attenuation-form comparison}
+\begin{center}
+\input{tables/t_decay}
+\end{center}
+
+\subsection{Identified per-$k$ coefficients}
+
+At a single inbox size $k$ the design columns $1$, $l$, and $k-l$ are
+collinear ($l + (k-l) = k$), so a logistic fit at fixed $k$ identifies only
+$c_0 + k\beta_F$ and $\beta_T - \beta_F$. The per-$k$ coefficients below are
+therefore fitted jointly over all inbox sizes, with one fixed effect per claim
+anchored by the empty-inbox cells ($k = 0$), which identifies
+$\beta_T(k)$ and $\beta_F(k)$ separately at every measured $k$ (design rank
+verified: 29/29 columns for variant A, 30/30 for variant B). Intervals are
+claim-clustered bootstrap percentiles (200 resamples).
+
+\begin{center}
+\small
+\begin{tabular}{rcccc}
+\toprule
+$k$ & $\beta_T(k)$, variant A & $\beta_F(k)$, variant A & $\beta_T(k)$, variant B & $\beta_F(k)$, variant B \\
+\midrule
+1  & 2.11 [1.58, 2.96] & $-1.53$ [$-2.03$, $-1.12$] & 1.62 [1.29, 1.94] & $-1.52$ [$-1.80$, $-1.25$] \\
+2  & 1.23 [0.98, 1.41] & $-1.21$ [$-1.49$, $-0.94$] & 0.78 [0.60, 0.95] & $-1.10$ [$-1.23$, $-0.93$] \\
+3  & 0.80 [0.65, 0.96] & $-1.04$ [$-1.30$, $-0.80$] & 0.61 [0.49, 0.72] & $-0.82$ [$-0.92$, $-0.68$] \\
+5  & 0.45 [0.35, 0.55] & $-0.72$ [$-0.88$, $-0.57$] & 0.34 [0.28, 0.41] & $-0.50$ [$-0.57$, $-0.42$] \\
+8  & 0.31 [0.26, 0.37] & $-0.51$ [$-0.63$, $-0.41$] & 0.24 [0.20, 0.28] & $-0.34$ [$-0.38$, $-0.29$] \\
+12 & 0.23 [0.18, 0.27] & $-0.39$ [$-0.48$, $-0.33$] & 0.18 [0.16, 0.21] & $-0.25$ [$-0.28$, $-0.22$] \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Mean claim fixed effect under the full scaffold: $0.94$ (variant A; range
+$-0.70$ to $3.03$ over the 17 claims), $-0.64$ (variant B), with
+$\theta = 2.15$ (variant B).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figS1_perk_identified}
+\caption{\textbf{Identified per-message coefficients versus inbox size
+(31{,}824 randomized queries).} $\beta_T(k)$ and $\beta_F(k)$ from the joint
+fit with claim fixed effects anchored by the empty-inbox cells, for prompt
+variants A (a) and B (b); bars are 95\% claim-clustered bootstrap intervals.}
+\label{fig:si_single}
+\end{figure}
+
+\section{Reduced-map \texorpdfstring{$\astar$}{alpha*}: validation table}
+
+Fold of the full map $F$ (all $P_\alpha(k)$, exact binomial sums; located by
+bisection in $\alpha$) versus the two closure levels of the reduced map $G$,
+for seven synthetic coefficient sets and the four measured ones. The fold of
+$G$ is solved jointly from $G(x;K) = x$ and $G_x(x;K) = 1$ (residuals below
+$10^{-12}$; $G_{xx} > 0$ and $G_K < 0$ at every fold), then converted to
+$\astar$ by inverting the exact mean degree $E[K](\alpha)$ or the closed
+form~(1) of the main text. Synthetic sets use $\beta_T = -\beta_F = \bar\beta$.
+
+\begin{center}
+\small
+\resizebox{\textwidth}{!}{\input{tables/t_fold_precision}}
+\end{center}
+
+Median relative error: 2.7\% (exact-$E[K]$ inversion), 6.7\% (fully closed);
+maximum 6.0\% (exact-$E[K]$ inversion; the synthetic set $h = 0.7$,
+$\theta = 0.6$, $\bar\beta = 1$) and 9.9\% (fully closed; $h = 0.3$,
+$\theta = 2$, $\bar\beta = 1$). The registered variant-A value
+$\astar = 0.435$ ($K^* = 6.4$) was obtained with $K^*$ located on a 0.05 grid;
+the fold solved to full precision gives 0.439 ($K^* = 6.36$).
+
+Main text Section 4 quotes the folds of the full map $F$ (first numeric
+column): variant A 0.43 (constant), 0.48 (divisive), 0.46 (identified
+per-$k$); variant B 0.47 (constant) and 1.28 (divisive). The registered
+prediction $\astar = 0.435$ is the $G$-fold with exact $E[K]$ (second
+column).
+
+\emph{Coefficient sets and $\gamma$ by figure.} The constant-coupling sets are
+the pooled Stage 1 fits (main text Section 4). The divisive $\astar$ values
+use $\gamma$ profiled separately per prompt variant ($\gamma_A = 0.526$,
+$\gamma_B = 1.318$); Fig.~3 of the main text and the per-claim response
+functions of the collective experiments use the pooled profile $\gamma = 0.9$
+(Section 2.2 above). Fig.~2 of the main text plots the table above.
+
+\emph{Range of the closed form.} $\bar K(\alpha) = \ln(1 + \alpha(N-1))/\alpha$
+underestimates the exact mean degree by 2.5\% ($\alpha = 0.2$), 4.0\%
+(0.435), 7.0\% (1.0), 11.3\% (2.0) and 68\% ($\alpha = 20$): as
+$\alpha \to \infty$ the closed form tends to zero whereas the exact mean tends
+to one (the first candidate is always accepted). All $\astar$ values in this
+paper lie in $\alpha \le 1.6$, where the underestimate is below 10\%, and the
+exact recursion is inverted wherever precision matters.
+
+\section{Main collective experiment}
+
+\subsection{Distribution of final fractions}
+
+The outcome labels of the main text ($x_8 \ge 0.6$ correct-side consensus,
+$x_8 \le 0.4$ wrong-side) are operational thresholds. The table gives, per
+campaign, the share of episodes that were decided and the share of decided
+episodes whose final fraction lies beyond $|x_8 - 0.5| > 0.4$, with the
+median end state on each side. Pooled over all 2{,}620 episodes, 66\% end in
+$|x_8 - 0.5| \in [0.45, 0.5]$ (unanimity included).
+\begin{center}
+\small
+\resizebox{\textwidth}{!}{\input{tables/t_outcome_distribution}}
+\end{center}
+
+\subsection{Outcome family (arm A, generated graphs)}
+\begin{center}
+\small
+\input{tables/t_s2_committor}
+\end{center}
+
+\subsection{Empirical critical crowding level}
+\begin{center}
+\input{tables/t_s2_alphastar}
+\end{center}
+No crossing of the pre-registered 20\% threshold occurs in the window
+($\astar_{\mathrm{emp}}$ undefined; 0 of 2{,}000 claim-clustered bootstrap
+resamples cross).
+
+\subsection{Discrimination arm (variant B)}
+\begin{center}
+\input{tables/t_s2_armB}
+\end{center}
+
+Observed low-$x_0$ ($x_0 \le 10/32$) mean final fractions against eight-round
+surrogate rollouts (200 per episode, same graphs and seedings) of three rules
+with claim-resolved fields: the normalized rule with the 17-claim identified
+per-$k$ weights, and the per-claim reduced fits with divisive and with
+constant coupling:
+\begin{center}
+\small
+\resizebox{\textwidth}{!}{\input{tables/t_s2_armB_surrogate}}
+\end{center}
+The normalized rules lie closer to the observations than the constant rule
+but neither reproduces them exactly; claim 1569 converged wrong-side under
+both rules' correct-side predictions (main text Section 5.2).
+
+\subsection{Rewiring control}
+\begin{center}
+\input{tables/t_s2_rho}
+\end{center}
+
+\subsection{Yoked one-step calibration}
+Every realized transition replayed through the response function with the
+17-claim identified per-$k$ weights and each claim's own field:
+\begin{center}
+\small
+\input{tables/t_s2_onestep}
+\end{center}
+At contested compositions ($l/k \in [0.4, 0.6]$; last column) the residual
+is within $\pm 0.02$ in arm A, whereas in arm B (own-state line present) a
+systematic over-prediction of $0.04$--$0.06$ remains.
+
+\section{Polarity discrimination experiment}
+
+\subsection{SUPPORTS-claim collectives (A-1)}
+\begin{center}
+\input{tables/t_s2b_a1}
+\end{center}
+
+\subsection{Negated-rewrite collectives (A-2) versus originals}
+\begin{center}
+\small
+\input{tables/t_s2b_a2}
+\end{center}
+
+\subsection{Claim texts, rewrites, and checks}
+
+Selected SUPPORTS claims (bare-prompt $p_q$ in parentheses): 993 (0.708)
+``While there has been a mean rise of a little more than 3mm per year
+worldwide since the 1990s, in the last decade, the NOAA Virginia Key tide
+gauge just south of Miami Beach has measured a 9mm rise annually.''; 1103
+(0.792) ``[ocean acidification was] First referenced in a peer-reviewed study
+in Nature in 2003''; 1239 (0.792) ``Through decades of research, it has
+become clear that human civilization, roughly 6,000 years old, developed
+during an unusually stable period for global sea levels.''
+
+Negated rewrites (model opposition-judgment rate; bare-prompt $p_q$ of the
+rewrite, TRUE = correct side):
+
+\begin{center}
+\small
+\begin{tabular}{p{5.6cm}p{5.6cm}cc}
+\toprule
+original & rewrite & opp.\ rate & $p_q$ \\
+\midrule
+The polar bear population has been growing. &
+The polar bear population has \emph{not} been growing. & 0.70 & 0.344 \\
+Sea level rise is decelerating. &
+Sea level rise is \emph{not} decelerating. & 0.85 & 0.938 \\
+The amount of energy used to construct solar and wind facilities is greater
+than they produce in their working lives. &
+\ldots is \emph{not} greater than they produce in their working lives. &
+0.70 & 0.938 \\
+When life is considered, ocean acidification is often found to be a
+non-problem, or even a benefit. &
+\ldots is often found to be a \emph{problem, and not a benefit}
+(contrary; quantifier ``often'' retained). & 0.85 & 1.000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Single-agent predictions for the polarity-experiment cells}
+
+Per-claim divisive response functions (main text Methods) give the predicted
+phase of each (claim, $\alpha$) cell of the polarity experiment; all ten cells
+are predicted monostable correct-side, and all ten converged correct-side.
+In two cells (993 at $\alpha = 0.30$, 1103 at $\alpha = 0.55$) a minority of
+episodes seeded at the lowest fraction ended wrong-side, so the fitted 50\%
+crossing lies below the seeding grid; these are the two cells described in
+the main text as matching to within the resolution of the grid.
+\begin{center}
+\small
+\resizebox{\textwidth}{!}{\input{tables/t_s2b_cells}}
+\end{center}
+
+\section{Cross-model campaigns}
+
+\subsection{qwen3:8b: predicted fixed points versus observed collectives}
+
+Fixed points of the mean-field map under each claim's divisive response
+function (fitted from 336 single-shot queries per claim), with 95\%
+single-agent-bootstrap intervals on the unstable point, against the observed
+mean final fractions and the fitted 50\% crossing:
+\begin{center}
+\footnotesize
+\resizebox{\textwidth}{!}{\input{tables/t_qwen_pred_obs}}
+\end{center}
+
+Per-cell outcome counts (correct/wrong/undecided of 10 episodes) for the same
+campaign; intermediate mean final fractions in Fig.~6 of the main text are
+splits between the two basins:
+\begin{center}
+\small
+\input{tables/t_s2d_cells}
+\end{center}
+
+qwen3:8b calibration of the 120 candidate claims found 4 SUPPORTS and 3
+REFUTES claims with $|h_q| < 0.4$; a polarity-balanced set of 12 could not be
+formed, so genuine truth asymmetry remains unidentified in this model as
+well.
+
+\subsection{llama3.3:70b single-agent probe}
+\begin{center}
+\input{tables/t_70b}
+\end{center}
+Polarity-coded regression across all eight claims (claim fixed effects):
+$b(\text{TRUE-side message}) = +0.583$, $b(\text{FALSE-side}) = -0.563$,
+ratio 1.03 with claim-clustered 95\% interval $[0.66, 1.64]$ (2{,}000
+resamples of the eight claims; weak ridge $10^{-3}$ against separation). On
+the same eight claims and message bank llama3.1:8b gives 1.94 $[1.39, 2.73]$
+(over the 17 calibration claims: 1.44 $[1.25, 1.65]$); the 8b$-$70B
+difference is 0.90 $[0.00, 1.72]$ and the ratio of ratios 1.87
+$[1.00, 3.12]$, so the reduction is at the edge of resolution with eight
+claims. Per-claim coefficients with $|c_0| > 5$ in the table above reflect
+separation (accuracy 0 or 1 at $k = 0$) and are reported for completeness.
+Empty-inbox fields (last column, observed rates over the empty-inbox
+queries of each claim): the four false originals give
+$P(\mathrm{TRUE}) = 0.000$ (every answer on the denying and correct side); of
+the four true rewrites, three give 1.000 and the negated polar-bear rewrite
+(90006) 0.42, the one near-neutral claim among the eight.
+Per-$k$ fits (truth-coded, pooled across claims):
+$\beta_T(4) = 2.41 \to \beta_T(8) = 1.35$. The positive wrong-side
+coefficient at $k = 4$ ($+0.61$) --- wrong-side messages slightly
+\emph{increasing} correct-side probability --- is recorded as an observation
+only.
+
+\section{Stage 2c: eight-claim calibration campaign and polarity-origin probe}
+
+\subsection{Calibration campaign: all 16 cells}
+
+Predicted classifications and thresholds come from each claim's divisive
+response function fitted to its single-shot queries (Methods); the eight
+claims were selected from twenty candidates by the pre-registered rule.
+Prediction intervals are single-agent bootstrap percentiles (200 resamples
+of each claim's queries within design cells) and ``frac.\ bistable'' is the
+fraction of resamples classified bistable. Observed crossings are 50\% points
+of ridge-penalized logistic fits of episode outcomes against $x_0$, with
+episode-bootstrap 95\% intervals;
+$n_{\mathrm{c}}/n_{\mathrm{w}}/n_{\mathrm{u}}$ are correct/wrong/undecided
+episode counts of 16 per cell.
+
+\begin{table}[h]
+\centering\footnotesize
+\resizebox{\textwidth}{!}{\input{tables/t_s2c_cells}}
+\caption{All 16 cells of the eight-claim calibration campaign (qwen3:8b,
+256 episodes, zero parse failures). Fifteen cells match in class; the
+mismatch is claim 1146 at $\alpha = 0.30$, predicted bistable with threshold
+0.094 just above the lowest seeded fraction (2/32), observed monostable
+correct. All eleven predicted thresholds of the cells observed bistable lie
+inside the observed intervals (mean absolute difference 0.04; Spearman
+$r_s = 0.96$, claim-permutation $p = 0.004$).}
+\end{table}
+
+\subsection{Polarity-origin probe (D-3)}
+
+Judgment-side single-shot measurements on three llama3.1-8b variants with the
+fixed 8B message bank and a three-shot answer-format prefix applied
+identically to all variants. The base model does not follow the forced-choice
+format (parse rate 1.5\% in the bare pilot, 4.9\% under the prefix), so its row is
+reported for completeness and carries no statistical weight.
+
+\begin{table}[h]
+\centering\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllll}
+\toprule
+variant & tag (digest) & parsed & $|b_T|/|b_F|$ & 95\% CI \\
+\midrule
+instruct (control) & llama3.1:8b (46e0c10c039e) & 5{,}984/5{,}984 & 1.437 & [1.250, 1.651] \\
+abliterated & mannix/llama3.1-8b-abliterated (f7d729db9832, Q4\_0) & 5{,}984/5{,}984 & 1.243 & [1.051, 1.471] \\
+base & llama3.1:8b-text-q4\_K\_M (6f98b5a6e4b7) & 294/5{,}984 & (2.10) & not evaluable \\
+\bottomrule
+\end{tabular}}
+\caption{Per-message assertion asymmetry (claim-fixed-effect logistic
+regression; claim-clustered bootstrap intervals). The instruct control
+reproduces the Stage-1 value 1.44 under the added format prefix. Bare
+affirmation indices $S$ for the four original/negated pairs: instruct
+0.92--1.52 (mean 1.22), abliterated 1.13--1.42 (mean 1.24); base cells parsed
+2--6 of 64 and are not evaluable.}
+\end{table}
+
+\section{Residual and consistency analyses}
+
+\subsection{Message statistics by side}
+\begin{center}
+\input{tables/t_E_messages}
+\end{center}
+
+\subsection{Recorded-message persuasiveness probes}
+\begin{center}
+\input{tables/t_E_probes}
+\end{center}
+Episode-generated and bank messages are indistinguishable in persuasive
+force; no message-quality contribution to the high-$x_0$ residual is detected.
+
+\subsection{Repeated exposure and finite time}
+
+One-step regression with round interactions gives
+$\beta_T \times (t-1) = +0.026$ (SE 0.006) and $\beta_F \times (t-1) =
+-0.004$ (SE 0.003): repeated exposure does not attenuate message influence.
+Finite-time check on high-$x_0$ episodes:
+\begin{center}
+\small
+\input{tables/t_E_finitetime}
+\end{center}
+
+\subsection{Label residual}
+
+Correlation between an episode's share of TF label assignments and its final
+state: $r = 0.194$ ($n = 1{,}008$ episodes) --- an order of magnitude below
+the experimental effects ($\Delta \bar x_8 \approx 1$), but nonzero;
+per-call randomization protects pooled estimates.
+
+\subsection{Flip statistics and cascades}
+
+Refractory regression: the coefficient of ``flipped at $t-1$'' on flipping at
+$t$ is $+0.98$ (claim-cluster SE 0.13) --- flips concentrate in particular
+agents (anti-refractory). Branching ratios:
+\begin{center}
+\input{tables/t_E_branching}
+\end{center}
+Cascade-size distribution in the asynchronous public dataset (GPT-4o-mini,
+320 runs; cascades linked by graph adjacency within three events):
+\begin{center}
+\input{tables/t_E_async}
+\end{center}
+91.8\% of cascades have size 1; the tail decays geometrically (deeply
+subcritical).
+
+\section{Fidelity check}
+
+Ten episodes at $\alpha = 0.30$, $x_0 = 16/32$ re-run with five-sample
+majority voting: wrong-consensus rate 1.00, undecided 0.00, mean
+$|x_8 - 0.5| = 0.44$, versus 0.875, 0.125, 0.38 under single-sample
+judgments --- absorption is sharper, not weaker, under the original
+five-sample protocol.
+
+\end{document}

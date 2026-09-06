@@ -1,0 +1,26 @@
+# never publish: third-party dataset (obtain from original source)
+external/
+
+# serving logs (tens of GB, no scientific content) and scratch work
+data/*_ollama_serve.log
+scratch/
+
+# macOS / NAS artifacts
+.DS_Store
+._*
+.AppleDouble/
+
+# LaTeX build intermediates
+manuscript/tex/*.aux
+manuscript/tex/*.bbl
+manuscript/tex/*.blg
+manuscript/tex/*.out
+manuscript/tex/*.toc
+manuscript/tex/*.log
+
+# raw episode JSONs are shipped as data/stage2_episodes.tar.gz instead
+data/stage2/episodes/
+
+# Python
+__pycache__/
+*.pyc

@@ -1,0 +1,9 @@
+claim_id,claim,label,truth,p_q_scaffold
+832,"Or the news from Antarctica this past May, when a crack in an ice shelf grew 11 miles in six days, then kept going; the break now has just three miles to go — by the time you read this, it may already have met the open water, where it will drop into the sea one of the biggest icebergs ever, a process known poetically as ‘calving.’",SUPPORTS,TRUE,1.0
+656,"The Arctic’s carbon bomb might be even more potent than we thought […] methane, a shorter-lived but far harder-hitting gas that could cause faster bursts of warming",SUPPORTS,TRUE,1.0
+1013,"Global sea level rise surged between November 2014 and February 2016, with the El Niño event helping the oceans rise by 15mm.",SUPPORTS,TRUE,0.3333333333333333
+590,"Their ECS estimate is 1.5 degrees, with a probability range between 1.05 and 2.45 degrees.",REFUTES,FALSE,0.9166666666666666
+97,"according, again, to the official figures—during this past 10 years, if anything, mean global temperature, average world temperature, has slightly declined",REFUTES,FALSE,1.0
+1151,"“Unlike genuine pollutants, carbon dioxide (CO2) is an odorless, colorless gas.",REFUTES,FALSE,0.75
+184,It has never been shown that human emissions of carbon dioxide drive global warming.,REFUTES,FALSE,1.0
+1146,"“It’s far too early to tell if what we are seeing in the Arctic, and now the Antarctic, is a sharp shift towards warmer poles with less ice.",REFUTES,FALSE,0.0

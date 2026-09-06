@@ -1,0 +1,73 @@
+# data/ MANIFEST
+
+stage2_episodes.tar.gz unpacks to data/stage2/episodes/ (2,633 episode JSON files: the 1,414 main-experiment episodes plus the stage 2b/2c/2d campaigns and 3 trial runs).
+
+| path | bytes | sha256 |
+|---|---|---|
+| ._Claude outputs | 4096 | 2bea5b1bb24de268db2dc734f41596df26f976ac04cbf07a4e6bd785e16be89a |
+| ._manuscript | 4096 | 2bea5b1bb24de268db2dc734f41596df26f976ac04cbf07a4e6bd785e16be89a |
+| ._repo_prep | 4096 | 2bea5b1bb24de268db2dc734f41596df26f976ac04cbf07a4e6bd785e16be89a |
+| ._workshop_fast | 4096 | 2bea5b1bb24de268db2dc734f41596df26f976ac04cbf07a4e6bd785e16be89a |
+| groups.parquet | 63722 | 187c09c030422a9d822a0021e8b566f6a13cb5d8c02de3fdba6116ce69bef580 |
+| pk_empirical.parquet | 3479 | be4411babe26ccd77dd0fd27ef5c18845f43a5ff6057608d55c8777afae1a848 |
+| stage2_episodes.tar.gz | 86513404 | 63781533157dd65c952d0bdfa15db04faace9c00039a6eaa00b12c25b9b58b90 |
+| stage1/main_obs.parquet | 46768 | 956970aeac64378370de43fe7f6cfc1bfe6f584ea692dc1dba29753020ba7d6c |
+| stage1/message_bank.parquet | 135257 | 2206fb9163bdbcc3a6f244b3777203d9870ac911d1439b8cddde471f3ef5b2fc |
+| stage1/raw/11_calibrate_coarse.jsonl | 798471 | fde4d0ec4bcbd6b3f12efa864d4d4c389ed18d73d493a63c37656ed13d258df9 |
+| stage1/raw/11_calibrate_refine.jsonl | 243622 | 6b3b6f6e09a24e938ce4b74b8ec77eb7b01889fd700b2104222f17b0027237cf |
+| stage1/raw/12_gen_messages.jsonl | 571693 | f4d5bdb9655f429fef3bf6d0ae44e0af51a617cd8d92c57cb47f593ee9520fd1 |
+| stage1/raw/12_purity.jsonl | 438292 | 2ced06c85b3b54f1c3499a467d5eb4fd1f30c2d06e211c5e77334c513fbdcc54 |
+| stage1/raw/13_main.jsonl | 14163428 | 6ff19aed9fa1f2d061b299a812107ae22fafb7351ea9d517daf3249d851ddeb5 |
+| stage1/raw/25_gen_messages.jsonl | 220210 | 428c37175e0d4657588cea5c80971adc4b8236cdf6834b81925af4d6f324ce41 |
+| stage1/raw/25_opposition.jsonl | 20101 | 3af4e553525959bbd908cfd0b503652babb8c2ab7dc3e192dc1016bae5bf6fce |
+| stage1/raw/25_para_calibration.jsonl | 64589 | 33143c7bf8c66784cda9b91ad4328baa3ff812b354d2d6ee62664028a067eb1b |
+| stage1/raw/25_purity.jsonl | 180027 | db56e3a1da7bc25104fcc3a1d37f00c6f1bde002c99fff9dff5e3c28f025ebd8 |
+| stage1/raw/25e_probes.jsonl | 275763 | 222082f989cca6263b256c1324d9b20b56ed8c2e6843fb765a67e2940157fb8d |
+| stage1/raw/25h_qwen_cal.jsonl | 765147 | 8cc5af7e1ec2413c76c32e684d467d7db220d5f7819bdbd2e0c167cec3529609 |
+| stage1/raw/25h_qwen_gen.jsonl | 275155 | 034ad1b79097c294fd7cc2b0e767ea47b0ee3aca7c4b66e3d95cf1897269079c |
+| stage1/raw/25h_qwen_purity.jsonl | 263082 | 237f2f08e8fd91a137f0e3415c19709c6a86ae8de94c6fa05c1cf1bd90518cdd |
+| stage1/raw/25h_qwen_single.jsonl | 1054447 | 5aa7fefeeffa7f3d79a64bb6caf02455bfa0ce6dab03e55eaf0db5acc4bf42b8 |
+| stage1/raw/25i_70b_single.jsonl | 282200 | 756d99fe00d8a901d34fe77ffde9225a46f1d5b80245dc2de3f97ce77cf9f03d |
+| stage1/raw/26_single.jsonl | 691112 | cb492d903881b93bfc8650afdeb56a809276f1c72aa21c7cff7376345506ea4c |
+| stage1/raw/42_a2_ablit.jsonl | 1619930 | f69d897b2393874def5ca8fe7c30f92aa8ef2cfe0a5846ba20fcf2be59bfe0ac |
+| stage1/raw/42_a2_base.jsonl | 1677431 | 6fc1c250edf39a65aa22f46270005adb5aa379f76a7320dd1ef54ff29ce76ae1 |
+| stage1/raw/42_a2_instruct.jsonl | 1620395 | 417f2e40a09670889c88bf09f325a8d0af566a4955100ac4e80f77ef9c7b69b0 |
+| stage1/raw/42_a3_ablit.jsonl | 119129 | 0071b57c86ebae595ba6912655e5a0d8da5f2d56185f4cd13ce435f72e40cd07 |
+| stage1/raw/42_a3_base.jsonl | 124535 | fba7df0d17618df707dcbe3c1eecad2b89b8ec210bf7b38bf447f2a6c1152aee |
+| stage1/raw/42_a3_instruct.jsonl | 119142 | d47b05b0fbef650e9ec1ab1ec2e48a727c2222748c99acaf484301a2ffc023a5 |
+| stage1/raw/42_pilot_ablit.jsonl | 53417 | 5b586b51e71d806b91fcafafe0c815cf69f83ee27fdb56ea4898a36c58d0472d |
+| stage1/raw/42_pilot_base.jsonl | 55403 | 43d939c1ea39b26a5d2ad7ef6075fecbd044f263c4c2b891b1bdf3c198b018e1 |
+| stage1/raw/42_pilot_instruct.jsonl | 53359 | 712e6a98ebf10a4cb0d841ad2c5e0c2c0e0bb3b82e52f03531e93c8407544fbb |
+| stage1/raw/43_cal24.jsonl | 128562 | 49d6e31d9aa618a0bd620daf078494d33ceacf909aabe7e60987bab55a121a83 |
+| stage1/raw/43_cal40.jsonl | 10664 | 640683f4992bc71922345de55f1908c4949802d72a5443fcabb2f670af0f9aec |
+| stage1/raw/43_gen.jsonl | 514780 | 18b4dc5cddebf8b64795770788b6f6d609c40c63a70cf7a956d06e3b74bb2a44 |
+| stage1/raw/43_purity.jsonl | 481329 | 7c6cfc1b03bab3c6262ea28173ff834cc0d4e23d48174230307eba6b65ad9176 |
+| stage1/raw/43_single.jsonl | 1793490 | c114235aa5ea9738d121900c1560f6ba8fc4330dc3ca0182783c65850983d598 |
+| stage2/PIPELINE_DONE | 0 | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
+| stage2/driver_b4.log | 5394 | 123ca7491175699f8ecd11e80b701eb6a8a09f60c5fb919582ca3a8f466af27c |
+| stage2/driver_b5.log | 703 | 8e3d114da625cbe251bc8b80d51a139f38291be00ef776bef3ed04e2b6d47cf9 |
+| stage2/driver_b6.log | 17679 | 58622070489e73d657439ea63f77cc902ec23091242d9694720505a398100fbf |
+| stage2/orchestrator.log | 218 | 861814c4b57e38bf313e7a29243537551f9f9adad8839db620673a58f334a9b9 |
+| stage2/timing.csv | 28087 | 0f0dfa7771e2cbafcc1663e2438ea81c4e1a5fadaef500510cfc6f5b38570ea2 |
+| stage2b/GROUPS_DONE | 0 | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
+| stage2b/claims.csv | 1149 | 5aa1b4ceeb2e3bc6fe367152f3937630adbac118d94176088b52f83c11a4c927 |
+| stage2b/driver_a1.log | 17178 | 0d829d5bb7ffec35b728f0794c35bbb5eed76a0f9e5a4a83d92a596602cd6d5f |
+| stage2b/driver_a2.log | 12070 | d21fc4f398b6220b413547a071aaa63728396103afeef4639327b8634789bd89 |
+| stage2b/message_bank.parquet | 55395 | 12fe867c3ca285892b278ba4e7ec0719ad3243aa1e91f527c1f2b90a1ac6ede0 |
+| stage2b/orchestrator.log | 177 | f879f060dafce6e7e3fb750d6b97596f6b4fe745d3ffaa729f1674e89b394047 |
+| stage2b/single_obs.parquet | 3207 | 4213c9c1d16bbb58c6cd30e8cfff3fbd14f2a98072985a5579caed4f7330084a |
+| stage2c/B3C_DONE | 0 | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
+| stage2c/all_candidate_predictions.csv | 9305 | eed5cff570a401969f933e5c88364e8a5cfc98a86426c1952303e87018842d09 |
+| stage2c/claims.csv | 1459 | 18c576e9688d64a9c9e329d962a712b7fb9597463eb4d52060ed77166f894d26 |
+| stage2c/driver_b3c.log | 12032 | 5744f7538f22740a063cb7d8caaa28a6489d55790a5f6e40e6607a9c8da3f049 |
+| stage2c/message_bank.parquet | 70306 | f53a26326914025abd2f15b7adba0cb7ed010e67f7029874a851d10c766fe888 |
+| stage2c/orchestrator.log | 123 | 67b73176895d27e4ecc819764a83bb657ec2cd646fb037a97911c4aca0c21465 |
+| stage2c/single_obs.parquet | 3584 | 681e80b0d335ac0b5bea9f298748aacc328868911b15a214081f4e9685e6cd55 |
+| stage2d/D_DONE | 0 | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
+| stage2d/claims.csv | 1318 | 0db027471ee0b87436659153349dd89e1db30f6ed0f7bbf4882ed5dedd5a9375 |
+| stage2d/d2_70b.log | 515 | eac74deff021626fd3bbc30ae617c89bea3305aa93eaa1b2a2208154660fc0fa |
+| stage2d/d2_70b_obs.parquet | 3685 | 2f90e5dcdea7015e0fc59a33a44409234f0c6d4bebbd52ceaac5d20bebe7694f |
+| stage2d/driver_d1.log | 22396 | 2ecdf21df076b0324127210f2b2de121be855f45f677569d5a89688b5125e176 |
+| stage2d/message_bank.parquet | 33679 | 4d4da60f611822c813de0225265df9ce30c13bbf29b2f8951a94e3cd7e39dd37 |
+| stage2d/orchestrator.log | 185 | eed910058cc77f9cc4e9d63f9ea0835443a9f0af0c10e34cf2c95b8597deb18a |
+| stage2d/single_obs.parquet | 3235 | 9c14121858602da1a0d768bf4419dfc0969c1746a06be101e350167d4ba9f883 |

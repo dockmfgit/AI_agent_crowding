@@ -1,0 +1,18 @@
+claim_id,claim,label,truth,h_q_bare,FE,selected
+79,The rate of warming according to the data is much slower than the models used by the IPCC,REFUTES,FALSE,-0.3150810466398954,-0.7197275643612714,False
+2070,"When life is considered, ocean acidification is often found to be a non-problem, or even a benefit.",REFUTES,FALSE,-0.251314428280906,0.03206611407515872,True
+382,The amount of energy used to construct solar and wind facilities is greater than they produce in their working lives.,REFUTES,FALSE,0.3150810466398954,0.06426098585232642,True
+6,The polar bear population has been growing.,REFUTES,FALSE,-0.3794896217049037,0.08570995696762079,True
+1569,Sea level rise is decelerating.,REFUTES,FALSE,-0.0625203569813339,0.3644283579241014,True
+1609,Greenland has only lost a tiny fraction of its ice mass.,REFUTES,FALSE,-0.251314428280906,0.6350260427600688,False
+2711,"'Antarctic sea ice set a new record in October 2007, as photographs distributed by the National Oceanic and Atmospheric Administration showed penguins and other cold-weather creatures able to stand farther north on Southern Hemisphere sea ice than has ever been recorded.",REFUTES,FALSE,0.125163142954006,0.7008070957328728,False
+2753,"However, studies have determined that current technology is sufficient to reduce greenhouse gas emissions the necessary amount, and that we can do so without significant impact on the economy.",SUPPORTS,TRUE,0.1880522315029396,0.71181240090506,False
+2081,Heat waves have been decreasing since the 1930s in the U.S. and globally.,REFUTES,FALSE,-0.1880522315029396,0.711812400905062,False
+349,Nor is there evidence of an increase in floods globally.,REFUTES,FALSE,0.0625203569813339,0.8114673850901621,False
+2961,Cooks ’97% consensus’ disproven by a new peer,REFUTES,FALSE,-0.125163142954006,0.82261311376565,False
+443,"“Today climate scientists are obsessed with the level of carbon dioxide in the atmosphere, a very very small part of the overall picture.",REFUTES,FALSE,-0.1880522315029396,0.8337745515011811,False
+21,"Sea level rise has been slow and a constant, pre-dating industrialization",REFUTES,FALSE,0.125163142954006,0.9236694325439392,False
+1508,global warming ceased around the end of the twentieth century and was followed (since 1997) by 19 years of stable temperature.,REFUTES,FALSE,0.1880522315029396,0.9463225856638093,False
+306,There is no statistical evidence that global warming is intensifying[…] droughts,REFUTES,FALSE,0.3150810466398954,1.24886532334931,False
+2128,Less than half of published scientists endorse global warming,REFUTES,FALSE,0.3794896217049037,1.3823891912947468,False
+19,"If CO2 was so terrible for the planet, then installing a CO2 generator in a greenhouse would kill the plants.",REFUTES,FALSE,-0.125163142954006,2.7647706552607825,False

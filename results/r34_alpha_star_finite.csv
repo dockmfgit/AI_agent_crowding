@@ -1,0 +1,6 @@
+source,alpha_star_20pct
+observed,
+surrogate:perk17,
+surrogate:claim_const,
+surrogate:claim_div,
+surrogate:legacy,0.80542

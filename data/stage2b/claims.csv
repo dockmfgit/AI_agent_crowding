@@ -1,0 +1,8 @@
+claim_id,claim,truth,set,p_q_bare,orig_id,n,opposite_rate
+993,"While there has been a mean rise of a little more than 3mm per year worldwide since the 1990s, in the last decade, the NOAA Virginia Key tide gauge just south of Miami Beach has measured a 9mm rise annually.”",TRUE,A1_supports,0.7083333333333334,,,
+1103,[ocean acidification was ] First referenced in a peer-reviewed study in Nature in 2003,TRUE,A1_supports,0.7916666666666666,,,
+1239,"Through decades of research, it has become clear that human civilization, roughly 6,000 years old, developed during an unusually stable period for global sea levels.",TRUE,A1_supports,0.7916666666666666,,,
+90006,The polar bear population has not been growing.,TRUE,A2_paraphrase,0.34375,6.0,20.0,0.7
+91569,Sea level rise is not decelerating.,TRUE,A2_paraphrase,0.9375,1569.0,20.0,0.85
+90382,The amount of energy used to construct solar and wind facilities is not greater than they produce in their working lives.,TRUE,A2_paraphrase,0.9375,382.0,20.0,0.7
+92070,"When life is considered, ocean acidification is often found to be a problem, and not a benefit.",TRUE,A2_paraphrase,1.0,2070.0,20.0,0.85

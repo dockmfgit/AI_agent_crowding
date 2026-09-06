@@ -1,0 +1,17 @@
+claim_id,side,source,mean,size
+6,correct,bank,1.0,60
+6,correct,episode,1.0,60
+6,wrong,bank,0.1,60
+6,wrong,episode,0.167,60
+382,correct,bank,1.0,60
+382,correct,episode,1.0,60
+382,wrong,bank,0.017,60
+382,wrong,episode,0.0,60
+1569,correct,bank,1.0,60
+1569,correct,episode,1.0,60
+1569,wrong,bank,0.1,60
+1569,wrong,episode,0.05,60
+2070,correct,bank,1.0,60
+2070,correct,episode,1.0,60
+2070,wrong,bank,0.05,60
+2070,wrong,episode,0.167,60

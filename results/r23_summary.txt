@@ -1,0 +1,136 @@
+== stage2b: 10 claim x alpha cells
+   searchfix   : strict class hits 8/10 (+1 consistent within the seeding grid); threshold in CI 0/0 (observed bistable cells: 0)
+   id_constant : strict class hits 8/10 (+1 consistent within the seeding grid); threshold in CI 0/0 (observed bistable cells: 0)
+   id_divisive : strict class hits 8/10 (+2 consistent within the seeding grid); threshold in CI 0/0 (observed bistable cells: 0)
+ claim_id  alpha searchfix_class searchfix_match id_constant_class  id_constant_xc id_constant_match id_divisive_class id_divisive_xc id_divisive_match    obs_class  obs_cross  obs_ci_lo  obs_ci_hi
+      993   0.30    mono_correct grid_consistent          bistable           0.155              miss      mono_correct           None   grid_consistent        mixed     -0.034     -0.205      0.097
+      993   0.55    mono_correct             hit      mono_correct             NaN               hit      mono_correct           None               hit mono_correct        NaN        NaN        NaN
+     1103   0.30    mono_correct             hit      mono_correct             NaN               hit      mono_correct           None               hit mono_correct        NaN        NaN        NaN
+     1103   0.55      mono_wrong            miss      mono_correct             NaN   grid_consistent      mono_correct           None   grid_consistent        mixed     -0.024     -0.733      0.200
+     1239   0.30    mono_correct             hit      mono_correct             NaN               hit      mono_correct           None               hit mono_correct        NaN        NaN        NaN
+     1239   0.55    mono_correct             hit      mono_correct             NaN               hit      mono_correct           None               hit mono_correct        NaN        NaN        NaN
+    90006   0.30    mono_correct             hit      mono_correct             NaN               hit      mono_correct           None               hit mono_correct        NaN        NaN        NaN
+    90382   0.30    mono_correct             hit      mono_correct             NaN               hit      mono_correct           None               hit mono_correct        NaN        NaN        NaN
+    91569   0.30    mono_correct             hit      mono_correct             NaN               hit      mono_correct           None               hit mono_correct        NaN        NaN        NaN
+    92070   0.30    mono_correct             hit      mono_correct             NaN               hit      mono_correct           None               hit mono_correct        NaN        NaN        NaN
+== stage2c: 16 claim x alpha cells
+   searchfix   : strict class hits 15/16 (+0 consistent within the seeding grid); threshold in CI 7/11 (observed bistable cells: 11)
+   id_constant : strict class hits 15/16 (+0 consistent within the seeding grid); threshold in CI 10/11 (observed bistable cells: 11)
+   id_divisive : strict class hits 15/16 (+0 consistent within the seeding grid); threshold in CI 11/11 (observed bistable cells: 11)
+ claim_id  alpha searchfix_class searchfix_match id_constant_class  id_constant_xc id_constant_match id_divisive_class  id_divisive_xc id_divisive_match    obs_class  obs_cross  obs_ci_lo  obs_ci_hi
+       97   0.30    mono_correct             hit      mono_correct             NaN               hit      mono_correct             NaN               hit mono_correct        NaN        NaN        NaN
+       97   0.55    mono_correct             hit      mono_correct             NaN               hit      mono_correct             NaN               hit mono_correct        NaN        NaN        NaN
+      184   0.30    mono_correct             hit      mono_correct             NaN               hit      mono_correct             NaN               hit mono_correct        NaN        NaN        NaN
+      184   0.55    mono_correct             hit      mono_correct             NaN               hit      mono_correct             NaN               hit mono_correct        NaN        NaN        NaN
+      590   0.30        bistable             hit          bistable           0.538               hit          bistable           0.559               hit     bistable      0.560      0.465      0.653
+      590   0.55        bistable             hit          bistable           0.569               hit          bistable           0.578               hit     bistable      0.622      0.536      0.701
+      656   0.30        bistable             hit          bistable           0.170               hit          bistable           0.185               hit     bistable      0.248      0.157      0.341
+      656   0.55        bistable             hit          bistable           0.100               hit          bistable           0.119               hit     bistable      0.120      0.057      0.200
+      832   0.30        bistable             hit          bistable           0.453               hit          bistable           0.425               hit     bistable      0.498      0.413      0.589
+      832   0.55        bistable             hit          bistable           0.409               hit          bistable           0.396               hit     bistable      0.436      0.334      0.531
+     1013   0.30        bistable             hit          bistable           0.440               hit          bistable           0.407               hit     bistable      0.436      0.335      0.525
+     1013   0.55        bistable             hit          bistable           0.433               hit          bistable           0.409               hit     bistable      0.373      0.292      0.460
+     1146   0.30        bistable            miss          bistable           0.111              miss          bistable           0.094              miss mono_correct        NaN        NaN        NaN
+     1146   0.55        bistable             hit          bistable           0.052               hit          bistable           0.034               hit     bistable      0.012     -0.087      0.169
+     1151   0.30        bistable             hit          bistable           0.310               hit          bistable           0.271               hit     bistable      0.184      0.085      0.285
+     1151   0.55        bistable             hit          bistable           0.297               hit          bistable           0.288               hit     bistable      0.311      0.208      0.404
+== stage2d: 12 claim x alpha cells
+   searchfix   : strict class hits 8/12 (+3 consistent within the seeding grid); threshold in CI 4/5 (observed bistable cells: 6)
+   id_constant : strict class hits 10/12 (+2 consistent within the seeding grid); threshold in CI 5/6 (observed bistable cells: 6)
+   id_divisive : strict class hits 11/12 (+1 consistent within the seeding grid); threshold in CI 5/6 (observed bistable cells: 6)
+ claim_id  alpha searchfix_class searchfix_match id_constant_class  id_constant_xc id_constant_match id_divisive_class  id_divisive_xc id_divisive_match    obs_class  obs_cross  obs_ci_lo  obs_ci_hi
+        6   0.30        bistable             hit          bistable           0.192               hit          bistable           0.209               hit     bistable      0.189      0.104      0.251
+        6   0.55        bistable             hit          bistable           0.123               hit          bistable           0.144               hit     bistable      0.167      0.080      0.235
+        6   1.00        bistable grid_consistent      mono_correct             NaN   grid_consistent      mono_correct             NaN   grid_consistent        mixed     -0.143     -0.244      0.077
+     1239   0.30        bistable             hit          bistable           0.677               hit          bistable           0.699               hit     bistable      0.747      0.723      0.771
+     1239   0.55        bistable             hit          bistable           0.703               hit          bistable           0.709               hit     bistable      0.691      0.629      0.750
+     1239   1.00        bistable             hit          bistable           0.763               hit          bistable           0.707               hit     bistable      0.699      0.615      0.792
+     1569   0.30        bistable grid_consistent          bistable           0.060   grid_consistent      mono_correct             NaN               hit mono_correct        NaN        NaN        NaN
+     1569   0.55        bistable grid_consistent      mono_correct             NaN               hit      mono_correct             NaN               hit mono_correct        NaN        NaN        NaN
+     1569   1.00    mono_correct             hit      mono_correct             NaN               hit      mono_correct             NaN               hit mono_correct        NaN        NaN        NaN
+    91569   0.30    mono_correct            miss          bistable           0.415               hit          bistable           0.374               hit     bistable      0.353      0.280      0.427
+    91569   0.55    mono_correct             hit      mono_correct             NaN               hit      mono_correct             NaN               hit mono_correct        NaN        NaN        NaN
+    91569   1.00    mono_correct             hit      mono_correct             NaN               hit      mono_correct             NaN               hit mono_correct        NaN        NaN        NaN
+== Stage 2 arms A/B fixed points (identified models)
+arm claim_id                                       model  alpha                             fps        class    xc  lowest_stable
+  A        6             identified constant (per claim)   0.20 0.0054(s); 0.6768(u); 0.9745(s)     bistable 0.677          0.005
+  A        6             identified constant (per claim)   0.30 0.0183(s); 0.7484(u); 0.9100(s)     bistable 0.748          0.018
+  A        6             identified constant (per claim)   0.38                       0.0359(s)   mono_wrong   NaN          0.036
+  A        6             identified constant (per claim)   0.45                       0.0577(s)   mono_wrong   NaN          0.058
+  A        6             identified constant (per claim)   0.55                       0.1005(s)   mono_wrong   NaN          0.101
+  A        6             identified constant (per claim)   1.00                       0.3513(s)   mono_wrong   NaN          0.351
+  A        6             identified divisive (per claim)   0.20                       0.0336(s)   mono_wrong   NaN          0.034
+  A        6             identified divisive (per claim)   0.30                       0.0396(s)   mono_wrong   NaN          0.040
+  A        6             identified divisive (per claim)   0.38                       0.0449(s)   mono_wrong   NaN          0.045
+  A        6             identified divisive (per claim)   0.45                       0.0499(s)   mono_wrong   NaN          0.050
+  A        6             identified divisive (per claim)   0.55                       0.0578(s)   mono_wrong   NaN          0.058
+  A        6             identified divisive (per claim)   1.00                       0.1077(s)   mono_wrong   NaN          0.108
+  A      382             identified constant (per claim)   0.20 0.0001(s); 0.8312(u); 0.9911(s)     bistable 0.831          0.000
+  A      382             identified constant (per claim)   0.30 0.0006(s); 0.8553(u); 0.9728(s)     bistable 0.855          0.001
+  A      382             identified constant (per claim)   0.38 0.0019(s); 0.8970(u); 0.9324(s)     bistable 0.897          0.002
+  A      382             identified constant (per claim)   0.45                       0.0041(s)   mono_wrong   NaN          0.004
+  A      382             identified constant (per claim)   0.55                       0.0096(s)   mono_wrong   NaN          0.010
+  A      382             identified constant (per claim)   1.00                       0.1172(s)   mono_wrong   NaN          0.117
+  A      382             identified divisive (per claim)   0.20                       0.0040(s)   mono_wrong   NaN          0.004
+  A      382             identified divisive (per claim)   0.30                       0.0052(s)   mono_wrong   NaN          0.005
+  A      382             identified divisive (per claim)   0.38                       0.0064(s)   mono_wrong   NaN          0.006
+  A      382             identified divisive (per claim)   0.45                       0.0076(s)   mono_wrong   NaN          0.008
+  A      382             identified divisive (per claim)   0.55                       0.0095(s)   mono_wrong   NaN          0.010
+  A      382             identified divisive (per claim)   1.00                       0.0261(s)   mono_wrong   NaN          0.026
+  A     1569             identified constant (per claim)   0.20 0.0029(s); 0.5667(u); 0.9944(s)     bistable 0.567          0.003
+  A     1569             identified constant (per claim)   0.30 0.0115(s); 0.5635(u); 0.9822(s)     bistable 0.564          0.012
+  A     1569             identified constant (per claim)   0.38 0.0249(s); 0.5597(u); 0.9655(s)     bistable 0.560          0.025
+  A     1569             identified constant (per claim)   0.45 0.0435(s); 0.5546(u); 0.9445(s)     bistable 0.555          0.043
+  A     1569             identified constant (per claim)   0.55 0.0868(s); 0.5419(u); 0.9008(s)     bistable 0.542          0.087
+  A     1569             identified constant (per claim)   1.00                       0.6229(s) mono_correct   NaN          0.623
+  A     1569             identified divisive (per claim)   0.20 0.0266(s); 0.5487(u); 0.9628(s)     bistable 0.549          0.027
+  A     1569             identified divisive (per claim)   0.30 0.0322(s); 0.5461(u); 0.9568(s)     bistable 0.546          0.032
+  A     1569             identified divisive (per claim)   0.38 0.0374(s); 0.5434(u); 0.9515(s)     bistable 0.543          0.037
+  A     1569             identified divisive (per claim)   0.45 0.0427(s); 0.5405(u); 0.9463(s)     bistable 0.540          0.043
+  A     1569             identified divisive (per claim)   0.55 0.0514(s); 0.5353(u); 0.9381(s)     bistable 0.535          0.051
+  A     1569             identified divisive (per claim)   1.00 0.1285(s); 0.4830(u); 0.8833(s)     bistable 0.483          0.128
+  A     2070             identified constant (per claim)   0.20 0.0002(s); 0.8597(u); 0.9770(s)     bistable 0.860          0.000
+  A     2070             identified constant (per claim)   0.30                       0.0016(s)   mono_wrong   NaN          0.002
+  A     2070             identified constant (per claim)   0.38                       0.0044(s)   mono_wrong   NaN          0.004
+  A     2070             identified constant (per claim)   0.45                       0.0087(s)   mono_wrong   NaN          0.009
+  A     2070             identified constant (per claim)   0.55                       0.0188(s)   mono_wrong   NaN          0.019
+  A     2070             identified constant (per claim)   1.00                       0.1883(s)   mono_wrong   NaN          0.188
+  A     2070             identified divisive (per claim)   0.20                       0.0126(s)   mono_wrong   NaN          0.013
+  A     2070             identified divisive (per claim)   0.30                       0.0152(s)   mono_wrong   NaN          0.015
+  A     2070             identified divisive (per claim)   0.38                       0.0176(s)   mono_wrong   NaN          0.018
+  A     2070             identified divisive (per claim)   0.45                       0.0198(s)   mono_wrong   NaN          0.020
+  A     2070             identified divisive (per claim)   0.55                       0.0234(s)   mono_wrong   NaN          0.023
+  A     2070             identified divisive (per claim)   1.00                       0.0481(s)   mono_wrong   NaN          0.048
+  A    all17 identified joint per-k (Stage 1, 17 claims)   0.20 0.0476(s); 0.4783(u); 0.9593(s)     bistable 0.478          0.048
+  A    all17 identified joint per-k (Stage 1, 17 claims)   0.30 0.0788(s); 0.4194(u); 0.9509(s)     bistable 0.419          0.079
+  A    all17 identified joint per-k (Stage 1, 17 claims)   0.38 0.1162(s); 0.3614(u); 0.9445(s)     bistable 0.361          0.116
+  A    all17 identified joint per-k (Stage 1, 17 claims)   0.45 0.1838(s); 0.2751(u); 0.9394(s)     bistable 0.275          0.184
+  A    all17 identified joint per-k (Stage 1, 17 claims)   0.55                       0.9335(s) mono_correct   NaN          0.934
+  A    all17 identified joint per-k (Stage 1, 17 claims)   1.00                       0.9297(s) mono_correct   NaN          0.930
+  B        6             identified constant (per claim)   0.60                       0.3277(s)   mono_wrong   NaN          0.328
+  B        6             identified constant (per claim)   0.90                       0.4060(s)   mono_wrong   NaN          0.406
+  B        6             identified constant (per claim)   1.30                       0.4300(s)   mono_wrong   NaN          0.430
+  B        6             identified divisive (per claim)   0.60 0.1150(s); 0.6590(u); 0.7797(s)     bistable 0.659          0.115
+  B        6             identified divisive (per claim)   0.90                       0.1458(s)   mono_wrong   NaN          0.146
+  B        6             identified divisive (per claim)   1.30                       0.1909(s)   mono_wrong   NaN          0.191
+  B      382             identified constant (per claim)   0.60                       0.0757(s)   mono_wrong   NaN          0.076
+  B      382             identified constant (per claim)   0.90                       0.1862(s)   mono_wrong   NaN          0.186
+  B      382             identified constant (per claim)   1.30                       0.3468(s)   mono_wrong   NaN          0.347
+  B      382             identified divisive (per claim)   0.60 0.0236(s); 0.7279(u); 0.9049(s)     bistable 0.728          0.024
+  B      382             identified divisive (per claim)   0.90 0.0324(s); 0.7589(u); 0.8639(s)     bistable 0.759          0.032
+  B      382             identified divisive (per claim)   1.30                       0.0478(s)   mono_wrong   NaN          0.048
+  B     1569             identified constant (per claim)   0.60                       0.7985(s) mono_correct   NaN          0.799
+  B     1569             identified constant (per claim)   0.90                       0.6995(s) mono_correct   NaN          0.700
+  B     1569             identified constant (per claim)   1.30                       0.6506(s) mono_correct   NaN          0.651
+  B     1569             identified divisive (per claim)   0.60 0.1880(s); 0.2899(u); 0.9297(s)     bistable 0.290          0.188
+  B     1569             identified divisive (per claim)   0.90                       0.9138(s) mono_correct   NaN          0.914
+  B     1569             identified divisive (per claim)   1.30                       0.8916(s) mono_correct   NaN          0.892
+  B     2070             identified constant (per claim)   0.60                       0.0285(s)   mono_wrong   NaN          0.029
+  B     2070             identified constant (per claim)   0.90                       0.0776(s)   mono_wrong   NaN          0.078
+  B     2070             identified constant (per claim)   1.30                       0.1758(s)   mono_wrong   NaN          0.176
+  B     2070             identified divisive (per claim)   0.60                       0.0146(s)   mono_wrong   NaN          0.015
+  B     2070             identified divisive (per claim)   0.90                       0.0199(s)   mono_wrong   NaN          0.020
+  B     2070             identified divisive (per claim)   1.30                       0.0288(s)   mono_wrong   NaN          0.029
+  B    all17 identified joint per-k (Stage 1, 17 claims)   0.60 0.0957(s); 0.4600(u); 0.9217(s)     bistable 0.460          0.096
+  B    all17 identified joint per-k (Stage 1, 17 claims)   0.90 0.1251(s); 0.4107(u); 0.9181(s)     bistable 0.411          0.125
+  B    all17 identified joint per-k (Stage 1, 17 claims)   1.30 0.2052(s); 0.3028(u); 0.9134(s)     bistable 0.303          0.205
