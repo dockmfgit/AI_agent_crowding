@@ -1,0 +1,1 @@
+A single agent's measured response (a stochastic binary neuron with divisively normalized weights) and a crowding-generated network together predict whether a collective of language-model agents can reach the correct consensus, and the threshold set by a claim's wording decides which phase the collective is in.

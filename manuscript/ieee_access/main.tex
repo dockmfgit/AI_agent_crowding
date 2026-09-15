@@ -1,0 +1,1404 @@
+\documentclass{ieeeaccess}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+\usepackage{bm}
+\makeatletter
+\AtBeginDocument{\DeclareMathVersion{bold}
+\SetSymbolFont{operators}{bold}{T1}{times}{b}{n}
+\SetSymbolFont{NewLetters}{bold}{T1}{times}{b}{it}
+\SetMathAlphabet{\mathrm}{bold}{T1}{times}{b}{n}
+\SetMathAlphabet{\mathit}{bold}{T1}{times}{b}{it}
+\SetMathAlphabet{\mathbf}{bold}{T1}{times}{b}{n}
+\SetMathAlphabet{\mathtt}{bold}{OT1}{pcr}{b}{n}
+\SetSymbolFont{symbols}{bold}{OMS}{cmsy}{b}{n}
+\renewcommand\boldmath{\@nomath\boldmath\mathversion{bold}}}
+\makeatother
+
+\graphicspath{{figs/}}
+\newcommand{\astar}{\alpha^{*}}
+
+\begin{document}
+\history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
+\doi{10.1109/ACCESS.2026.0000000}
+
+\title{Message Capacity and Claim Wording Set the Transition Points of Collective Truth-Finding in Language-Model Networks}
+\author{\uppercase{Makoto Fukushima}\authorrefmark{1}}
+
+\address[1]{Research Division, Honda Research Institute Japan Co., Ltd., Wako, Saitama 351-0188, Japan}
+\tfootnote{This work was supported by Honda Research Institute Japan Co., Ltd.}
+
+\markboth
+{Fukushima: Message Capacity and Claim Wording Set the Transition Points of Collective Truth-Finding}
+{Fukushima: Message Capacity and Claim Wording Set the Transition Points of Collective Truth-Finding}
+
+\corresp{Corresponding author: Makoto Fukushima (e-mail: makoto.fukushima@jp.honda-ri.com).}
+
+\begin{abstract}
+Human or large language model (LLM), an agent in a discussion reads only a few of the others' contributions, bounded by cognition or cost. LLM collectives can settle on a wrong consensus even from a correct majority; we ask how far that bound decides the outcome. We model the bound with one number, the message capacity, and generate the network from it. Over 31,824 randomized queries, we found that an 8-billion-parameter model's judgment of a claim effectively reduces to a logistic function of a weighted sum of its inbox, the update rule of a stochastic binary neuron with divisively normalized weights. From these weights and the network's degree statistics alone, the wrong consensus should become unreachable once agents read on average fewer than 6.4 of their 31 sources. In 1,414 episodes the prediction failed: the correct side won in under 50\% of episodes from every start, 28--45\% from 75\%-correct starts. The failure traces to the field, the threshold a claim's wording sets before any message is read: with each claim's own field the same weights reproduce the outcomes, and reversing the wording showed the threshold follows what a claim asserts, not whether it is true. On a second 8B model, transition points appeared where computed and an eight-claim calibration matched in 15 of 16 conditions. At 70B the assertion bias is not detected. Thus a collective's fate is largely set by two single-agent measurements: the threshold a claim's wording sets, and the message capacity that sets the transition point.
+\end{abstract}
+
+\begin{keywords}
+Collective intelligence, language models, mean-field theory, multi-agent systems, network science, opinion dynamics, phase transitions.
+\end{keywords}
+
+\titlepgskip=-21pt
+
+\maketitle
+
+\section{Introduction}\label{sec:intro}
+
+\PARstart{W}{hether} human or large language model (LLM), an agent in a discussion
+processes only a few of the others' contributions. For people the bound is
+cognitive. Working memory holds only about four items at once
+\cite{Cowan2001,LuckVogel1997}, and selective attention narrows the intake
+further: a listener in a crowded room follows one conversation and retains
+almost nothing of the others \cite{Cherry1953}, because unattended streams
+are attenuated before they reach the capacity-limited stage
+\cite{Treisman1964}. In online discussions the same limit appears as
+divided attention capping how many contributions a participant actually
+processes \cite{HodasLerman2012}. For LLM agents the bound is set by
+context windows, per-token costs, and the sampling policies of agent
+frameworks.
+Groups of LLM agents that exchange messages and update binary opinions are
+now studied as statistical-mechanical systems \cite{El2026}, and whether
+such a group finds the truth is not guaranteed: members who each read only
+part of the discussion may carry the group to a consensus that most of them
+did not start with. The question this paper
+asks is to what extent that reading bound alone, together with the response
+of a single agent measured in isolation, decides where a collective ends up.
+
+Two ingredients make the question tractable. The first turns the bound into
+a network. In a model of synaptic resource allocation \cite{SciRepCrowding},
+a receiving unit that has already accepted $r$ inputs accepts a further one
+with probability $e^{-\alpha r}$; the number of accepted inputs then grows
+only logarithmically in the candidate pool, the mean in-degree is
+$(\log N)/\alpha$ with bounded variance, the full in-degree distribution
+$P_{\alpha,N}(k)$ obeys a closed recursion, and the distribution is
+invariant under reordering of the candidates. One parameter, $\alpha$ (the
+crowding parameter of that model), compresses everything about the acceptance process that matters for degree
+statistics: applied to a discussion, it is the message capacity of an agent,
+and larger $\alpha$ means fewer messages read. Throughout, $\alpha$
+describes the crowding of a finite intake budget at the level of whole
+messages; it is unrelated to the attention mechanism inside transformer
+architectures, and we avoid the word ``attention'' for this reason.
+
+The second ingredient describes the agent. A model that reads $k$ messages
+and then judges a claim could respond in countless ways; a theory needs a
+rule simple enough to iterate, and the rule must be measured rather than
+assumed. We take the agent to be a stochastic binary neuron: its probability
+of siding with the correct answer is a logistic function of a weighted sum
+of its inbox, one weight per correct-side message and one per wrong-side
+message, with weights that may depend on inbox size. We do not assume this
+form; we measure it on the experimental agent, and check it against the
+largest public dataset of LLM communities, before any collective is run.
+With a measured neuron and a
+crowding-generated network, the collective becomes a network of binary
+neurons whose degree statistics are known in closed form, and mean-field
+theory yields a one-dimensional map whose fixed points are the possible
+consensus states.
+
+The two ingredients together pose a quantitative question. Consider a
+population in which a fraction $x_0$ of agents initially holds the correct
+answer to a binary question. After several rounds of exchange the population
+typically reaches a correct or a wrong consensus; the probability of the
+former after a fixed number of rounds, $q(x_0)$, is the finite-horizon
+analogue of the committor of the collective dynamics, the probability of
+reaching one end state rather than the other from a given start. Mean-field
+theory on the generated networks predicts that the basin of the wrong
+consensus disappears entirely above a critical crowding level $\astar$: for
+$\alpha > \astar$, even small correct minorities propagate. Our question is
+to what extent $\astar$ can be computed in advance, from the degree
+statistics that $\alpha$ induces and from response coefficients measured on
+single agents in isolation, with no quantity fitted to collective runs. The
+nearest precedents come from LLM naming games, where emergent conventions
+and collective bias are established phenomena \cite{Ashery2025, Flint2026}:
+a mean-field consensus condition has been assembled from single-token
+acceptance rates measured on isolated models \cite{DeNobili2026}, and a
+mean-field account of population-size-dependent collective bias from
+logit-extracted single-agent policies \cite{Flint2026}. These constructions
+share our logic, but they concern coordination on a convention (no correct
+side, no committor) under fully mixed or imposed interaction structures. In
+the truth-finding setting, El et al.~\cite{El2026} showed that a kinetic Ising model
+fitted to one-step transitions describes more than 10{,}000 communities
+($N = 32$, eight rounds) and generalizes to unseen graphs; there, as in most
+multi-agent opinion studies, the graph is supplied by the experimenter and
+the rule is fitted to the collective data. No previous study has, to our
+knowledge, generated the interaction network of an LLM collective from a
+crowding process, or predicted the basin boundary of a truth-finding
+collective, the critical initial fraction of correct agents, from
+single-agent measurements completed before the collective ran.
+
+Two families of confound make this comparison easy to get wrong, and both
+shaped our design. First, in observational data the initial fraction $x_0$
+is not an experimental dial: where question difficulty drives both the
+initial fraction and the outcome, the apparent committor is a difficulty
+curve and the transition point (the tipping point of the social-dynamics
+literature) is unidentified. We examine this concern on the largest public
+dataset, and our collective experiment assigns initial opinions
+exogenously. Second, changing the network changes the
+composition of each agent's prompt, and LLMs respond to prompt composition
+regardless of any network; effects of this kind reproduce in a single agent
+with a single query. We therefore measure the single-agent response function
+first, predict the collective outcome from it, and treat any residual,
+quantified by replaying every realized prompt through the measured response
+function, as the collective contribution proper.
+
+The bound itself is not particular to machines, and the theory's inputs (a response threshold, per-message weights and their attenuation, an intake
+bound)
+are behavioral quantities with human counterparts. A theory that turns an
+intake bound into a collective outcome is therefore, at least potentially, a
+statement about committees and juries as well as about machine collectives.
+In human groups, however, neither the bound nor the network it induces can
+be measured or controlled; in LLM collectives, both can, which is why the
+test is made here.
+
+The paper proceeds in three steps: a theory of $\astar$ from a reduced map
+(Section~\ref{sec:theory}), the measurements that give the theory its
+coefficients, from a reanalysis of the public dataset and a direct measurement
+of the experimental agent (Section~\ref{sec:measurement}),
+and a collective experiment run against a prediction registered before any
+collective episode (Section~\ref{sec:collective}), followed by the
+Discussion. Whether the transition point of an LLM collective can be
+computed before it runs, and what else has to be measured when it cannot,
+is the question the rest of the paper addresses. A glossary of the terms
+used below is given in Appendix~\ref{app:glossary}.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{fig1_framework}
+\caption{\textbf{Crowding-generated networks and the prediction pipeline.}
+(a)~In-degree distribution $P_{\alpha,N}(k)$ generated by the acceptance
+process $e^{-\alpha r}$ (inset) at three crowding levels, $N=32$.
+(b)~Every quantity used to predict the collective outcome is measured on
+single agents or computed from the reduced map; nothing is fitted to
+collective data.}
+\label{fig:framework}
+\end{figure*}
+
+\section{Theory: a critical crowding level from a reduced map}\label{sec:theory}
+
+The theory assembles two ingredients: the crowding-generated network
+(Section~\ref{sec:netgen}) and the measured single-agent rule
+(Section~\ref{sec:reduction}). It then asks at what capacity the
+wrong-consensus basin disappears (Section~\ref{sec:critical}).
+
+\subsection{Network generation}\label{sec:netgen}
+
+We generate the network by the process of Fukushima~\cite{SciRepCrowding}. Each
+receiving agent processes the other $N-1$ agents in arbitrary order. Having
+already accepted $r$ sources, it accepts the next with probability
+$e^{-\alpha r}$; the first candidate is always accepted. The in-degree
+distribution $P_{\alpha,N}(k)$ then follows the recursion
+$P_{m+1}(r) = P_m(r)\,(1-e^{-\alpha r}) + P_m(r-1)\,e^{-\alpha (r-1)}$,
+with mean $E[K] = (\log N)/\alpha + O(1)$. New here is only the closure.
+The deterministic continuum limit gives the finite-$N$ form
+\begin{equation}
+\bar K(\alpha) = \frac{1}{\alpha}\,\ln\!\bigl(1 + \alpha (N-1)\bigr),
+\end{equation}
+which underestimates the exact mean by 3\% ($\alpha = 0.3$) to 11\%
+($\alpha = 2$) at $N = 32$. Where precision matters we therefore invert the
+exact recursion instead. Note that Eq.~(1) is a large-$N$,
+moderate-$\alpha$ form: as $\alpha \to \infty$ it tends to zero, whereas
+the exact mean tends to one because the first candidate is always accepted.
+One property of the process matters for the experimental design. Degree
+statistics are invariant under reordering of the candidates, so
+manipulations of \emph{who} is read change nothing in $P(k)$. Thus,
+order-based conditions can be compared at exactly matched communication
+budgets.
+
+\subsection{Single-agent response and its reduction}\label{sec:reduction}
+
+We take the agent's rule from the measurements of
+Section~\ref{sec:measurement}. An agent receiving $l$ correct-side and
+$k-l$ wrong-side messages adopts the correct side with probability
+\[
+\sigma\bigl(c_0 + \theta\,\mathbf{1}[\text{own state correct}] + \beta_T l +
+\beta_F (k-l)\bigr),
+\]
+where $\sigma$ is the logistic function and the
+per-message weights are attenuated by inbox size as $\beta g(k)$
+(Section~\ref{sec:measurement}). The measured unit is therefore equivalent
+to a stochastic binary neuron.
+
+Three combinations of its coefficients organize everything that follows.
+The first is the symmetry-breaking field $h = c_0 + \theta/2$, measured
+per claim (the persistence indicator, which takes the values 0 and 1,
+contributes a constant part $\theta/2$ to the field and a symmetric part
+that does not). In the language of the binary neuron, $h$ is the unit's
+threshold with its sign reversed. The agent answers on the correct side
+when its weighted input exceeds $-h$, so $h$ is the log-odds of the correct
+side with an empty inbox. A positive $h$ means that the claim's wording
+alone lowers the threshold for the correct side; a negative $h$ means that
+it raises it. The threshold shifts the logistic response along its input
+axis, whereas the steepness of the response is set by the message weights,
+the gains. We refer to $h$ as the threshold that the claim's wording sets,
+and we report it as $h$ throughout. The second combination is the
+per-input swing $\bar\beta = (\beta_T - \beta_F)/2$, the average push of
+one message toward its own side. The third is the per-input drift
+$\delta = (\beta_T + \beta_F)/2$, the push that any message adds regardless
+of its side.
+
+How does a population of such units evolve? In words, the population
+dynamics is a map that takes the fraction $x$ of correct-side agents in one
+round and returns the expected fraction in the next: an agent with $k$
+sources sees each of them on the correct side with probability $x$ and
+responds through the measured rule. A fixed point of the map ($F(x) = x$)
+is a state the collective can settle into. A stable fixed point is a
+consensus, and an unstable one lying between two stable ones is the
+transition point that separates their basins. Under the heterogeneous
+mean-field assumption (each of an agent's $k$ inputs is correct
+independently with probability $x$) the map is
+\begin{equation}
+\begin{split}
+F(x) = \sum_{k} P_{\alpha,N}(k) \sum_{l=0}^{k} \binom{k}{l}
+x^{l} (1-x)^{k-l} \\ \times \bigl[\, x\,\sigma(u_{1}) + (1-x)\,\sigma(u_{0})
+\bigr],
+\end{split}
+\label{eq:hmfmap}
+\end{equation}
+with $u_{s} = c_0 + \theta s + \beta_T l + \beta_F (k-l)$. The interior
+unstable fixed point of $F$ separates the two consensus basins.
+
+This construction is the mean-field analysis of the generating model
+\cite{SciRepCrowding} with one substitution: the hard-threshold unit
+assumed there is replaced by the measured logistic unit, of which the
+hard-threshold unit is the infinite-gain limit. The outcome observable
+$q(x_0)$ is likewise inherited from that analysis, which computed the
+committor proper by an absorbing Markov-chain closure; here it is read
+after eight rounds (Appendix~\ref{app:methods}). Note that no hard-threshold nonlinearity is
+assumed anywhere below. Bistability is a property of the fixed-point
+structure of the S-shaped map, an unstable interior fixed point separating
+two stable ones. The substitution also removes the structural
+discontinuity that hard-threshold updates produce at truth-weight 1 (equal
+per-message weight for correct-side and wrong-side sources;
+Section~\ref{sec:measurement}).
+
+Exact numerics iterate Eq.~(\ref{eq:hmfmap}) directly. To obtain a form
+that can be read by eye, we close the degree at $\bar K(\alpha)$ and smooth
+the binomial with the standard Gaussian--logistic approximation, which
+yields the reduced map
+\begin{equation}
+\begin{split}
+G(x;K) &= x\,\sigma(z_+) + (1-x)\,\sigma(z_0), \\
+z_s &= \frac{(h \pm \theta/2) + K\delta + 2\bar\beta K (x - \tfrac12)}
+{\sqrt{1 + \tfrac{\pi}{8}\, 4\bar\beta^2 K x(1-x)}}.
+\end{split}
+\end{equation}
+A degree-dependent coupling $g(k)$, for example the divisive normalization
+$\beta/(1+\gamma k)$, one of the two attenuation forms our data support,
+enters by multiplying $\bar\beta$ and $\delta$ and leaves the form
+unchanged.
+
+\subsection{The critical capacity}\label{sec:critical}
+
+As $\alpha$ grows and each agent reads fewer messages, the interior
+unstable fixed point moves toward the wrong-consensus fixed point. At
+$\astar$ the two merge and disappear, and beyond it only the correct
+consensus remains. Formally, $\astar$ is the capacity at which the interior
+unstable fixed point of $G$ undergoes a fold ($G = x$ and $G' = 1$
+simultaneously). We keep the term critical crowding level for $\astar$ for
+continuity with the generating model. The transition is, however, a
+saddle-node bifurcation of the mean-field map, corresponding to the
+disappearance of a metastable basin (a spinodal), and the Discussion
+returns to the distinction. Operationally, the fold defines a critical
+degree $K^*$, and $\astar$ solves $\bar K(\alpha) = K^*$.
+
+The mechanism is visible in the linear gain at the symmetric point,
+\begin{equation}
+\lambda(K) = \bigl[\sigma(z_+) - \sigma(z_0)\bigr]
++ \frac{2\bar\beta K\,\bar\sigma'}{\sqrt{1 + \tfrac{\pi}{8}\bar\beta^2 K}},
+\end{equation}
+where $\bar\sigma' = [\sigma'(z_+) + \sigma'(z_0)]/2$ and every term is
+evaluated at $x = 1/2$. The first term is a persistence gain, carried by
+$\theta$. The second is a social-amplification gain that, for constant
+coupling, grows only as $\sqrt{K}$, because input fluctuations smooth the
+response. In the symmetric case ($h = 0$ and $\delta = 0$) bistability
+requires $\lambda > 1$. With a nonzero field, however, the gain at the
+symmetric point locates the mechanism but is neither necessary nor
+sufficient for bistability, and it misplaces $\astar$ by 30--90\% at
+realistic fields. All quantitative predictions below therefore come from
+the fold of $G$.
+
+One further structural fact falls out of the reduction. With the measured
+$\delta < 0$, the effective field $h + K\delta\,g(K)$ is screened as degree
+grows; with constant coupling it crosses zero near $K \approx 10$ for the
+coefficients measured in Section~\ref{sec:measurement} under the
+collective experiment's prompt (variant A). This is why bistability
+survives at low $\alpha$ despite $h > 0$. Under divisive coupling the
+screening saturates, $K\delta\,g(K) \to \delta/\gamma$, and over the mean
+degrees realized here ($K \approx 3$--$10$) the factor $K g(K)$ varies only
+between 0.82 and 1.0. Thus, the effective field, and with it the position
+of the transition point, depends only weakly on $\alpha$. The weak
+$\alpha$-dependence of the qwen3:8b transition points
+(Section~\ref{sec:generality}) is consistent with this; the zero crossing
+itself is not tested separately.
+
+How accurate is the closure? Against exact numerics (the full $P(k)$ sum,
+fold located by bisection in $\alpha$), it is accurate to a median 2.7\%
+over a 3-decade parameter grid and both measured coefficient sets when the
+exact $E[K]$ is inverted, and to 6.7\% in the fully closed form. The worst
+cases are 6.0\% (exact $E[K]$; the synthetic set $h = 0.7$, $\theta = 0.6$,
+$\bar\beta = 1$) and 9.9\% (closed form; $h = 0.3$, $\theta = 2$,
+$\bar\beta = 1$) (Fig.~\ref{fig:theory}; Appendix~\ref{app:fold}). For the measured variant-A
+coefficients the prediction is $\astar = 0.435$, $K^* = 6.4$, as registered
+(the fold conditions solved to full precision give 0.439 and $K^* = 6.36$,
+inside the registered tolerance). In words, the wrong-consensus basin is
+predicted to disappear when agents accept, on average, fewer than 6.4 of
+their 31 possible sources. Thus, the critical crowding level of the
+collective is, to this accuracy, computable from single-agent coefficients
+through the reduced map.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{fig2_theory}
+\caption{\textbf{Critical crowding level from the reduced map.} (a)~Fixed points of the
+reduced map $G$ as functions of $\alpha$ for the four measured coefficient
+sets of El et al.~\cite{El2026}; the interior unstable branch (open symbols) vanishes
+at $\astar$. (b)~Validation of the two closure levels against the fold of
+the full map $F$ over 11 coefficient sets (filled symbols: coefficient sets
+measured in this study).}
+\label{fig:theory}
+\end{figure*}
+
+\section{Measuring the response function of the experimental agent}
+\label{sec:measurement}
+
+\subsection{What the public dataset provides, and what it cannot test}
+
+The natural first test requires no new data. El et al.~\cite{El2026} released full
+logs of 6{,}400 objective-question communities (four models, 40 questions,
+ten graphs per question, four episodes) \cite{El2026data}. We therefore
+asked whether their apparent committor $q(x_0)$ identifies a transition
+point. It does not, for a reason that constrains any design in which the
+initial fraction is not assigned. Across the four models, between 50\% and
+99.5\% of the variance of $x_0$ lies between questions, and within
+questions the $x_0$--outcome correlation drops to 0.04--0.27. Question
+difficulty thus drives both the initial fraction and the outcome, so the
+pooled $q(x_0)$ curve is a difficulty curve, and its 0.5-crossing is not a
+property of the collective dynamics. Accordingly, a question-clustered
+bootstrap widens the intervals on the fitted crossing 4--10 fold, after
+which no difference among models or graph families is resolved. Two
+further obstacles are structural. The released graphs have nearly
+degenerate degree distributions, so the degree-statistics content of any
+mean-field prediction is untestable there; and under the hard-threshold
+update rule assumed in earlier work the predicted crossing jumps
+discontinuously at truth-weight 1, which reduces the comparison to a single
+bit (Supplementary Material Section~S1).
+
+The logs do yield the microscopic coefficients. We regressed each agent's
+next-round correctness on the composition of its inbox (43{,}500
+observations per model, question-clustered errors). The truth asymmetry
+$w_T$, the relative per-message weight of correct-side sources previously
+estimated at 1.16--1.71 from Ising couplings, is indistinguishable from 1
+in all four models (GPT-4o-mini: 1.055, 95\% CI $[0.996, 1.114]$). A
+persistence term $\theta$ and an individual field $c_0$, in contrast, are
+robustly nonzero. The asymmetry that breaks the symmetric degeneracy of the
+mean-field map therefore resides in the field $h = c_0 + \theta/2$, not in
+message weighting, which is what Section~\ref{sec:theory} assumes. Thus,
+public data fix the form of the theory, but they cannot test its
+collective prediction.
+
+\subsection{The experimental agent}
+
+A theory needs the agent's rule measured rather than assumed, and this
+section is that measurement. The collective experiment uses llama3.1:8b
+(4-bit Q4\_K\_M quantization, temperature 0.7, snap-judgement prompt
+matching El et al.'s protocol). We measured its response function directly
+with 31{,}824 single-shot queries, in which the inbox composition ($k$
+messages, $l$ of them correct-side), the A/B label assignment, the message
+order, and an optional explicit own-state line were randomized by design.
+Claims came from CLIMATE-FEVER \cite{Diggelmann2020}. A two-stage
+calibration under the bare judgment prompt selected 17 claims with
+per-claim field $|h_q| < 0.4$. Under the full experimental scaffold
+(persona and inbox lines), however, the fields did not transfer: the
+per-claim intercepts re-expanded to a range of 3.5 logits with mean 0.94.
+This is why the claims of the collective experiment were calibrated again
+under the full scaffold (Appendix~\ref{app:methods}), and, as Section~\ref{sec:results} shows,
+why the field rather than the message weights turns out to be the quantity
+that fails to carry across claim sets. Note that 16 of the 17 selected
+claims are REFUTES (claims labeled false in CLIMATE-FEVER). All results are
+therefore stated in correct-side/wrong-side terms, and the
+truth-versus-polarity distinction is explicitly not identified by this
+claim set: a diagnostic regression shows that TRUE-side messages are more
+persuasive on average (ratio 1.44 $[1.25, 1.65]$), which accounts for the
+apparent $w_T = 0.74$--$0.89 < 1$.
+
+Three measured facts carry the predictions (Fig.~\ref{fig:neuron}; per-$k$ coefficients and interval estimates in Fig.~\ref{fig:si_single}, Appendix~\ref{app:single}).
+
+The first is the set of coefficients. With no line in the prompt stating
+the agent's own current answer (variant A, the protocol of the collective
+experiment), the field is $h = 0.725$ $[0.516, 0.915]$. With such a line
+(variant B), the persistence term is $\theta = 1.909$ $[1.723, 2.106]$.
+Adding one line thus raises $\theta$ from absent to about 1.9. This is
+consistent with the persistence measured in observational data being a
+persona-level carryover rather than an in-prompt self-input. Fitted jointly
+with claim fixed effects anchored by the empty-inbox cells, the per-message
+coefficients fall from $\beta_T = 2.11$ $[1.58, 2.96]$ and
+$\beta_F = -1.53$ $[-2.03, -1.12]$ at $k = 1$ to $0.23$ $[0.18, 0.27]$ and
+$-0.39$ $[-0.48, -0.33]$ at $k = 12$ (Fig.~\ref{fig:si_single}). Note that separate fits
+at fixed $k$ do not identify these coefficients (Appendix~\ref{app:methods}).
+
+The second is the load attenuation: each additional message weakens the
+influence of every message. To identify its form, we compared candidate
+forms by cross-validation split by claim. Forms that depend on inbox size
+were favored, load decay $e^{-0.14k}$ and divisive normalization
+$\beta/(1+0.9k)$ being indistinguishable, over the position-dependent form
+$e^{-\alpha_{\mathrm{pos}} r}$ closest to the theory's acceptance kernel.
+The theory's kernel is thus implemented by the exogenous router, not by the
+model's internal weighting, under this protocol, in which message order is
+randomized. A deployment that orders messages by recency or salience could
+reinstate an internal position dependence. This demotion was fixed in the
+design before any collective run, and the internal decay enters the theory
+only through $\beta(k)$. We quantified the reduction itself in two ways: by
+claim-clustered cross-validated log-likelihood ($-0.483$ nats per
+observation for the two retained forms, against $-0.509$ for a
+constant-weight model with the same claim fields and self term and $-0.693$
+for chance), and by the calibration of the fitted $\sigma$ on every
+replayed collective transition (expected calibration error 0.03;
+Section~\ref{sec:collective}). The same reduction is visible cell by cell
+(Fig.~\ref{fig:neuron}b,c): the RMS deviation of the 78 cell rates from the
+logistic curve is 0.054 with divisive weights against 0.118 with constant
+weights. This comparison is in-sample; the cross-validated log-likelihoods
+above are the out-of-sample statement.
+
+The third is the prediction. Pushing the measured coefficients through
+Section~\ref{sec:theory} gives, as folds of the full map $F$,
+$\astar = 0.43$--$0.48$ for variant A \emph{under every reduction of the
+$k$-dependence} (constant 0.43, or 0.435 by the reduced map as registered;
+divisive 0.48; jointly identified per-$k$ coefficients 0.46). For variant B
+the reductions disagree: $\astar = 0.47$ (constant) versus 1.28 (divisive).
+This disagreement is an experimental resource, because an arm run under
+variant B between $\alpha = 0.6$ and 1.3 discriminates the coupling rule
+regardless of outcome. Thus, the response function of a single agent,
+measured in isolation, fixes every number the collective experiment is
+asked to reproduce.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.8\textwidth]{fig3_neuron}
+\caption{\textbf{Observed correct-side rate against fitted net input under divisive and constant message weights.}
+(a)~The measured update rule: $l$ correct-side and $k-l$ wrong-side messages
+enter with weights $\beta_T g(k)$ and $\beta_F g(k)$, the own-state indicator
+$s \in \{0,1\}$ (variant B only) with weight $\theta$, and the field $c_0$;
+the choice probability is $\sigma(u)$ with $g(k) = 1/(1+\gamma k)$,
+$\gamma = 0.9$. (b)~Observed correct-side rate in each of the 78 design cells
+of the 31{,}824 randomized queries (variant $\times$ $k$ $\times$ $l$
+$\times$ $s$; 408 queries per cell; Wilson 95\% intervals) against $u$, the
+logit of the model's mean predicted probability in the cell under divisive
+normalization with claim fixed effects. Color gives inbox size $k$; circles
+variant A, squares variant B. (c)~The same cells under constant
+weights ($g \equiv 1$): large-$k$ cells lie between the curve and 0.5 and
+small-$k$ cells beyond it. RMS deviation of cell rates from $\sigma(u)$: 0.054 in
+(b), 0.118 in (c).}
+\label{fig:neuron}
+\end{figure*}
+
+\section{Collective experiment}\label{sec:collective}
+
+\subsection{Design (pre-registered before any collective run)}
+
+With the network from $\alpha$ and the neuron from
+Section~\ref{sec:measurement}, the collective experiment tests the
+prediction that follows from them. Each episode is one collective run. A
+network is generated by the acceptance process at capacity $\alpha$,
+initial opinions are assigned exogenously ($\lceil 32 x_0 \rceil$ agents
+seeded correct-side), and the dynamics follow El et al.'s protocol for
+eight rounds (one broadcast message per agent per round conditioned on its
+current stance, Markovian inboxes, snap-judgement opinion resampling).
+
+Two arms were run. The main arm (variant A prompts) covers
+$\alpha \in \{0.20, 0.30, 0.38,\allowbreak 0.45, 0.55, 1.00\}$ and
+$x_0 \in \{4,\dots,24\}/32$, adaptively concentrated where $q$ crosses
+$\tfrac12$ and, above the predicted $\astar$, at low $x_0$ where the
+collapse of the wrong basin is most visible. The discrimination arm
+(variant B prompts) runs $\alpha \in \{0.60, 0.90, 1.30\}$, the range over
+which the two coupling rules of Section~\ref{sec:measurement} disagree.
+
+Three analyses accompany the runs. A rewiring control
+(in-degree-preserving shuffle with rewiring fraction $\rho = 1$, i.e., all
+sources resampled, at $\alpha = 0.30$) checks that outcomes are
+reproducible when every receiver's sources are redrawn at fixed in-degree;
+this is a test of reproducibility under the mean-field premise rather than
+of its sufficiency (Section~\ref{sec:results}). A yoked one-step analysis
+replays every realized inbox through the Section~\ref{sec:measurement}
+response function, so that any collective deviation from iterated
+single-agent behavior is measured rather than assumed absent. A surrogate
+rollout simulates the measured per-$k$ rule for eight rounds on the same
+graphs and seeds and provides the finite-size prediction band.
+
+Decision criteria were fixed in advance. The empirical
+$\astar_{\mathrm{emp}}$ is the capacity at which the wrong-consensus rate
+from $x_0 \le 8/32$, after eight rounds, falls through 20\%, and the
+discrimination arm's verdict is read from which $\alpha$ levels retain a
+wrong basin. Outcomes are read after eight rounds: an episode ends in a
+correct-side consensus when $x_8 \ge 0.6$ and in a wrong-side consensus
+when $x_8 \le 0.4$. The criterion is operational. Among decided episodes
+the final fraction lies beyond $|x_8 - 0.5| > 0.4$ in 63\% of the main
+arm's episodes (median wrong-side end state $x_8 = 0.03$) and in 97--99\%
+of the qwen3:8b campaigns of Section~\ref{sec:generality}, so the labels
+describe strongly polarized end states. The sensitivity of every result to
+the criterion ($\delta \in \{0.05, 0.2\}$) is reported in Supplementary Material Section~S2.
+
+\subsection{The pre-registered prediction fails}\label{sec:results}
+
+We first tested the pre-registered prediction directly. Across all 1{,}414
+episodes (zero parse failures), the probability of a correct consensus
+never reached 0.5 in any $(\alpha, x_0)$ cell (Fig.~\ref{fig:collective}a).
+The collectives converged on the wrong consensus from most initial
+conditions. Even when 24 of the 32 agents started on the correct side, the
+correct side won in only 28--45\% of episodes (wrong side 33--73\%,
+undecided 0--28\%). The wrong-consensus rate from low $x_0$ did fall as
+$\alpha$ increased, from 0.98 at $\alpha = 0.20$ to 0.75 at
+$\alpha = 1.00$, which is the direction the theory predicts. However, it
+never crossed the pre-registered 20\% criterion, so no empirical critical
+crowding level exists in the tested window. Thus, the prediction
+$\astar = 0.435 \pm 0.03$ is rejected (claim-clustered bootstrap, 0 of
+2{,}000 resamples crossing).
+
+\subsection{The failure traces to the threshold, not to the message weights}
+
+Why did the prediction fail? The theory takes two kinds of single-agent
+input: the message weights, which were pooled over the 17 calibration
+claims, and the field, which the blind rule also inherited from the
+calibration set. To find out which of the two failed, we replayed every
+realized inbox through the response function of
+Section~\ref{sec:measurement}, keeping the pooled weights but fitting the
+field to each experimental claim. This replay reproduced the observed
+transitions without systematic error: the Brier score was 0.10--0.14,
+against 0.17--0.25 for always predicting the base rate; the expected
+calibration error was 0.03; and the residual at contested compositions
+($l/k \approx \tfrac12$) lay between $-0.02$ and $+0.01$. The weights,
+therefore, were right. The field was not. The four experimental claims,
+which had been chosen for near-neutral fields, carried fields of 0.16--0.55
+under the experimental scaffold, whereas the calibration set's fields
+averaged 0.94. In other words, the blind rule assumed a threshold lower for
+the correct side than the experimental claims actually had.
+
+We then asked whether the theory, given the right fields, predicts what we
+observed. Re-inserting the four fields into the otherwise unchanged theory
+predicted the observed phase: a single wrong-consensus attractor for three
+of the claims at every $\alpha$ in the window ($x^* = 0.02$--$0.11$), and
+for the fourth a wrong basin extending to $x_0 \approx 0.7$ up to
+$\alpha = 0.55$. Rolled out for eight rounds on the realized graphs and
+seedings, the same rule reproduced the wrong-consensus rate from low $x_0$
+(0.93--1.00 predicted, 0.75--0.99 observed) and the final fractions to an
+RMS of 0.09 over the 36 cells. Replacing the realized graphs by the
+mean-field independence assumption changed the eight-round prediction by a
+further 0.04 (RMS). We call this failure mode field transport: a field
+measured on one claim set does not carry over to another, whereas the
+message weights do.
+
+A second limit of the blind test is its horizon. The fold of the
+mean-field map is a statement about infinite time, whereas the experiment
+lasted eight rounds, and near the fold the map relaxes slowly. Indeed, the
+blind rule's own eight-round surrogate on the realized graphs fell below
+20\% wrong consensus only at $\alpha = 0.63$, not at $\astar = 0.435$; at
+$\alpha = 0.45$ it still predicted wrong consensus in 67\% of the low-$x_0$
+episodes (Fig.~\ref{fig:collective}a, dashed). The pre-registered
+criterion therefore tested the fold through a horizon that displaces it by
+about 0.2 in $\alpha$. The two causes can be separated by a counterfactual.
+With the blind field, the surrogate fails the 20\% criterion at
+$\alpha \le 0.55$ on its own, which is the horizon effect; but at
+$\alpha = 1.0$ it predicts wrong consensus in only 0.1\% of the low-$x_0$
+episodes, against 75\% observed, which only the field can explain. Thus,
+the field is why the prediction failed across the window, and the horizon
+is why the criterion could not have resolved the fold near $\astar$ even
+with the right field.
+
+\subsection{The discrimination arm favors the normalized rule but does not reject the constant one}
+
+The discrimination arm survives with a weaker verdict
+(Fig.~\ref{fig:collective}b). Under the pooled coefficients, the constant
+rule predicted no wrong basin at $\alpha \ge 0.6$ and the normalized rule
+predicted absorption up to $\alpha = 1.3$. Wrong-consensus rates of
+0.975--1.00 at all three capacities matched the normalized prediction,
+which was the pre-registered criterion. With claim-resolved fields,
+however, both coupling rules predict wrong-side attractors at these
+capacities, and the arm separates them less sharply: the normalized rule
+places the low-$x_0$ final fractions at 0.10--0.20 against 0.06--0.10
+observed, the constant rule at 0.25--0.39. The data therefore favor the
+normalized rule but do not reject the constant one. One claim (1569)
+converged wrong-side where both rules predicted correct-side convergence.
+
+Two further checks bound what the collective step adds. Degree-preserving
+rewiring ($\rho = 1$ at $\alpha = 0.30$) changed the outcome probability by
+at most 0.09 in any cell and by 0.00 in four of six. Because the generated
+network is itself uniform given its degrees, this control tests
+reproducibility under redrawn sources rather than the sufficiency of
+$P(k)$. One residual remains: the collectives ended slightly more correct
+than the iterated single-agent rule predicts (final fractions 0.05--0.17
+above the surrogate in 11 of the 12 cells at $x_0 \ge 5/8$). In sum, the
+collective experiment rejects the blind prediction, verifies each link of
+the reduction chain except the transport of the field across claims, and
+identifies the claim's field as the quantity that decided the outcome in
+the main arm.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{fig4_collective}
+\caption{\textbf{Outcome probability after eight rounds against the surrogate of the pre-registered rule (arm A), and low-$x_0$ final fractions against surrogates of two coupling rules (arm B).}
+(a)~Observed outcome family $q(x_0)$ after eight rounds (solid, Wilson 95\%
+intervals) against the eight-round surrogate of the blind pooled rule on the
+same graphs and seedings (dashed): the blind prediction is rejected; the
+correct-side outcome probability stays below 0.5 from every initial
+condition. (b)~Discrimination arm:
+observed low-$x_0$ final fractions against the eight-round surrogates of the
+normalized (divisive) and constant coupling rules with claim-resolved fields;
+the normalized rule lies closer, the constant rule is not rejected.}
+\label{fig:collective}
+\end{figure*}
+
+\subsection{The field follows the assertion, not the truth: a pre-registered discrimination experiment}
+
+What is the dominant field? It admits three interpretations, which we
+separated with predictions registered before data collection: an
+assertion-polarity bias (collectives drift toward affirming the claim,
+whatever its content), a truth asymmetry (wrong content itself is favored),
+and a parametric-prior pull (collectives drift toward the model's stored
+world knowledge). Two designs separate them. First, we ran collectives on
+three \emph{true} claims (labeled SUPPORTS in CLIMATE-FEVER). Here polarity
+and prior predict correct-side convergence, whereas truth asymmetry predicts
+wrong-side convergence. Second, we ran collectives on minimally negated
+rewrites of the four original misinformation claims. Each rewrite denies
+what its original affirms about the same proposition, so that the correct
+side switches from denying to affirming; three were made by inserting a
+negation and the fourth by replacing ``a non-problem, or even a benefit''
+with ``a problem, and not a benefit'' (a contrary rather than a strict
+negation, with the quantifier ``often'' retained), and equivalence was
+checked by model judgment and by hand. Here polarity predicts that the
+drift reverses with the wording, whereas both alternatives predict that it
+does not.
+
+The verdict is polarity (Fig.~\ref{fig:polarity}). On all three true claims
+the collectives converged on the correct (affirming) side from every
+initial condition, including 12.5\% correct starts (mean final fractions
+0.67--1.00). This rejects truth asymmetry. On all four negated rewrites the
+collectives converged on the affirming side, which is now the correct side
+(correct-side fractions 0.98--1.00), exactly as the originals had converged
+on the affirming side when it was the wrong side (correct-side fractions
+0.00--0.43). The assertion-referenced outcome is thus the same while the
+content-referenced outcome reverses with the wording, which a
+parametric-prior pull fixed by content cannot produce. The parametric-prior
+account is therefore rejected in the form tested, a content-fixed prior
+read from the bare prompt (a quantity that, as
+Section~\ref{sec:measurement} notes, does not itself carry over to the full
+scaffold), though not in every conceivable form. Note that one rewrite
+whose bare-prompt field pointed to the \emph{denying} side ($p = 0.34$)
+still converged on the affirming side. This is the one pair in which field
+and polarity opposed each other, and the polarity channel overrode the
+field rather than merely riding it. Single-agent predictions again matched
+the collective outcomes claim by claim in all ten (claim, $\alpha$) cells,
+two of them to within the resolution of the seeding grid (Supplementary Material Section~S3).
+
+Could the polarity instead be a property of the messages, denying messages
+being simply weaker text? Two measurements exclude this sender-side
+account. The field itself carries the polarity, with an empty inbox and
+before any message is read, and the same 8B-generated message bank read by
+llama3.3:70b yields a per-message asymmetry of 1.03 $[0.66, 1.64]$
+(Section~\ref{sec:generality}). The asymmetry therefore travels with the
+reader, not with the messages. For this model, the collectives follow the
+assertion, not the truth. This reframes the social reading of
+Section~\ref{sec:results}: the collectives lose to misinformation here
+because misinformation is phrased as an affirmation, not because wrong
+content is favored. The same reading bears on reports that LLM opinion
+networks converge toward scientific ground truth regardless of initial
+stance \cite{Chuang2024}. Where the true position is the affirming one, a
+polarity channel and a truth bias make identical predictions, and only
+designs that reverse the assertion direction, as here, separate them.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{fig5_polarity}
+\caption{\textbf{Final correct-side fractions for original, negated, and true claims.} (a)~Mean final correct-side
+fraction for the four original claims (denying side correct) and their
+minimally negated rewrites (affirming side correct) under identical
+conditions: the content-referenced outcome reverses with the wording.
+(b)~True (SUPPORTS) claims converge on the correct = affirming side from all
+initial fractions.}
+\label{fig:polarity}
+\end{figure*}
+
+\subsection{A second model shows predicted transition points; a third lacks the assertion bias}\label{sec:generality}
+
+Is the assertion-dominated regime a property of the model or of the
+pipeline? To find out, we ran the identical pipeline (claim calibration and
+randomized single-shot measurement, then collectives, with fixed-point
+predictions computed from the single-shot fits alone) on a second
+8-billion-parameter model, qwen3:8b. The outcome was qualitatively
+different (Fig.~\ref{fig:generality}). For all twelve qwen3:8b claims the
+single-agent data were collected before the corresponding collectives ran,
+and the fixed points reported here are computed from those data with the
+final estimation procedure (Appendix~\ref{app:methods}). Their agreement with the collectives
+is therefore an out-of-sample test in which no collective outcome enters
+the fit, though not a prospective registration; the eight-claim campaign
+below adds the prospective element, since its claim-selection rule was
+registered before its data existed.
+
+For this model the theory predicts, from the single-agent measurements
+alone, claim-dependent bistability: an interior unstable fixed point at
+0.14--0.21 for one claim (falling with $\alpha$ and leaving the seeding
+grid at $\alpha = 1.0$) and at 0.70--0.71 for another. Both appeared.
+Collectives seeded at $x_0 = 0.125$ split between the two basins, while
+every start at 0.375 or above converged correctly. For the second claim
+the correct-side outcome probability was at most 0.3 from every start at
+0.625 or below (mean final fractions 0.00--0.42) and 0.9--1.0 from 0.875,
+placing the observed crossings at 0.69--0.75. These are the first observed
+interior transition points in this study, and they lie at the computed
+positions. For the remaining two claims the pipeline predicts monostable
+correct-side convergence in every cell but one (the negated rewrite of
+claim 1569 at $\alpha = 0.30$, predicted bistable with transition point
+0.37), and the collectives converged correctly in every cell but that one,
+where the observed crossing is 0.35 $[0.28, 0.43]$. In sum, all twelve
+cells match in class (one to within the resolution of the seeding grid),
+five of six predicted transition points fall inside the observed intervals
+(the sixth misses by 0.02), and the prediction and observation intervals
+overlap in all six. This model is also not assertion-following: one true
+claim converged to the \emph{denying} side from all starts below 0.625,
+which no polarity account permits.
+
+We then took the comparison beyond these four claims with a calibration
+campaign. Twenty further claims were calibrated and measured single-shot,
+and the same pipeline classified each (claim, $\alpha$) cell as monostable
+correct-side, monostable wrong-side, or bistable with a computed transition
+point. Eight claims spanning the predicted regimes were selected by a
+pre-registered rule applied to the classifications computed at the time of
+the campaign (the predictions reported here, recomputed with the estimation procedure of Appendix~\ref{app:methods}, leave the selected claims' classes unchanged in 15 of
+16 cells), and 256 further episodes were run ($\alpha \in \{0.30, 0.55\}$,
+eight initial fractions, zero parse failures). The predicted classification
+matched the observed one in 15 of 16 cells (Fig.~\ref{fig:calibration}).
+Across the eleven cells observed bistable, all eleven predicted transition
+points fall inside the episode-bootstrap intervals, the mean absolute
+difference between predicted and observed transition points is 0.04, and
+the two are rank-correlated at $r_s = 0.96$ (Spearman; $p = 0.004$ under
+permutation of claim labels, claims being the exchangeable unit).
+Prediction-side uncertainty, from resampling each claim's single-shot
+queries, gives intervals of width 0.08--0.25 on the predicted transition
+points, and these overlap the observed intervals in all eleven cells
+(Fig.~\ref{fig:calibration}, horizontal bars). The one mismatch is a claim
+at $\alpha = 0.30$ whose predicted transition point, 0.09, lies just above
+the lowest seeded fraction ($2/32$), from which its collectives
+nevertheless converged correctly. At $\alpha = 0.55$ the same claim's
+predicted transition point (0.03) and observed crossing (0.01
+$[-0.09, 0.17]$) agree, and it is bistable in only 62\% of the resampled
+predictions, which marks it as the boundary case. Thus, what was an
+existence proof on two claims is a calibration curve on eight: the
+single-agent pipeline predicts not only whether a transition point exists
+but, to the resolution of the seeding grid, where it sits.
+
+The larger model completes the comparison. We probed llama3.3:70b at the
+single-agent level with the same eight claims and message bank. Its
+per-message assertion asymmetry is 1.03 $[0.66, 1.64]$, against 1.44
+$[1.25, 1.65]$ for llama3.1:8b over the 17 calibration claims and 1.94
+$[1.39, 2.73]$ on these same eight (difference 0.90 $[0.00, 1.72]$,
+claim-clustered). The bare fields align with content for seven of the eight
+claims: with an empty inbox, $P(\mathrm{TRUE}) = 0.000$ for the four false
+originals and $1.000$ for three of the four true rewrites, while the
+eighth, the negated polar-bear rewrite, is near neutral at
+$P(\mathrm{TRUE}) = 0.42$. The polarity channel that governed the
+8-billion-parameter collectives is thus not detected, and the larger
+model's collective regime (not measured here, a stated limitation) would be
+field-dominated on most realistic claims. Note that the larger model
+differs from llama3.1:8b in model generation as well as in scale, so the
+comparison bounds the channel in the larger model rather than isolating
+scale as its cause. In sum, whether a collective has a transition point at
+all, where it sits, and what force drives consensus are, across the two
+models whose collectives were run, and for the polarity channel in the
+third, properties measurable on the individual agent before any collective
+is run.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{fig6_generality}
+\caption{\textbf{qwen3:8b collective outcomes against predicted fixed points, and the per-message asymmetry at 70B.} (a)~qwen3:8b
+collectives: mean final correct-side fraction per cell; stars mark the
+predicted unstable fixed points, which coincide with the observed basin
+boundaries for claims 6, 1239, and 91569 at $\alpha = 0.30$; claim 1569 is
+predicted and observed monostable correct-side. Cell values are mean final
+fractions; intermediate values are splits between the two basins, not
+intermediate end states (per-cell outcome counts in Supplementary Material Section~S5). (b)~The
+per-message assertion asymmetry on the same eight claims and message bank
+(claim-clustered 95\% intervals) is not detected at 70B.}
+\label{fig:generality}
+\end{figure*}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig7_calibration}
+\caption{\textbf{Calibration of transition-point predictions (qwen3:8b).}
+Predicted unstable-fixed-point position (per-claim divisive response
+function) against the observed transition point (50\% crossing of the eight-round outcome) for every (claim, $\alpha$) cell observed bistable: circles, the
+eight-claim campaign (11 cells); squares, the four-claim campaign (6 cells).
+Vertical bars are episode-bootstrap 95\% intervals of the observed transition point, horizontal bars are single-agent-bootstrap 95\% intervals of the
+prediction, and the dotted line is identity. Cells predicted and observed
+monostable (4 of 16 and 6 of 12) and the one class mismatch (claim 1146 at
+$\alpha = 0.30$) are listed in Supplementary Material Section~S5.}
+\label{fig:calibration}
+\end{figure}
+
+\section{Discussion}\label{sec:discussion}
+
+In the current study, we asked to what extent the reading bound of a
+single agent decides where a collective of language-model agents ends up.
+We turned the bound into a network with one parameter, the message
+capacity $\alpha$, measured the response function of an isolated agent, and
+found that the agent behaves as a stochastic binary neuron with divisively
+normalized weights. From these measurements alone we predicted the
+capacity at which the wrong-consensus basin should disappear, and we
+registered the prediction before any collective ran. The prediction
+failed. The failure was traced to the threshold that a claim's wording
+sets, which did not carry over from the calibration claims to the
+experimental ones, and, with each claim's own threshold, the same weights
+reproduced the collectives. A pre-registered discrimination experiment then
+showed that the threshold follows what a claim asserts rather than whether
+it is true, and a second model showed transition points at the positions
+the pipeline computed.
+
+The reading bound does not decide a collective's fate on its own. Across
+three models it did so together with one more single-agent quantity. The
+bound, entering through the degree distribution $P(k)$ of the
+crowding-generated network, sets where the transition point sits; the
+threshold that a claim's wording sets decides which phase the collective is
+in, and whether a transition point exists at all. In llama3.1:8b the
+threshold, and the assertion bias behind it, overrode the bound: three of
+the four claims sat in a wrong-side monostable phase at every capacity
+tested, and 75\%-correct majorities were lost in most episodes. In qwen3:8b
+the threshold left claims bistable, and the transition points appeared
+where the measured neuron and the crowding network placed them (15 of 16
+cells). At 70B the assertion bias was not detected. In every case the
+prediction used single-agent measurements only. In every case, too, the
+$\alpha$ trend of the wrong-consensus attractor, observed and predicted,
+showed that the number of messages each agent was actually shown remained
+the operative degree. Where the blind prediction failed, the failure lay
+in transporting the field across claim sets, not in the network.
+
+The blind test carries two lessons for prediction in this setting. The
+field must be measured on the claims that will be debated: message weights
+pooled over a calibration set transfer, the field does not. And the
+decision criterion must be computed for the horizon of the experiment. The
+fold of the mean-field map is an infinite-time statement, and near the fold
+the map relaxes slowly, so an eight-round experiment must be compared with
+an eight-round surrogate rather than with the fold itself.
+
+What the collectives verified should be stated in three parts. Verified:
+transition points at fixed capacity, crossings in the initial fraction that
+appeared at the positions the pipeline computed (qwen3:8b, 15 of 16 cells;
+the polarity cells of llama3.1:8b, 10 of 10). Predicted and not observed:
+the fold in $\alpha$ itself, the vanishing of the wrong basin as capacity
+is reduced, which llama3.1:8b's fields kept out of reach by placing three
+of the four claims in the wrong-side monostable phase at every capacity
+tested and the fourth in a bistable phase whose transition point lay near
+$x_0 \approx 0.7$. Observed as capacity dependence: the movement of the
+qwen3:8b transition points with $\alpha$ (claim 6: 0.21 to 0.14 predicted,
+0.19 to 0.17 observed, then below the seeding grid at $\alpha = 1.0$), the
+same fold approached from the side of the initial fraction. The title's
+claim is the first of these: capacity sets where the transition point sits,
+and wording sets the threshold and with it which phase the collective is
+in.
+
+What $\alpha$ corresponds to outside this experiment differs by system.
+Here $\alpha$ is an enforced reading budget: in this protocol the router,
+not the model, implements the acceptance kernel, a division of labor the
+measurements themselves selected (Section~\ref{sec:measurement}). In
+deployed multi-agent systems its counterparts are the quantities that bound
+how many messages an agent reads: finite context windows, per-token costs,
+and the sampling policies of agent frameworks. In the naming-game
+literature the analogous bound is a finite interaction memory
+\cite{Flint2026}; in human information sharing, divided attention limits
+message visibility in the same direction \cite{HodasLerman2012}. The
+model's own capacity enters the theory separately, as the measured load
+attenuation $\beta(k)$. Thus, the intake budget sets who is read, and the
+attenuation sets how much each reading counts.
+
+Dialogue does not correct error in the field-dominated phase. Majorities of
+75\% correct agents ended correct-side in fewer than half of the episodes
+at every capacity tested, and the discrimination experiment shows that the
+drive is the assertion, not the content. Communication volume and capacity
+are therefore no remedy where the threshold set by the wording is adverse.
+Accounts that model collective knowledge formation as decentralized
+Bayesian inference over exchanged messages \cite{Taniguchi2024} treat
+each message as evidence. In the field-dominated phase a message moves its
+reader by what it asserts, so the collective aggregates wording rather than
+evidence, and convergence to the truth fails under a condition that can be
+measured on a single agent. The misinformation-vulnerability reading must
+be
+stated carefully: small llama collectives lose to misinformation because
+misinformation affirms, whereas models without the polarity channel (qwen,
+70B) fail or succeed by different routes. Directional conformity has
+likewise been reported to collapse majority-vote aggregation in LLM safety
+panels under peer pressure \cite{HuQu2026}. The polarity channel measured
+here is a claim-level analogue that requires no peer opinions at all, since
+it is present in bare single-shot calibration.
+
+The origin of the polarity channel is probed and bounded rather than
+resolved. An abliterated (refusal-direction-ablated, \cite{Arditi2024})
+derivative of the same instruct model retains the channel: per-message
+asymmetry 1.24 $[1.05, 1.47]$ against 1.44 $[1.25, 1.65]$ for the intact
+model, measured in the same batch with the same message bank. Removing
+refusal behavior therefore does not remove the assertion bias, and any
+reduction is below this measurement's resolution. Whether the channel
+exists before instruction tuning could not be measured. The base model does
+not follow the forced-choice format (parse rate below 5\% even with a
+three-shot format prefix), which places pre-tuning behavior outside any
+forced-choice probe; a log-probability readout is the instrument for that
+question. The channel is adjacent to, but not identical with, sycophancy as
+usually defined, agreement with a user's stated opinion, traced in part to
+the preference data used for RLHF \cite{Sharma2023}; here the agreement is
+with the claim's own assertion, with no user opinion in the prompt. What
+can be said is negative and useful: the bias that decides these
+collectives' fate is not carried mainly by the safety-refusal direction.
+
+What is verified here is the reduction chain from single-agent response and
+degree statistics to the basin boundaries of \emph{LLM} collectives at
+fixed capacity; the fold in capacity itself remains a theoretical
+prediction. The suggestion for human groups is nonetheless concrete. The
+cognitive limits cited above give human participants a finite effective
+intake of the same shape, and the theory's inputs (response threshold, load
+attenuation, intake bound) are all behavioral, none tied to a machine
+substrate. If deliberating groups sit at finite effective $\alpha$, the
+theory would say which of them can recover the truth from a correct
+minority and which cannot. Statements about human collectives are,
+however, implications rather than measurements. Locating a human group on
+the computed $\astar$ curve would need, besides an estimate of a human
+$\alpha$ from intake-saturation data, the human counterparts of the
+response coefficients (the threshold, the per-message weights, and their
+load attenuation), none of which is measured here. A further limitation is
+the REFUTES-skew of the calibrated claim set, which restricts all claims to
+correct-side/wrong-side language. Identifying genuine truth asymmetry needs
+a claim set balanced in polarity at matched difficulty, which this model's
+one-sided accuracy on SUPPORTS claims may make impossible. The mitigation
+is that the $\astar$ prediction never invoked truth asymmetry: the theory
+weights correct-side and wrong-side messages by their measured
+coefficients, and the measured inequality $|\beta_T| \ne |\beta_F|$
+($\delta < 0$) is, for this REFUTES-skewed set, the assertion asymmetry
+seen from the correct side, not a truth asymmetry.
+
+Relative to El et al.~\cite{El2026}, their graphs were given, ours are generated;
+their fits describe the collective data, ours are computed from
+single-agent data alone. The two studies probe orthogonal axes of one phase
+diagram for the same class of system, binary units with logistic
+(Glauber-type) updates. Their transition is thermal: topology fixed, noise
+swept, a critical point located by a susceptibility peak, on symmetric
+couplings that admit an energy function. Ours is topological: effective
+noise fixed (absorbed in the measured $\beta$), degree statistics swept
+through $\alpha$, and the transition is a fold, the disappearance of a
+metastable basin, a spinodal rather than a critical point. This is why the
+collapse of the wrong basin and not a fluctuation peak is the correct
+observable. Our graphs are directed, so the dynamics are non-equilibrium
+and free-energy arguments do not transfer; the mean-field map does.
+Model-dependent collective regimes have now been reported in the
+coordination setting as well, in naming-game populations whose collective
+bias amplifies, induces, or reverses individual bias with model-specific
+size thresholds \cite{Flint2026}, convergent with the model dependence
+measured here; and the structured interaction topologies those authors
+list as future work are what the crowding process supplies. For
+consensus-scaling observations \cite{DeMarzo2024}, $(\log N)/\alpha$
+supplies the analytic form for the reported size-limited consensus.
+
+Part of the logistic form is guaranteed by the output mechanism. For a
+forced choice between two options, $P(A \mid A\ \text{or}\ B) =
+\sigma((z_A - z_B)/T)$ is exactly a logistic function of the logit
+difference, and with zero parse failures in every collective campaign the
+measured choice probabilities are close to this conditional quantity. What
+the mechanism does not guarantee, the empirical content of the reduction,
+is that this logit difference is approximately additive in the inbox
+composition, one weight per correct-side and per wrong-side message
+(Fig.~\ref{fig:neuron}b), as an aggregator of conditionally independent
+evidence would produce. Whether the transformer approximates such a
+computation, and why, is left open alongside the mechanism of the
+attenuation below.
+
+The measured update rule (Fig.~\ref{fig:neuron}a) departs from a classical
+Ising spin in exactly one place: the per-message coupling is attenuated by
+the total inbox size, $\beta/(1+\gamma k)$, the form known in sensory
+neuroscience as divisive normalization \cite{CarandiniHeeger2012}. As in
+that literature the law is phenomenological, a behavioral input--output
+relation rather than an identified mechanism. Three candidate mechanisms
+make separable predictions. Softmax attention, itself a divisive operation,
+predicts attenuation governed by token volume rather than message count.
+Proportion coding, judging by the fraction $l/k$ of supporting messages as
+classically reported for human majority influence, predicts dependence on
+$l/k$ alone. Calibration compression of the output probabilities would mimic
+attenuation and is quantified by reading log-probabilities directly. A
+factorial manipulation of message length and proportional $(l, k)$ scaling
+within the Section~\ref{sec:measurement} protocol would separate the three.
+We leave this as a stated open question, since no result in this paper
+depends on which mechanism generates the measured form.
+
+One residual remains to be explained. The collectives ended slightly more
+correct than the iterated single-agent rule predicts, and the residual is
+small but systematic (11 of 12 cells, same sign), so it measures a
+collective contribution beyond the iterated single-agent rule rather than
+noise. One candidate is the evolution of message content across rounds: the
+influence of correct-side messages grows by $+0.026$ per round in the
+one-step regression (Supplementary Material Section~S2), which could reflect either the messages or
+repeated exposure. Replaying single-shot queries with round-specific
+message banks built from the logged episodes would separate the two, and
+the logs permit it.
+
+\section{Conclusion}\label{sec:conclusion}
+
+An agent that reads only a few of the others' contributions was the
+starting point of this paper. Two single-agent measurements turn that bound
+into a prediction: the agent's input-output rule, equivalent to a
+stochastic binary neuron with divisively normalized weights, and the
+threshold a claim's wording sets for its answer. Placed on a
+crowding-generated network, the neuron yields a one-dimensional map whose
+fold locates the message capacity at which the wrong-consensus basin
+disappears. The blind prediction for one model failed because the threshold
+did not carry over between claim sets. With each claim's own threshold the
+same weights reproduced the outcomes, and in a second model the predicted
+transition points appeared where computed. The practical rule is short:
+measure the threshold first, then set the budget. Both are single-agent
+measurements, and together they account for most of what the collectives
+did, with residuals of 0.05--0.17 in final fraction and one claim outside
+both coupling rules remaining. Thus an LLM collective can be assessed
+before it runs. Which claims a given model will debate to the wrong side is
+a quantity measured here on two models, and how much reading capacity would
+let a correct minority win is a quantity the theory computes, verified at
+fixed capacity and still a prediction as a fold in capacity itself.
+
+
+\appendices
+\section{Experimental Methods}\label{app:methods}
+
+\subsection{Models, serving, and prompts}
+
+All agents are served with ollama. The primary model is llama3.1:8b
+(Q4\_K\_M quantization, temperature 0.7 throughout, seed recorded for every
+call); the cross-model campaigns use qwen3:8b (thinking disabled) and
+llama3.3:70b (judgments only, message banks fixed to the 8B-generated banks).
+The judgment prompt asks for a snap A/B judgment of the claim given the
+persona and the inbox messages, with a single-character response; variant B
+adds a line stating the agent's current answer. Verbatim prompts, the A/B
+counterbalancing, message generation, serving configuration, and the model
+variants of the polarity-origin probe are given in Supplementary Material Section~S7. Every
+call's prompt hash, seed, raw response, and parse result are logged to JSONL.
+
+\subsection{Claims and calibration}
+
+Claims are drawn from CLIMATE-FEVER \cite{Diggelmann2020} (SUPPORTS and
+REFUTES only; the claim text is presented alone, without evidence). A
+two-stage calibration (24 calls per candidate, refined to 64 for candidates
+with $p_q \in [0.35, 0.65]$; A/B assignment counterbalanced) measured
+per-claim accuracy $p_q$ and field $h_q = \mathrm{logit}(p_q)$. The collective
+experiments use per-claim fields re-estimated under the full experimental
+scaffold (Section~\ref{sec:measurement}). The negated rewrites of the four
+Stage-2 claims (each rewrite denies what its original affirms about the
+same proposition; three by inserting a negation, one by replacing ``a non-problem, or even a
+benefit'' with ``a problem, and not a benefit'', a contrary that avoids a
+double negative and retains the quantifier ``often'') were checked for
+semantic opposition by model judgment
+(70--85\% of 20 counterbalanced calls per pair) and approved by hand before
+any collective run. Full claim texts, rewrites, and calibration values are in Supplementary Material Section~S3.
+
+\subsection{Networks, episodes, and controls}
+
+Each episode generates a fresh directed network: every receiver processes the
+other 31 agents in an independent uniformly random order, accepting the next
+candidate with probability $e^{-\alpha r}$ after $r$ acceptances. Initial
+stances are assigned exogenously to a uniformly random subset of
+$\lceil 32 x_0 \rceil$ agents. Each of eight rounds consists of a message
+phase (every agent with at least one out-edge generates one two-sentence
+message conditioned on its current stance, broadcast to all its receivers)
+and a judgment phase (each agent answers the snap-judgement prompt with its
+current-round inbox; single sample). The network is fixed within an episode
+(regenerated only between episodes), so a receiver reads the same senders in
+every round, and their states are correlated through the shared graph even
+though every message is regenerated each round from its sender's current
+stance; the independence assumption of the mean field of
+Section~\ref{sec:theory} is therefore an approximation. Its cost is
+quantified in Section~\ref{sec:results} by comparing the eight-round
+iteration of the mean-field map with surrogate rollouts of the same rule on
+the realized graphs (RMS difference 0.04 in the final fraction). A fidelity check with five-sample majority voting (Appendix~\ref{app:fidelity}) gave
+sharper absorption, so the single-sample simplification is not the source
+of wrong-side absorption. The rewiring control resamples each receiver's sources uniformly
+while preserving its in-degree. Outcomes are classified at $\delta = 0.1$
+(correct consensus: $x_8 \ge 0.6$; wrong: $x_8 \le 0.4$), with
+$\delta \in \{0.05, 0.2\}$ and undecided-exclusion sensitivity analyses in Supplementary Material Section~S2.
+
+\subsection{Cross-model calibration campaign}
+
+Twenty further CLIMATE-FEVER claims, disjoint from all earlier sets, were
+calibrated under the full scaffold and measured single-shot with qwen3:8b;
+eight were selected by a rule fixed in the pre-registered instructions (at least four predicted bistable with interior transition points, the remainder
+monostable; no wrong-side-dominant claim existed among the twenty).
+Collectives ran the full $\alpha \in \{0.30, 0.55\} \times x_0$ grid with two
+replicates (256 episodes; Supplementary Material Section~S7).
+
+\subsection{Statistics}
+
+All confidence intervals on measured coefficients are claim-clustered
+pairs-bootstrap percentiles (claims are the clusters because episodes within
+a claim share their field; resample counts in Supplementary Material Section~S7).
+Attenuation-form comparison uses five-fold cross-validation with folds split
+by claim, alongside AIC; the form parameter is profiled on the full data
+($\gamma = 0.9$) and re-profiled inside each training fold, with a held-out
+claim's fixed effect set to zero, so the cross-validated likelihood scores
+prediction for an unseen claim with an unknown field. The divisive $\astar$
+of Section~\ref{sec:measurement} uses $\gamma$ profiled per variant (0.53 for
+A, 1.32 for B). Per-$k$ coefficients are identified by a joint logistic fit
+over all inbox sizes with claim fixed effects anchored by the empty-inbox
+cells, because at a single $k$ the columns $1$, $l$, and $k - l$ are
+collinear; per-claim response functions for the collective claims use the
+reduced form $c_0 + g(k)[\delta k + \bar\beta(2l - k)]$ ($+\theta s$ for
+variant B). Fixed points of the mean-field map are bracketed on a grid in $x$
+with bisection refinement and classified by $|F'(x)| < 1$; a phase is
+bistable when an unstable interior point separates two stable ones, and
+$\astar$ is located by bisection in $\alpha$ on that classification.
+Prediction-side intervals resample each claim's single-shot outcomes within
+claim and design cell and recompute the fixed points.
+
+\emph{Outcome and transition point.} An episode's outcome is its correct-side
+fraction after eight rounds, $x_8$; $q(x_0)$ is the fraction of episodes with
+$x_8 \ge 0.6$, a finite-horizon quantity compared with the infinite-time
+fixed points only through surrogate rollouts. Observed transition points are the 50\% crossings of a logistic fit of the correct outcome on $x_0$ with a weak
+ridge penalty; intervals are episode-bootstrap percentiles (500 replicates).
+Rank correlations between predicted and observed transition points are tested by
+permuting claim labels, claims being the exchangeable unit. Fitting details,
+the construction of Fig.~\ref{fig:neuron}, and the bootstrap retention counts are in Supplementary Material Section~S7.
+
+\subsection{Pre-registration timeline}
+
+``Pre-registered'' means throughout that a prediction or decision rule, with
+the criteria for judging it, was written to a file before the corresponding
+data were collected, with the file's timestamp and SHA-256 hash recorded in
+the project repository; these are local records, not a third-party registry.
+Three items were pre-registered: (i)~the $\astar = 0.435 \pm 0.03$ prediction
+and the decision criteria of the main collective experiment (2026-08-23);
+(ii)~the three-hypothesis prediction table of the polarity discrimination
+experiment (2026-08-25); (iii)~the claim-selection rule of the eight-claim
+calibration campaign (2026-08-27). The single-agent measurements preceded
+the collective experiments. The claim-resolved predictions of
+Sections~\ref{sec:results}--\ref{sec:generality} were computed after the
+collective experiments from single-agent data alone and were not
+prospectively registered; the adaptive second-pass allocation followed rules
+fixed in the pre-registered design (Supplementary Material Section~S7).
+
+\subsection{Data and code availability}
+
+All episode logs (stance histories, full message texts, graphs, seeds, prompt
+hashes), single-shot logs, analysis scripts (scripts 50--57 produce every
+identified fit, fixed point, surrogate rollout, and figure reported here), and
+notebooks are retained in the project repository, to be released publicly on GitHub
+(\url{https://github.com/dockmfgit/AI_agent_crowding}); the public
+dataset of El et al.~\cite{El2026} is not redistributed and is available from its
+original source \cite{El2026data}. Layout: \texttt{scripts/} (measurement, engines, analysis),
+\texttt{results/} (all tables backing the figures), \texttt{data/}
+(raw JSONL and episode JSON), \texttt{notes/} (working records including the
+pre-registration files).
+
+
+\section{Glossary}\label{app:glossary}
+Table~\ref{tab:terms} collects the terms used in the article.
+\begin{table*}[!t]
+\caption{Glossary of the terms used in the article.}
+\label{tab:terms}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}p{0.70\textwidth}@{}}
+\toprule
+Term & Meaning \\
+\midrule
+Agent & One LLM instance with a persona, holding a binary stance (TRUE or
+FALSE) on a claim; $N = 32$ agents form a collective. \\
+Claim; correct side & A short factual statement from CLIMATE-FEVER; the
+correct side is the side matching its label (mostly the denying side here,
+since most claims used are misinformation). \\
+Inbox & The $k$ messages an agent reads in a round, $l$ of which argue for
+the correct side. \\
+Message capacity $\alpha$ (crowding parameter) & An agent that has already
+accepted $r$ sources accepts the next with probability $e^{-\alpha r}$;
+larger $\alpha$ means fewer messages read (mean about
+$\ln(1+\alpha(N-1))/\alpha$; 6.4 sources at $\alpha = 0.435$). \\
+Response function & The probability that an agent answers on the correct
+side given its inbox; measured as a logistic function of a weighted sum of
+the messages. \\
+Field $h$ (threshold) & The agent's threshold for the correct side with
+its sign reversed: the log-odds of answering on the correct side with an
+empty inbox, set by the claim's wording; positive means the wording alone
+lowers the threshold for the correct side. It shifts the logistic response;
+the steepness is set by the weights. \\
+Per-message weights $\beta_T$, $\beta_F$ & The push of one correct-side and
+one wrong-side message on the log-odds; both shrink with inbox size as
+$\beta/(1+\gamma k)$ (divisive normalization). \\
+$x$, $x_0$, $x_8$ & Fraction of agents on the correct side; at the start;
+after the eight rounds. \\
+Outcome $q(x_0)$; outcome criterion & Probability that a collective
+started at $x_0$ ends on the correct side; the criterion is $x_8 \ge 0.6$
+for a correct-side and $x_8 \le 0.4$ for a wrong-side consensus. \\
+Mean-field map & An equation giving next round's $x$ from this round's $x$;
+its fixed points are the possible consensus states. \\
+Basin; transition point; bistable, monostable & The starting fractions that
+end at one consensus; the unstable fixed point separating the two basins
+(also called the basin boundary, crossing, or tipping point); a collective
+with two reachable
+consensus states is bistable, with one, monostable. \\
+Fold; $\astar$ & The capacity at which the wrong-consensus basin disappears
+(a saddle-node bifurcation of the map); above $\astar$ even small correct
+minorities win. \\
+Variant A, variant B; main arm, discrimination arm & Judgment prompt without
+and with the agent's current answer shown; the collective runs made under
+each variant. \\
+Calibration claims; experimental claims & The 17 claims on which the weights
+were measured; the 4 claims on which the main collectives ran. \\
+Surrogate rollout & The measured single-agent rule simulated for eight
+rounds on the actual graphs and seedings: the finite-time prediction
+against which collectives are compared. \\
+Field transport & Whether a field measured on one claim set carries over to
+another; it did not, whereas the weights did. \\
+Assertion bias (polarity channel) & The tendency to move toward affirming a
+claim as worded, whatever its truth; present in llama3.1:8b, absent in
+qwen3:8b, not detected at 70B. \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+
+\section{Single-Agent Measurement and Reduced-Map Validation}\label{app:single}
+
+\subsection{Response coefficients}
+Table~\ref{tab:coeffs} lists the pooled response coefficients of llama3.1:8b for both prompt variants.
+\begin{table}[!t]
+\caption{Pooled response coefficients (llama3.1:8b; claim-clustered 95\% intervals).}
+\label{tab:coeffs}
+\centering\small
+\resizebox{\columnwidth}{!}{\input{tables/t_stage1_coeffs}}
+\end{table}
+
+\subsection{Attenuation-form comparison}\label{app:decay}
+Table~\ref{tab:decay} compares the candidate attenuation forms by log-likelihood, AIC, and claim-split cross-validated log-likelihood.
+\begin{table}[!t]
+\caption{Attenuation-form comparison (five-fold cross-validation with folds split by claim).}
+\label{tab:decay}
+\centering\small
+\resizebox{\columnwidth}{!}{\input{tables/t_decay}}
+\end{table}
+
+\subsection{Identified per-$k$ coefficients}
+
+At a single inbox size $k$ the design columns $1$, $l$, and $k-l$ are
+collinear ($l + (k-l) = k$), so a logistic fit at fixed $k$ identifies only
+$c_0 + k\beta_F$ and $\beta_T - \beta_F$. The per-$k$ coefficients in Table~\ref{tab:perk} are
+therefore fitted jointly over all inbox sizes, with one fixed effect per claim
+anchored by the empty-inbox cells ($k = 0$), which identifies
+$\beta_T(k)$ and $\beta_F(k)$ separately at every measured $k$ (design rank
+verified: 29/29 columns for variant A, 30/30 for variant B). Intervals are
+claim-clustered bootstrap percentiles (200 resamples).
+
+\begin{table*}[!t]
+\caption{Identified per-$k$ coefficients (claim-clustered bootstrap percentiles, 200 resamples).}
+\label{tab:perk}
+\centering\small
+{%
+\begin{tabular}{rcccc}
+\toprule
+$k$ & $\beta_T(k)$, variant A & $\beta_F(k)$, variant A & $\beta_T(k)$, variant B & $\beta_F(k)$, variant B \\
+\midrule
+1  & 2.11 [1.58, 2.96] & $-1.53$ [$-2.03$, $-1.12$] & 1.62 [1.29, 1.94] & $-1.52$ [$-1.80$, $-1.25$] \\
+2  & 1.23 [0.98, 1.41] & $-1.21$ [$-1.49$, $-0.94$] & 0.78 [0.60, 0.95] & $-1.10$ [$-1.23$, $-0.93$] \\
+3  & 0.80 [0.65, 0.96] & $-1.04$ [$-1.30$, $-0.80$] & 0.61 [0.49, 0.72] & $-0.82$ [$-0.92$, $-0.68$] \\
+5  & 0.45 [0.35, 0.55] & $-0.72$ [$-0.88$, $-0.57$] & 0.34 [0.28, 0.41] & $-0.50$ [$-0.57$, $-0.42$] \\
+8  & 0.31 [0.26, 0.37] & $-0.51$ [$-0.63$, $-0.41$] & 0.24 [0.20, 0.28] & $-0.34$ [$-0.38$, $-0.29$] \\
+12 & 0.23 [0.18, 0.27] & $-0.39$ [$-0.48$, $-0.33$] & 0.18 [0.16, 0.21] & $-0.25$ [$-0.28$, $-0.22$] \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+Mean claim fixed effect under the full scaffold: $0.94$ (variant A; range
+$-0.70$ to $3.03$ over the 17 claims), $-0.64$ (variant B), with
+$\theta = 2.15$ (variant B).
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{figS1_perk_identified}
+\caption{\textbf{Identified per-message coefficients versus inbox size
+(31{,}824 randomized queries).} $\beta_T(k)$ and $\beta_F(k)$ from the joint
+fit with claim fixed effects anchored by the empty-inbox cells, for prompt
+variants A (a) and B (b); bars are 95\% claim-clustered bootstrap intervals.}
+\label{fig:si_single}
+\end{figure*}
+
+\subsection{Reduced-map validation}\label{app:fold}
+
+Fold of the full map $F$ (all $P_\alpha(k)$, exact binomial sums; located by
+bisection in $\alpha$) versus the two closure levels of the reduced map $G$,
+for seven synthetic coefficient sets and the four measured ones. The fold of
+$G$ is solved jointly from $G(x;K) = x$ and $G_x(x;K) = 1$ (residuals below
+$10^{-12}$; $G_{xx} > 0$ and $G_K < 0$ at every fold), then converted to
+$\astar$ by inverting the exact mean degree $E[K](\alpha)$ or the closed
+form~(1). Synthetic sets use $\beta_T = -\beta_F = \bar\beta$ (Table~\ref{tab:fold}).
+
+\begin{table*}[!t]
+\caption{Fold of the full map $F$ versus the two closure levels of the reduced map $G$ for seven synthetic and four measured coefficient sets.}
+\label{tab:fold}
+\centering\small
+\resizebox{\textwidth}{!}{\input{tables/t_fold_precision}}
+\end{table*}
+
+Median relative error: 2.7\% (exact-$E[K]$ inversion), 6.7\% (fully closed);
+maximum 6.0\% (exact-$E[K]$ inversion; the synthetic set $h = 0.7$,
+$\theta = 0.6$, $\bar\beta = 1$) and 9.9\% (fully closed; $h = 0.3$,
+$\theta = 2$, $\bar\beta = 1$). The registered variant-A value
+$\astar = 0.435$ ($K^* = 6.4$) was obtained with $K^*$ located on a 0.05 grid;
+the fold solved to full precision gives 0.439 ($K^* = 6.36$).
+
+Section~\ref{sec:measurement} quotes the folds of the full map $F$ (first numeric
+column): variant A 0.43 (constant), 0.48 (divisive), 0.46 (identified
+per-$k$); variant B 0.47 (constant) and 1.28 (divisive). The registered
+prediction $\astar = 0.435$ is the $G$-fold with exact $E[K]$ (second
+column).
+
+\emph{Coefficient sets and $\gamma$ by figure.} The constant-coupling sets are
+the pooled Stage 1 fits (Section~\ref{sec:measurement}). The divisive $\astar$ values
+use $\gamma$ profiled separately per prompt variant ($\gamma_A = 0.526$,
+$\gamma_B = 1.318$); Fig.~\ref{fig:neuron} and the per-claim response
+functions of the collective experiments use the pooled profile $\gamma = 0.9$
+(Appendix~\ref{app:decay}). Fig.~\ref{fig:theory} plots Table~\ref{tab:fold}.
+
+\emph{Range of the closed form.} $\bar K(\alpha) = \ln(1 + \alpha(N-1))/\alpha$
+underestimates the exact mean degree by 2.5\% ($\alpha = 0.2$), 4.0\%
+(0.435), 7.0\% (1.0), 11.3\% (2.0) and 68\% ($\alpha = 20$): as
+$\alpha \to \infty$ the closed form tends to zero whereas the exact mean tends
+to one (the first candidate is always accepted). All $\astar$ values in this
+paper lie in $\alpha \le 1.6$, where the underestimate is below 10\%, and the
+exact recursion is inverted wherever precision matters.
+
+
+\section{Fidelity Check}\label{app:fidelity}
+
+Ten episodes at $\alpha = 0.30$, $x_0 = 16/32$ re-run with five-sample
+majority voting: wrong-consensus rate 1.00, undecided 0.00, mean
+$|x_8 - 0.5| = 0.44$, versus 0.875, 0.125, 0.38 under single-sample
+judgments; absorption is sharper, not weaker, under the original
+five-sample protocol.
+
+
+\section*{Acknowledgment}
+The author used Anthropic's Claude (Claude Code) for code generation and
+debugging, execution of the pre-specified experiment pipelines, drafting
+and editing of text throughout Sections~I--VI, the appendices, and the
+supplementary material, and literature search. The research questions,
+theory, experimental designs, pre-registered predictions, and
+interpretations are the author's; all AI-assisted text was reviewed,
+revised, and fact-checked by the author, and every reported number is
+recomputed from the logged data by the scripts in the public repository.
+The language models studied here (llama3.1:8b, qwen3:8b, llama3.3:70b) are
+the subject of the research, not writing tools. The author declares no
+conflict of interest.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{author_photo}}]{Makoto Fukushima}
+received the B.S.\ degree in physics from Waseda University, Tokyo, Japan, in 1997, and the Ph.D.\ degree in psychology from the University of Chicago, Chicago, IL, USA, in 2008. He was a Postdoctoral Fellow with the National Institute of Mental Health, Bethesda, MD, USA, a Research Scientist with the RIKEN Center for Brain Science, Wako, Japan, and a Manager of neurotechnology research with Deloitte Analytics R\&D. Since 2025, he has been a Principal Scientist with the Research Division, Honda Research Institute Japan Co., Ltd., Wako, Japan. His research interests include systems neuroscience, the neural coding of communication signals, and collective behavior in networks of neurons and artificial agents. He received the NIH Fellows Award for Research Excellence in 2012 and 2014.
+\end{IEEEbiography}
+
+\EOD
+
+\end{document}

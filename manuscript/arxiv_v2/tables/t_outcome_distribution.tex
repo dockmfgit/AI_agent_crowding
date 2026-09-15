@@ -1,0 +1,13 @@
+\begin{tabular}{lrrrrr}
+\toprule
+campaign & episodes & decided ($|x_8-0.5|\ge 0.1$) & of which $|x_8-0.5|>0.4$ & median $x_8$, correct side & median $x_8$, wrong side \\
+\midrule
+main arm A ($\rho=0$) & 1008 & 0.895 & 0.634 & 0.922 & 0.031 \\
+main arm A, rewired ($\rho=1$) & 96 & 0.969 & 0.667 & 1.000 & 0.031 \\
+discrimination arm B & 300 & 0.917 & 0.633 & 0.875 & 0.062 \\
+true claims (A-1) & 288 & 0.976 & 0.758 & 1.000 & --- \\
+negated rewrites (A-2) & 192 & 1.000 & 0.995 & 1.000 & --- \\
+qwen3:8b, eight claims & 256 & 0.996 & 0.992 & 1.000 & 0.000 \\
+qwen3:8b, four claims & 480 & 0.996 & 0.967 & 1.000 & 0.000 \\
+\bottomrule
+\end{tabular}

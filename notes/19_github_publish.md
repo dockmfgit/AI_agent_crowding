@@ -95,3 +95,22 @@ __pycache__ 指定がないため組み立てツリーどおり収載。改変�
   投稿事務ファイルなし / __pycache__ なし / scripts 50–57 + hmf_lib 9 本 /
   results r1・r23・r34・r4・r5・r6・r8 揃い / main.pdf 20 頁 / si.pdf 12 頁 /
   "Claim-induced fields" が README と main.tex に各 1 — **全項目合格**。
+
+## 更新 2026-09-06(第 2 コミット)
+
+指示書: `repo_prep/github_update_v21.md`。
+
+- コミット: **`a1c0ec2dee5c2a13874fc5a82b72758bfa50dd1e`**(c576a63 → a1c0ec2、
+  fast-forward、force なし、本人名義・トレーラなし)。
+- 変更: **7 ファイル(+161 / −33 行)** — README.md、manuscript/tex/{main.tex, si.tex,
+  main.pdf, si.pdf}、notes/{15, 19} — §2 の想定リストと完全一致。
+- チェック: 新タイトル句 "Message capacity and claim wording" が README・main.tex・
+  si.tex に各 1 ✓ / "claim-induced" 残存なし ✓ / "Use of generative AI" 1 ✓ /
+  main.pdf 21 頁・si.pdf 12 頁 ✓ / 投稿フォルダ submission_pnasnexus_20260906 は
+  rsync 除外を追加し混入なし ✓ / トークン様文字列なし ✓。
+- 復活ファイルの除去: --delete なし rsync により v2.0 で削除済みの 5 図ファイル
+  (fig3_single_agent.{pdf,png}、fig1_framework.png、fig3_neuron.png、
+  fig6_generality.png)が作業ツリーに復活したため削除し、コミット状態を復元。
+- 記録(齟齬): §2 の図チェックの期待「fig3_panel_a.png のみ」は、c576a63 で意図的に
+  保持された fig2/fig4/fig5/fig7/figS1 の PNG(追跡済み)と矛盾する。追跡済み PNG の
+  削除は本指示の範囲外(内容変更)と判断し、v2.0 の削除リスト 5 件の復活除去のみ実施。

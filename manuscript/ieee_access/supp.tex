@@ -1,30 +1,26 @@
 \documentclass[11pt]{article}
-\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[a4paper,margin=2.7cm]{geometry}
 \usepackage{amsmath,amssymb}
-\usepackage{booktabs}
 \usepackage{graphicx}
-\usepackage[round]{natbib}
-\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black]{hyperref}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
 \usepackage{longtable}
-\usepackage{xcolor}
-
-\newcommand{\astar}{\alpha^{*}}
+\usepackage{float}
+\usepackage{array}
 \graphicspath{{figs/}}
-\renewcommand{\thefigure}{S\arabic{figure}}
+\newcommand{\astar}{\alpha^{*}}
 \renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\thetable}{S\arabic{table}}
-\usepackage{tocloft}
-\setlength{\cftsecnumwidth}{3em}
-\setlength{\cftsubsecnumwidth}{3.8em}
-\title{Supplementary Information:\\Message capacity and claim wording set the transition points of collective truth-finding in language-model networks}
+\renewcommand{\theequation}{S\arabic{equation}}
+\title{Supplementary Material for\\ ``Message Capacity and Claim Wording Set the Transition Points of Collective Truth-Finding in Language-Model Networks''}
 \author{Makoto Fukushima\\[3pt]
-{\normalsize Research Division, Honda Research Institute Japan Co., Ltd.,
-Wako, Saitama, Japan}}
+{\normalsize Research Division, Honda Research Institute Japan Co., Ltd., Wako, Saitama, Japan}\\[2pt]
+{\small makoto.fukushima@jp.honda-ri.com}}
 \date{}
-
 \begin{document}
 \maketitle
-\tableofcontents
+\noindent Section numbers, figures, and tables in this document are prefixed with S. References to Sections I--VI, Figures 1--7, and Appendices A--D point to the main article. The glossary (Appendix B), the single-agent coefficient tables and the reduced-map validation (Appendix C), and the fidelity check (Appendix D) are in the main article. In this document and its tables, ``threshold'' denotes the transition point in the initial fraction (the unstable fixed point), which the main article calls the transition point.
 
 \section{Reanalysis of the public dataset}
 
@@ -70,7 +66,7 @@ communities at $x_0 = 0.15$ on an easy question converge correctly in 32 of
 32 episodes. These are limitations of the identification strategy, not of
 the dataset's quality; the same logs support the message-level measurement
 of the next subsection. The degenerate degree distributions noted in the
-main text concentrate the random-family mass on $k = 2$--$4$, and the
+main article concentrate the random-family mass on $k = 2$--$4$, and the
 lattice family has fixed degree.
 
 \subsection{Message-level coefficients and the truth asymmetry}
@@ -97,107 +93,11 @@ $0.080 \pm 0.044$ (GPT-4o-mini), $0.555 \pm 0.078$ (Gemma), $0.294 \pm 0.051$
 (Qwen), $0.288 \pm 0.041$ (Llama); $\theta$ is nonzero in all four models
 ($t \ge 3.4$, question-clustered).
 
-\section{Single-agent measurement (llama3.1:8b)}
-
-\subsection{Response coefficients}
-\begin{center}
-\input{tables/t_stage1_coeffs}
-\end{center}
-
-\subsection{Attenuation-form comparison}
-\begin{center}
-\input{tables/t_decay}
-\end{center}
-
-\subsection{Identified per-$k$ coefficients}
-
-At a single inbox size $k$ the design columns $1$, $l$, and $k-l$ are
-collinear ($l + (k-l) = k$), so a logistic fit at fixed $k$ identifies only
-$c_0 + k\beta_F$ and $\beta_T - \beta_F$. The per-$k$ coefficients below are
-therefore fitted jointly over all inbox sizes, with one fixed effect per claim
-anchored by the empty-inbox cells ($k = 0$), which identifies
-$\beta_T(k)$ and $\beta_F(k)$ separately at every measured $k$ (design rank
-verified: 29/29 columns for variant A, 30/30 for variant B). Intervals are
-claim-clustered bootstrap percentiles (200 resamples).
-
-\begin{center}
-\small
-\begin{tabular}{rcccc}
-\toprule
-$k$ & $\beta_T(k)$, variant A & $\beta_F(k)$, variant A & $\beta_T(k)$, variant B & $\beta_F(k)$, variant B \\
-\midrule
-1  & 2.11 [1.58, 2.96] & $-1.53$ [$-2.03$, $-1.12$] & 1.62 [1.29, 1.94] & $-1.52$ [$-1.80$, $-1.25$] \\
-2  & 1.23 [0.98, 1.41] & $-1.21$ [$-1.49$, $-0.94$] & 0.78 [0.60, 0.95] & $-1.10$ [$-1.23$, $-0.93$] \\
-3  & 0.80 [0.65, 0.96] & $-1.04$ [$-1.30$, $-0.80$] & 0.61 [0.49, 0.72] & $-0.82$ [$-0.92$, $-0.68$] \\
-5  & 0.45 [0.35, 0.55] & $-0.72$ [$-0.88$, $-0.57$] & 0.34 [0.28, 0.41] & $-0.50$ [$-0.57$, $-0.42$] \\
-8  & 0.31 [0.26, 0.37] & $-0.51$ [$-0.63$, $-0.41$] & 0.24 [0.20, 0.28] & $-0.34$ [$-0.38$, $-0.29$] \\
-12 & 0.23 [0.18, 0.27] & $-0.39$ [$-0.48$, $-0.33$] & 0.18 [0.16, 0.21] & $-0.25$ [$-0.28$, $-0.22$] \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-Mean claim fixed effect under the full scaffold: $0.94$ (variant A; range
-$-0.70$ to $3.03$ over the 17 claims), $-0.64$ (variant B), with
-$\theta = 2.15$ (variant B).
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{figS1_perk_identified}
-\caption{\textbf{Identified per-message coefficients versus inbox size
-(31{,}824 randomized queries).} $\beta_T(k)$ and $\beta_F(k)$ from the joint
-fit with claim fixed effects anchored by the empty-inbox cells, for prompt
-variants A (a) and B (b); bars are 95\% claim-clustered bootstrap intervals.}
-\label{fig:si_single}
-\end{figure}
-
-\section{Reduced-map \texorpdfstring{$\astar$}{alpha*}: validation table}
-
-Fold of the full map $F$ (all $P_\alpha(k)$, exact binomial sums; located by
-bisection in $\alpha$) versus the two closure levels of the reduced map $G$,
-for seven synthetic coefficient sets and the four measured ones. The fold of
-$G$ is solved jointly from $G(x;K) = x$ and $G_x(x;K) = 1$ (residuals below
-$10^{-12}$; $G_{xx} > 0$ and $G_K < 0$ at every fold), then converted to
-$\astar$ by inverting the exact mean degree $E[K](\alpha)$ or the closed
-form~(1) of the main text. Synthetic sets use $\beta_T = -\beta_F = \bar\beta$.
-
-\begin{center}
-\small
-\resizebox{\textwidth}{!}{\input{tables/t_fold_precision}}
-\end{center}
-
-Median relative error: 2.7\% (exact-$E[K]$ inversion), 6.7\% (fully closed);
-maximum 6.0\% (exact-$E[K]$ inversion; the synthetic set $h = 0.7$,
-$\theta = 0.6$, $\bar\beta = 1$) and 9.9\% (fully closed; $h = 0.3$,
-$\theta = 2$, $\bar\beta = 1$). The registered variant-A value
-$\astar = 0.435$ ($K^* = 6.4$) was obtained with $K^*$ located on a 0.05 grid;
-the fold solved to full precision gives 0.439 ($K^* = 6.36$).
-
-Main text Section 4 quotes the folds of the full map $F$ (first numeric
-column): variant A 0.43 (constant), 0.48 (divisive), 0.46 (identified
-per-$k$); variant B 0.47 (constant) and 1.28 (divisive). The registered
-prediction $\astar = 0.435$ is the $G$-fold with exact $E[K]$ (second
-column).
-
-\emph{Coefficient sets and $\gamma$ by figure.} The constant-coupling sets are
-the pooled Stage 1 fits (main text Section 4). The divisive $\astar$ values
-use $\gamma$ profiled separately per prompt variant ($\gamma_A = 0.526$,
-$\gamma_B = 1.318$); Fig.~3 of the main text and the per-claim response
-functions of the collective experiments use the pooled profile $\gamma = 0.9$
-(Section 2.2 above). Fig.~2 of the main text plots the table above.
-
-\emph{Range of the closed form.} $\bar K(\alpha) = \ln(1 + \alpha(N-1))/\alpha$
-underestimates the exact mean degree by 2.5\% ($\alpha = 0.2$), 4.0\%
-(0.435), 7.0\% (1.0), 11.3\% (2.0) and 68\% ($\alpha = 20$): as
-$\alpha \to \infty$ the closed form tends to zero whereas the exact mean tends
-to one (the first candidate is always accepted). All $\astar$ values in this
-paper lie in $\alpha \le 1.6$, where the underestimate is below 10\%, and the
-exact recursion is inverted wherever precision matters.
-
 \section{Main collective experiment}
 
 \subsection{Distribution of final fractions}
 
-The outcome labels of the main text ($x_8 \ge 0.6$ correct-side consensus,
+The outcome labels of the main article ($x_8 \ge 0.6$ correct-side consensus,
 $x_8 \le 0.4$ wrong-side) are operational thresholds. The table gives, per
 campaign, the share of episodes that were decided and the share of decided
 episodes whose final fraction lies beyond $|x_8 - 0.5| > 0.4$, with the
@@ -238,7 +138,7 @@ constant coupling:
 \end{center}
 The normalized rules lie closer to the observations than the constant rule
 but neither reproduces them exactly; claim 1569 converged wrong-side under
-both rules' correct-side predictions (main text Section 5.2).
+both rules' correct-side predictions (Section~IV-D of the main article).
 
 \subsection{Rewiring control}
 \begin{center}
@@ -307,13 +207,13 @@ non-problem, or even a benefit. &
 
 \subsection{Single-agent predictions for the polarity-experiment cells}
 
-Per-claim divisive response functions (main text Methods) give the predicted
+Per-claim divisive response functions (Appendix~A of the main article) give the predicted
 phase of each (claim, $\alpha$) cell of the polarity experiment; all ten cells
 are predicted monostable correct-side, and all ten converged correct-side.
 In two cells (993 at $\alpha = 0.30$, 1103 at $\alpha = 0.55$) a minority of
 episodes seeded at the lowest fraction ended wrong-side, so the fitted 50\%
 crossing lies below the seeding grid; these are the two cells described in
-the main text as matching to within the resolution of the grid.
+the main article as matching to within the resolution of the grid.
 \begin{center}
 \small
 \resizebox{\textwidth}{!}{\input{tables/t_s2b_cells}}
@@ -333,7 +233,7 @@ mean final fractions and the fitted 50\% crossing:
 \end{center}
 
 Per-cell outcome counts (correct/wrong/undecided of 10 episodes) for the same
-campaign; intermediate mean final fractions in Fig.~6 of the main text are
+campaign; intermediate mean final fractions in Fig.~6 of the main article are
 splits between the two basins:
 \begin{center}
 \small
@@ -375,7 +275,7 @@ only.
 \subsection{Calibration campaign: all 16 cells}
 
 Predicted classifications and thresholds come from each claim's divisive
-response function fitted to its single-shot queries (Methods); the eight
+response function fitted to its single-shot queries (Appendix~A of the main article); the eight
 claims were selected from twenty candidates by the pre-registered rule.
 Prediction intervals are single-agent bootstrap percentiles (200 resamples
 of each claim's queries within design cells) and ``frac.\ bistable'' is the
@@ -473,17 +373,9 @@ Cascade-size distribution in the asynchronous public dataset (GPT-4o-mini,
 91.8\% of cascades have size 1; the tail decays geometrically (deeply
 subcritical).
 
-\section{Fidelity check}
+\section{Extended Methods}
 
-Ten episodes at $\alpha = 0.30$, $x_0 = 16/32$ re-run with five-sample
-majority voting: wrong-consensus rate 1.00, undecided 0.00, mean
-$|x_8 - 0.5| = 0.44$, versus 0.875, 0.125, 0.38 under single-sample
-judgments --- absorption is sharper, not weaker, under the original
-five-sample protocol.
-
-\section{Extended Methods}\label{si:methods}
-
-This section reproduces in full the Methods subsections that the main text
+This section reproduces in full the Methods subsections that Appendix~A of the main article
 summarizes: models and serving, verbatim prompts, the cross-model
 calibration campaign, the complete statistical procedures, and the
 pre-registration statement.
@@ -498,7 +390,7 @@ only, message banks fixed to the 8B-generated banks). Single-shot campaigns
 ran against a user-space ollama instance with \texttt{OLLAMA\_NUM\_PARALLEL=16}
 (the system instance saturates at 0.62 generations/s; the parallel instance
 reaches 3.5 generations/s); the 70B model does not load under 16-slot KV
-allocation and was served by the serial system instance. The polarity-origin probe (Discussion) used two further variants, judgments
+allocation and was served by the serial system instance. The polarity-origin probe (Section~V of the main article) used two further variants, judgments
 only: llama3.1:8b-text-q4\_K\_M (the base model) and an abliterated derivative
 of the instruct model (mannix/llama3.1-8b-abliterated, Q4\_0), with a
 three-shot answer-format prefix applied identically to all variants,
@@ -554,7 +446,7 @@ category was empty --- no wrong-side-dominant claim existed among the twenty
 candidates). Collectives ran the full grid $\alpha \in \{0.30, 0.55\} \times
 x_0 \in \{2, 6, \ldots, 30\}/32$ with two replicates (256 episodes, protocol
 identical to the main cross-model campaign). Observed thresholds are defined
-under Statistics (main text) and in the next subsection.
+under Statistics (Appendix~A of the main article) and in the next subsection.
 
 \subsection{Statistics: full procedures}
 
@@ -569,15 +461,15 @@ is profiled on the full data ($\gamma = 0.9$) and re-profiled inside each
 training fold, and a held-out claim's fixed effect, which cannot be estimated
 from the training folds, is set to zero, so the cross-validated likelihood
 scores prediction for an unseen claim with an unknown field. The divisive
-$\astar$ of Section~4 of the main text uses $\gamma$ profiled separately
-per variant (0.53 for A, 1.32 for B); Fig.~3 of the main text uses the pooled
+$\astar$ of Section~III of the main article uses $\gamma$ profiled separately
+per variant (0.53 for A, 1.32 for B); Fig.~3 of the main article uses the pooled
 $\gamma = 0.9$. Per-$k$ coefficients are identified by a joint logistic fit
 over all inbox sizes with claim fixed effects anchored by the empty-inbox
 cells: at a single $k$ the columns $1$, $l$, and $k - l$ are collinear, so
 separate per-$k$ fits identify only $c_0 + k\beta_F$ and $\beta_T - \beta_F$.
 Per-claim response functions for the collective claims use the reduced form
 $c_0 + g(k)[\delta k + \bar\beta(2l - k)]$ ($+\theta s$ for variant B), with
-a weak ridge penalty ($10^{-3}$) where $k$ takes three values. For Fig.~3 of the main text, one logistic fit per prompt variant
+a weak ridge penalty ($10^{-3}$) where $k$ takes three values. For Fig.~3 of the main article, one logistic fit per prompt variant
 with claim fixed effects and message weights $\beta_T g(k)$, $\beta_F g(k)$
 (divisive, $\gamma = 0.9$ fixed, or $g \equiv 1$) assigns each query a
 predicted probability; a design cell's net input $u$ is the logit of its mean
@@ -624,10 +516,13 @@ discrimination experiment, before its data collection (2026-08-25);
 written into the campaign instructions before its data were collected
 (2026-08-27). The single-agent measurements preceded the collective
 experiments. The claim-resolved predictions of
-Sections~5.2--5.4 of the main text were computed after the
+Sections~IV-B to IV-D of the main article were computed after the
 collective experiments, with the estimation procedure described under
 Statistics, using only the single-agent data for parameter fitting; they were
 not prospectively registered. The one adaptive element (second-pass allocation of episodes)
 followed rules fixed in the pre-registered design.
 
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
 \end{document}
