@@ -11,8 +11,15 @@
 \newcommand{\astar}{\alpha^{*}}
 \graphicspath{{figs/}}
 \renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+\usepackage{tocloft}
+\setlength{\cftsecnumwidth}{3em}
+\setlength{\cftsubsecnumwidth}{3.8em}
 \title{Supplementary Information:\\Message capacity and claim wording set the transition points of collective truth-finding in language-model networks}
-\author{Makoto Fukushima}
+\author{Makoto Fukushima\\[3pt]
+{\normalsize Research Division, Honda Research Institute Japan Co., Ltd.,
+Wako, Saitama, Japan}}
 \date{}
 
 \begin{document}
@@ -56,6 +63,15 @@ Llama-3-8B  & 0.459 & $[0.441, 0.480]$ & 0.039 & $[0.370, 0.564]$ & 5.0$\times$ 
 \bottomrule
 \end{tabular}
 \end{center}
+
+Two illustrations of the endogeneity: communities at $x_0 \approx 0.40$ on
+different questions run to opposite consensuses with near certainty, while
+communities at $x_0 = 0.15$ on an easy question converge correctly in 32 of
+32 episodes. These are limitations of the identification strategy, not of
+the dataset's quality; the same logs support the message-level measurement
+of the next subsection. The degenerate degree distributions noted in the
+main text concentrate the random-family mass on $k = 2$--$4$, and the
+lattice family has fixed degree.
 
 \subsection{Message-level coefficients and the truth asymmetry}
 
@@ -464,5 +480,154 @@ majority voting: wrong-consensus rate 1.00, undecided 0.00, mean
 $|x_8 - 0.5| = 0.44$, versus 0.875, 0.125, 0.38 under single-sample
 judgments --- absorption is sharper, not weaker, under the original
 five-sample protocol.
+
+\section{Extended Methods}\label{si:methods}
+
+This section reproduces in full the Methods subsections that the main text
+summarizes: models and serving, verbatim prompts, the cross-model
+calibration campaign, the complete statistical procedures, and the
+pre-registration statement.
+
+\subsection{Models and serving}
+
+All agents are served with ollama. The primary model is llama3.1:8b
+(Q4\_K\_M quantization, temperature 0.7 throughout, seed recorded for every
+call). The cross-model campaign uses qwen3:8b (tag 500a1f067a9f, thinking
+disabled via \texttt{think:false}) and llama3.3:70b (Q4\_K\_M; judgments
+only, message banks fixed to the 8B-generated banks). Single-shot campaigns
+ran against a user-space ollama instance with \texttt{OLLAMA\_NUM\_PARALLEL=16}
+(the system instance saturates at 0.62 generations/s; the parallel instance
+reaches 3.5 generations/s); the 70B model does not load under 16-slot KV
+allocation and was served by the serial system instance. The polarity-origin probe (Discussion) used two further variants, judgments
+only: llama3.1:8b-text-q4\_K\_M (the base model) and an abliterated derivative
+of the instruct model (mannix/llama3.1-8b-abliterated, Q4\_0), with a
+three-shot answer-format prefix applied identically to all variants,
+including the re-measured instruct control. Every call's prompt
+hash, seed, raw response, and parse result are logged to JSONL.
+
+\subsection{Prompts}
+
+The judgment prompt (verbatim; variant A) is:
+\begin{quote}\footnotesize\ttfamily
+\# Your Expertise\\
+\{persona\}\\[2pt]
+\# Messages\\
+You received the following messages from fellow panelists:\\
+- \{message 1\} \ldots\\[2pt]
+\# Problem\\
+You are one member of an expert panel judging the following claim.\\
+Claim: "\{claim\}"\\
+Options:\\
+A) \{TRUE or FALSE\}\\
+B) \{FALSE or TRUE\}\\
+\# Instruction\\
+Give your direct answer on which option is correct.\\
+Do NOT work through the problem, show any steps, compute, or\\
+explain --- just commit to a snap judgement.\\
+\#\# Response Format\\
+Respond with a single character, A or B, and nothing else.
+\end{quote}
+Variant B inserts, before \texttt{\# Problem}: ``\texttt{\# Your Current
+Answer / Your current answer is that the claim is \{TRUE|FALSE\}.}'' The A/B
+$\leftrightarrow$ TRUE/FALSE assignment is randomized per call and
+counterbalanced within cells; message presentation order is randomized and
+recorded. The message-generation prompt asks the sender, given its persona,
+the claim, and its current stance, to ``write a brief message to a fellow
+panelist stating that you believe the claim is \{stance\} and giving the
+single strongest reason from your reasoning,'' with a two-sentence response
+format; stance is expressed in the message body (TRUE/FALSE), never as an
+option letter, because option labels are randomized per receiver. Personas are
+one-line expertise statements drawn from a fixed pool of 12. Prompt texts are
+extracted verbatim from the released scripts.
+
+\subsection{Cross-model calibration campaign}
+
+Twenty further CLIMATE-FEVER claims (ten SUPPORTS, ten REFUTES, disjoint from
+all earlier sets) were calibrated under the full scaffold and measured
+single-shot with qwen3:8b (24 calls per candidate, 64 in the boundary band;
+per-claim response-function fits from 6{,}720 further queries). The resulting
+fixed-point classifications and thresholds for $\alpha \in \{0.30, 0.55\}$
+were computed at the time of the campaign, and eight claims were selected by
+a rule fixed in the pre-registered instructions (at least four predicted bistable with interior
+thresholds, the remainder monostable, filled from the bistable pool where a
+category was empty --- no wrong-side-dominant claim existed among the twenty
+candidates). Collectives ran the full grid $\alpha \in \{0.30, 0.55\} \times
+x_0 \in \{2, 6, \ldots, 30\}/32$ with two replicates (256 episodes, protocol
+identical to the main cross-model campaign). Observed thresholds are defined
+under Statistics (main text) and in the next subsection.
+
+\subsection{Statistics: full procedures}
+
+All confidence intervals on measured coefficients are claim-clustered pairs
+bootstrap percentiles (1{,}000--2{,}000 resamples for the pooled
+coefficients, 200 for the identified per-$k$ coefficients and for the
+prediction-side intervals, 2{,}000 for the polarity ratios; claims are the
+clusters because episodes within a claim share its field). Attenuation-form comparison
+uses five-fold cross-validation with folds split by claim, alongside AIC; the
+form parameter ($\gamma$ for divisive normalization, the rate for load decay)
+is profiled on the full data ($\gamma = 0.9$) and re-profiled inside each
+training fold, and a held-out claim's fixed effect, which cannot be estimated
+from the training folds, is set to zero, so the cross-validated likelihood
+scores prediction for an unseen claim with an unknown field. The divisive
+$\astar$ of Section~4 of the main text uses $\gamma$ profiled separately
+per variant (0.53 for A, 1.32 for B); Fig.~3 of the main text uses the pooled
+$\gamma = 0.9$. Per-$k$ coefficients are identified by a joint logistic fit
+over all inbox sizes with claim fixed effects anchored by the empty-inbox
+cells: at a single $k$ the columns $1$, $l$, and $k - l$ are collinear, so
+separate per-$k$ fits identify only $c_0 + k\beta_F$ and $\beta_T - \beta_F$.
+Per-claim response functions for the collective claims use the reduced form
+$c_0 + g(k)[\delta k + \bar\beta(2l - k)]$ ($+\theta s$ for variant B), with
+a weak ridge penalty ($10^{-3}$) where $k$ takes three values. For Fig.~3 of the main text, one logistic fit per prompt variant
+with claim fixed effects and message weights $\beta_T g(k)$, $\beta_F g(k)$
+(divisive, $\gamma = 0.9$ fixed, or $g \equiv 1$) assigns each query a
+predicted probability; a design cell's net input $u$ is the logit of its mean
+predicted probability, and its observed correct-side rate is plotted against
+$u$ with a Wilson 95\% interval. Fixed points of the mean-field map are
+bracketed on an endpoint-inclusive grid of 4{,}001 points in $x$ with
+bisection refinement and classified by $|F'(x)| < 1$; a phase is bistable
+when an unstable interior point separates two stable ones, and $\astar$ is
+located by bisection in $\alpha$ on that classification, with the fold of $G$
+solved jointly from $G = x$ and $G_x = 1$. Prediction-side intervals resample
+each claim's single-shot outcomes within that claim and within each design
+cell (200 resamples; a within-claim bootstrap, not the claim-clustered
+bootstrap used for pooled coefficients) and recompute the fixed points. Reanalysis statistics on the public dataset use
+question-clustered bootstrap and CR0 sandwich errors.
+
+\emph{Outcome and threshold.} An episode's outcome is its correct-side
+fraction after eight rounds, $x_8$; $q(x_0)$ is the fraction of episodes with
+$x_8 \ge 0.6$, a finite-horizon quantity that we compare with the
+infinite-time fixed points only through surrogate rollouts. Observed
+thresholds are the 50\% crossings of a logistic fit of the correct outcome on
+$x_0$ with a weak ridge penalty (0.002) so that separated cells have a
+finite estimate; the slope is not constrained, a fit with a non-positive slope
+would be discarded, and none occurred in the reported cells. Intervals are
+episode-bootstrap percentiles (500 replicates); replicates without a finite
+crossing in $(-1, 2)$ are dropped, which retained all replicates in 12 of the
+17 cells observed bistable, 97--99\% in three, and 89\% and 65\% in the two
+cells whose crossing lies nearest the lowest seeded fraction (claims 656 and
+1146 at $\alpha = 0.55$). Rank correlations between predicted and observed thresholds are
+tested by permuting claim labels, claims being the exchangeable unit.
+
+\subsection{Pre-registration timeline: full statement}
+
+Throughout this paper, ``pre-registered'' means that a prediction or a
+decision rule, together with the criteria for judging it, was written to a
+file before the corresponding data were collected, and that the file's
+timestamp and SHA-256 hash are recorded in the project repository, so that
+the order of prediction and data is documented; these are local records, not
+a third-party time stamp. No external registry (such as OSF) was used. Three items were
+pre-registered: (i)~the $\astar = 0.435 \pm 0.03$ prediction and the decision
+criteria of the main collective experiment, before any collective episode
+(2026-08-23); (ii)~the three-hypothesis prediction table of the polarity
+discrimination experiment, before its data collection (2026-08-25);
+(iii)~the claim-selection rule of the eight-claim calibration campaign,
+written into the campaign instructions before its data were collected
+(2026-08-27). The single-agent measurements preceded the collective
+experiments. The claim-resolved predictions of
+Sections~5.2--5.4 of the main text were computed after the
+collective experiments, with the estimation procedure described under
+Statistics, using only the single-agent data for parameter fitting; they were
+not prospectively registered. The one adaptive element (second-pass allocation of episodes)
+followed rules fixed in the pre-registered design.
 
 \end{document}

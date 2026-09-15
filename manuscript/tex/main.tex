@@ -11,8 +11,10 @@
 \newcommand{\astar}{\alpha^{*}}
 
 \title{Message capacity and claim wording set the transition points of collective truth-finding in language-model networks}
-\author{Makoto Fukushima\thanks{Honda Research Institute Japan.
-Email: \texttt{makoto.fukushima@jp.honda-ri.com}}}
+\author{Makoto Fukushima\\[3pt]
+{\normalsize Research Division, Honda Research Institute Japan Co., Ltd.,
+Wako, Saitama, Japan}\\[2pt]
+{\small Correspondence: \texttt{makoto.fukushima@jp.honda-ri.com}}}
 \date{}
 
 \begin{document}
@@ -124,21 +126,20 @@ and treat any residual --- quantified by replaying every realized prompt
 through the measured response function --- as the collective contribution proper.
 
 The paper proceeds in three steps: a theory of $\astar$ from a reduced map
-(Section~\ref{sec:theory}), the measurements that reduce the experimental agent to a stochastic binary neuron and give the theory its empirical coefficients (Sections~\ref{sec:reanalysis}--\ref{sec:measurement}), and a
-collective experiment run against the pre-registered prediction
-(Section~\ref{sec:collective}). The pre-registered prediction fails, and the
-failure is traced to two measurable causes rather than to the collective
-step: the tilt each claim's wording induces (its field), which did not carry
-over from the calibration claims to the experimental ones, and the
-eight-round horizon, which is short
-against the relaxation of the mean-field map near its fold. Two further
-campaigns then identify what dominated: an assertion-polarity bias specific
-to the model class, established by a pre-registered discrimination experiment
-and not shared by a second model --- and in that second model the same
-pipeline predicts claim-dependent bistability whose basin boundaries are
-observed at the computed positions. To what extent a collective's truth-finding is
-decided by individual input crowding is, on this evidence, a question with a
-computable answer --- model by model, claim by claim.
+(Section~\ref{sec:theory}), the measurements that reduce the experimental
+agent to a stochastic binary neuron and give the theory its coefficients
+(Sections~\ref{sec:reanalysis}--\ref{sec:measurement}), and a collective
+experiment run against the pre-registered prediction
+(Section~\ref{sec:collective}). The prediction fails, and the failure is
+traced to two measurable causes rather than to the collective step: the
+field, the tilt each claim's wording induces, which did not carry over from
+the calibration claims to the experimental ones, and the eight-round
+horizon, short against the relaxation of the map near its fold. Two further
+campaigns identify what dominated: an assertion-polarity bias specific to
+the model class, established by a pre-registered discrimination experiment
+and not shared by a second model, in which the same pipeline predicts
+claim-dependent bistability with basin boundaries observed at the computed
+positions.
 
 \begin{figure}[t]
 \centering
@@ -287,43 +288,36 @@ measured in this study).}
 
 \section{Why public data cannot test the prediction}\label{sec:reanalysis}
 
-The natural first test requires no new data: \citet{El2026} released full logs of 6{,}400
-objective-question communities (four models, 40 questions, ten graphs per question, four episodes) \citep{El2026data}. We computed each community's correct-side fraction trajectory
-$x(t)$ and asked whether the apparent committor $q(x_0)$ identifies a transition point.
-
-It does not, for a reason that constrains observational designs in which the initial fraction is not assigned. Across the four models, between 50\% and
-99.5\% of the variance of $x_0$ lies \emph{between questions}; within
-questions the $x_0$--outcome correlation drops to 0.04--0.27. Communities at
-$x_0 \approx 0.40$ on different questions run to opposite consensuses with
-near certainty, while communities at $x_0 = 0.15$ on an easy question converge
-correctly in 32 of 32 episodes. Question difficulty drives both the initial
-fraction and the outcome; the pooled $q(x_0)$ curve is a difficulty curve, and
-its 0.5-crossing is not a property of the collective dynamics. A
-question-clustered bootstrap widens the apparent confidence intervals on the
-fitted crossing by a factor of 4--10, after which no pairwise difference among
-models or graph families is resolved. Two further obstacles are structural: the
-released graphs have nearly degenerate degree distributions (random family
-mass concentrated on $k = 2$--$4$; lattices), so the degree-statistics content
-of any mean-field prediction is untestable; and under the hard-threshold
+The natural first test requires no new data: \citet{El2026} released full logs
+of 6{,}400 objective-question communities (four models, 40 questions, ten
+graphs per question, four episodes) \citep{El2026data}. Their apparent
+committor $q(x_0)$ does not identify a transition point, for a reason that
+constrains any design in which the initial fraction is not assigned: across
+the four models, between 50\% and 99.5\% of the variance of $x_0$ lies between
+questions, and within questions the $x_0$--outcome correlation drops to
+0.04--0.27. Question difficulty drives both the initial fraction and the
+outcome, so the pooled $q(x_0)$ curve is a difficulty curve and its
+0.5-crossing is not a property of the collective dynamics; a
+question-clustered bootstrap widens the intervals on the fitted crossing
+4--10 fold, after which no difference among models or graph families is
+resolved. Two further obstacles are structural: the released graphs have
+nearly degenerate degree distributions, so the degree-statistics content of
+any mean-field prediction is untestable there, and under the hard-threshold
 update rule assumed in earlier work the predicted crossing jumps
-discontinuously at truth-weight 1, reducing the comparison to a single bit.
-These are limitations of the identification strategy, not of the dataset's
-quality --- the same logs support the message-level measurement below, which
-is what makes the rest of this paper possible.
+discontinuously at truth-weight 1, reducing the comparison to a single bit
+(SI Section~S1).
 
 The logs do yield the microscopic coefficients. Regressing each agent's
 next-round correctness on the composition of its inbox (43{,}500 observations
-per model, question-clustered errors), the truth asymmetry $w_T$ --- the
-relative per-message weight of correct-side sources, previously estimated at
-1.16--1.71 from Ising couplings --- is indistinguishable from 1 in all four
-models (e.g.\ GPT-4o-mini: 1.055, 95\% CI $[0.996, 1.114]$), while three other
-coefficients are robustly nonzero: a persistence term $\theta$, an individual
-field $c_0$, and an attenuation $\lambda_{\mathrm{lab}} = 0.08$--$0.56$ of
-messages arriving through ``disagree''-labeled edges. The asymmetry that
-breaks the symmetric degeneracy of the mean-field map therefore resides in the
-field $h = c_0 + \theta/2$, not in message weighting --- which is what
-Section~\ref{sec:theory} assumes. Public data fix the form of the theory; they
-cannot test its collective prediction.
+per model, question-clustered errors), the truth asymmetry $w_T$, the
+relative per-message weight of correct-side sources previously estimated at
+1.16--1.71 from Ising couplings, is indistinguishable from 1 in all four
+models (GPT-4o-mini: 1.055, 95\% CI $[0.996, 1.114]$), while a persistence
+term $\theta$ and an individual field $c_0$ are robustly nonzero. The
+asymmetry that breaks the symmetric degeneracy of the mean-field map
+therefore resides in the field $h = c_0 + \theta/2$, not in message
+weighting, which is what Section~\ref{sec:theory} assumes. Public data fix
+the form of the theory; they cannot test its collective prediction.
 
 \section{Measuring the response function of the experimental agent}
 \label{sec:measurement}
@@ -364,7 +358,7 @@ $e^{-\alpha_{\mathrm{pos}} r}$ closest to the theory's acceptance kernel. The
 theory's kernel is thus implemented by the exogenous router, not by the
 model's internal weighting, under this protocol, in which message order is
 randomized; a deployment that orders messages by recency or salience could
-reinstate an internal position dependence. This demotion was fixed in the design before any collective run, and the internal decay enters the theory only through $\beta(k)$. The reduction itself is quantified twice: by claim-clustered cross-validated log-likelihood ($-0.483$ nats per observation for the two retained forms, against $-0.509$ for a constant-weight model with the same claim fields and self term and $-0.693$ for chance), and by the calibration of the fitted $\sigma$ on every replayed collective transition (expected calibration error 0.03; Section~\ref{sec:collective}). The same reduction is visible cell by cell as calibration: with divisively normalized weights, the observed correct-side rate in each of the 78 design cells matches the model's mean predicted probability for that cell (RMS deviation 0.054 on the logistic curve), whereas the constant-weight model misses by inbox size (0.118), large-$k$ cells lying between the curve and 0.5 and small-$k$ cells beyond it (Fig.~\ref{fig:neuron}). The comparison is in-sample; the cross-validated log-likelihoods above are the out-of-sample statement. Third, the
+reinstate an internal position dependence. This demotion was fixed in the design before any collective run, and the internal decay enters the theory only through $\beta(k)$. The reduction itself is quantified twice: by claim-clustered cross-validated log-likelihood ($-0.483$ nats per observation for the two retained forms, against $-0.509$ for a constant-weight model with the same claim fields and self term and $-0.693$ for chance), and by the calibration of the fitted $\sigma$ on every replayed collective transition (expected calibration error 0.03; Section~\ref{sec:collective}). The same reduction is visible cell by cell in Fig.~\ref{fig:neuron}b,c: RMS deviation of the 78 cell rates from the logistic curve is 0.054 with divisive weights against 0.118 with constant weights (in-sample; the cross-validated log-likelihoods above are the out-of-sample statement). Third, the
 predictions: pushing the measured coefficients through
 Section~\ref{sec:theory} gives, as folds of the full map $F$,
 $\astar = 0.43$--$0.48$ for variant A \emph{under every reduction of the
@@ -387,11 +381,10 @@ $s \in \{0,1\}$ (variant B only) with weight $\theta$, and the field $c_0$;
 the choice probability is $\sigma(u)$ with $g(k) = 1/(1+\gamma k)$,
 $\gamma = 0.9$. (b)~Observed correct-side rate in each of the 78 design cells
 of the 31{,}824 randomized queries (variant $\times$ $k$ $\times$ $l$
-$\times$ $s$; 408 queries per cell; Wilson 95\% intervals) against
-$u$, the logit of the model's mean predicted probability in the cell
-(divisive normalization, claim fixed effects), so that a model calibrated in
-that cell places it on the curve $\sigma(u)$. Color gives inbox size $k$;
-circles variant A, squares variant B. (c)~The same cells under constant
+$\times$ $s$; 408 queries per cell; Wilson 95\% intervals) against $u$, the
+logit of the model's mean predicted probability in the cell under divisive
+normalization with claim fixed effects. Color gives inbox size $k$; circles
+variant A, squares variant B. (c)~The same cells under constant
 weights ($g \equiv 1$): large-$k$ cells lie between the curve and 0.5 and
 small-$k$ cells beyond it. RMS deviation of cell rates from $\sigma(u)$: 0.054 in
 (b), 0.118 in (c).}
@@ -714,9 +707,7 @@ predictions computed from single-agent measurements alone:
 assertion-dominated monostability in llama3.1:8b, where field and polarity
 override the budget and 75\%-correct majorities are lost in most episodes; claim-dependent
 bistability with predicted thresholds in qwen3:8b (15 of 16 cells); no
-detectable polarity at 70B. A blind prediction, its pre-registered rejection,
-the replay-based localization of the failure, and the cross-model confirmation of
-the pipeline with claim-resolved fields are reported together. Throughout,
+detectable polarity at 70B. Throughout,
 the $\alpha$ trend of the wrong-consensus attractor --- observed and
 predicted --- shows that the number of messages each agent was actually shown
 remained the operative degree even where the blind prediction failed: the
@@ -793,13 +784,6 @@ claim's own assertion, with no user opinion in the prompt. What can be said
 is negative and useful: the bias that decides these collectives' fate is not
 carried mainly by the safety-refusal direction.
 
-Two further single-agent observations are recorded without mechanistic
-claims: opinion flips concentrate in particular agents rather than being
-suppressed after a flip (a positive ``anti-refractory'' coefficient,
-$+0.98$), and the measured branching ratios (1.8--3.6) place these
-synchronous dynamics in a drift-dominated, far-from-critical regime ---
-closing, for now, a self-organized-criticality reading of these collectives.
-
 What is verified here is the reduction chain from single-agent response and
 degree statistics to the basin boundaries of \emph{LLM} collectives at fixed
 capacity; the fold in capacity itself remains a theoretical prediction.
@@ -840,36 +824,34 @@ $(\log N)/\alpha$ supplies the analytic form for the reported size-limited
 consensus.
 
 Part of the logistic form is guaranteed by the output mechanism: for a
-forced choice between two options, the probability of one option conditional
-on the answer being one of the two, $P(A \mid A\ \text{or}\ B) =
-\sigma((z_A - z_B)/T)$, is exactly a logistic function of the logit
-difference at temperature $T$; the response format asks for a single
-character and parse failures were zero in every collective campaign, so the
-measured choice probabilities are close to this conditional quantity. What the mechanism does not guarantee --- the
-empirical content of the reduction --- is that this logit difference is
-approximately additive in the inbox composition, one weight per
-correct-side and per wrong-side message (Fig.~\ref{fig:neuron}b). Additivity in log-odds is what an
-aggregator of conditionally independent evidence would produce; whether
-the transformer approximates such a computation, and why, is left open
-alongside the mechanism of the attenuation below.
+forced choice between two options, $P(A \mid A\ \text{or}\ B) =
+\sigma((z_A - z_B)/T)$ is exactly a logistic function of the logit
+difference, and with zero parse failures in every collective campaign the
+measured choice probabilities are close to this conditional quantity. What
+the mechanism does not guarantee, the empirical content of the reduction, is
+that this logit difference is approximately additive in the inbox
+composition, one weight per correct-side and per wrong-side message
+(Fig.~\ref{fig:neuron}b), as an aggregator of conditionally independent
+evidence would produce; whether the transformer approximates such a
+computation, and why, is left open alongside the mechanism of the
+attenuation below.
 
-The measured update rule (Fig.~\ref{fig:neuron}a) departs from a classical Ising spin in exactly one
-place: the per-message coupling is attenuated by the total inbox size,
-$\beta/(1+\gamma k)$, the form known in sensory neuroscience as divisive
-normalization \citep{CarandiniHeeger2012}. As in that literature, the law is
-phenomenological --- a behavioral input--output relation, not an identified
-mechanism. Three candidate mechanisms make separable predictions: softmax
-attention inside the transformer is itself a divisive operation, and
+The measured update rule (Fig.~\ref{fig:neuron}a) departs from a classical
+Ising spin in exactly one place: the per-message coupling is attenuated by
+the total inbox size, $\beta/(1+\gamma k)$, the form known in sensory
+neuroscience as divisive normalization \citep{CarandiniHeeger2012}. As in
+that literature the law is phenomenological, a behavioral input--output
+relation rather than an identified mechanism. Three candidate mechanisms
+make separable predictions: softmax attention, itself a divisive operation,
 predicts attenuation governed by token volume rather than message count;
-proportion coding --- judging by the fraction $l/k$ of supporting messages
-rather than their number, the saturation pattern classically reported for
-human majority influence --- predicts dependence on $l/k$ alone; and
-calibration compression of the output probabilities would mimic attenuation
-and is excluded or quantified by reading log-probabilities directly. A
+proportion coding, judging by the fraction $l/k$ of supporting messages as
+classically reported for human majority influence, predicts dependence on
+$l/k$ alone; and calibration compression of the output probabilities would
+mimic attenuation and is quantified by reading log-probabilities directly. A
 factorial manipulation of message length and proportional $(l, k)$ scaling
 within the Section~\ref{sec:measurement} protocol would separate the three;
-we leave this as a stated open question, since no result in this paper
-depends on which mechanism generates the measured form.
+no result in this paper depends on which mechanism generates the measured
+form.
 
 The practical rule this work supports is short: measure the tilt first, then
 set the budget. Both are single-agent measurements, and together they
@@ -885,57 +867,18 @@ built from the logged episodes would separate the two; the logs permit it.
 
 \section*{Methods}
 
-\subsection*{Models and serving}
+\subsection*{Models, serving, and prompts}
 
 All agents are served with ollama. The primary model is llama3.1:8b
 (Q4\_K\_M quantization, temperature 0.7 throughout, seed recorded for every
-call). The cross-model campaign uses qwen3:8b (tag 500a1f067a9f, thinking
-disabled via \texttt{think:false}) and llama3.3:70b (Q4\_K\_M; judgments
-only, message banks fixed to the 8B-generated banks). Single-shot campaigns
-ran against a user-space ollama instance with \texttt{OLLAMA\_NUM\_PARALLEL=16}
-(the system instance saturates at 0.62 generations/s; the parallel instance
-reaches 3.5 generations/s); the 70B model does not load under 16-slot KV
-allocation and was served by the serial system instance. The polarity-origin probe (Discussion) used two further variants, judgments
-only: llama3.1:8b-text-q4\_K\_M (the base model) and an abliterated derivative
-of the instruct model (mannix/llama3.1-8b-abliterated, Q4\_0), with a
-three-shot answer-format prefix applied identically to all variants,
-including the re-measured instruct control. Every call's prompt
-hash, seed, raw response, and parse result are logged to JSONL.
-
-\subsection*{Prompts}
-
-The judgment prompt (verbatim; variant A) is:
-\begin{quote}\footnotesize\ttfamily
-\# Your Expertise\\
-\{persona\}\\[2pt]
-\# Messages\\
-You received the following messages from fellow panelists:\\
-- \{message 1\} \ldots\\[2pt]
-\# Problem\\
-You are one member of an expert panel judging the following claim.\\
-Claim: "\{claim\}"\\
-Options:\\
-A) \{TRUE or FALSE\}\\
-B) \{FALSE or TRUE\}\\
-\# Instruction\\
-Give your direct answer on which option is correct.\\
-Do NOT work through the problem, show any steps, compute, or\\
-explain --- just commit to a snap judgement.\\
-\#\# Response Format\\
-Respond with a single character, A or B, and nothing else.
-\end{quote}
-Variant B inserts, before \texttt{\# Problem}: ``\texttt{\# Your Current
-Answer / Your current answer is that the claim is \{TRUE|FALSE\}.}'' The A/B
-$\leftrightarrow$ TRUE/FALSE assignment is randomized per call and
-counterbalanced within cells; message presentation order is randomized and
-recorded. The message-generation prompt asks the sender, given its persona,
-the claim, and its current stance, to ``write a brief message to a fellow
-panelist stating that you believe the claim is \{stance\} and giving the
-single strongest reason from your reasoning,'' with a two-sentence response
-format; stance is expressed in the message body (TRUE/FALSE), never as an
-option letter, because option labels are randomized per receiver. Personas are
-one-line expertise statements drawn from a fixed pool of 12. Prompt texts are
-extracted verbatim from the released scripts.
+call); the cross-model campaigns use qwen3:8b (thinking disabled) and
+llama3.3:70b (judgments only, message banks fixed to the 8B-generated banks).
+The judgment prompt asks for a snap A/B judgment of the claim given the
+persona and the inbox messages, with a single-character response; variant B
+adds a line stating the agent's current answer. Verbatim prompts, the A/B
+counterbalancing, message generation, serving configuration, and the model
+variants of the polarity-origin probe are given in SI Section~S10. Every
+call's prompt hash, seed, raw response, and parse result are logged to JSONL.
 
 \subsection*{Claims and calibration}
 
@@ -973,10 +916,9 @@ stance; the independence assumption of the mean field of
 Section~\ref{sec:theory} is therefore an approximation. Its cost is
 quantified in Section~\ref{sec:results} by comparing the eight-round
 iteration of the mean-field map with surrogate rollouts of the same rule on
-the realized graphs (RMS difference 0.04 in the final fraction). A fidelity check re-ran ten episodes
-with five-sample majority voting; absorption was sharper (wrong-consensus
-rate 1.00 versus 0.875, mean $|x_8 - 0.5|$ 0.44 versus 0.38), so the
-single-sample simplification is not the source of wrong-side absorption. The rewiring control resamples each receiver's sources uniformly
+the realized graphs (RMS difference 0.04 in the final fraction). A fidelity check with five-sample majority voting (SI Section~S9) gave
+sharper absorption, so the single-sample simplification is not the source
+of wrong-side absorption. The rewiring control resamples each receiver's sources uniformly
 while preserving its in-degree. Outcomes are classified at $\delta = 0.1$
 (correct consensus: $x_8 \ge 0.6$; wrong: $x_8 \le 0.4$), with
 $\delta \in \{0.05, 0.2\}$ and undecided-exclusion sensitivity analyses in
@@ -984,93 +926,64 @@ the SI.
 
 \subsection*{Cross-model calibration campaign}
 
-Twenty further CLIMATE-FEVER claims (ten SUPPORTS, ten REFUTES, disjoint from
-all earlier sets) were calibrated under the full scaffold and measured
-single-shot with qwen3:8b (24 calls per candidate, 64 in the boundary band;
-per-claim response-function fits from 6{,}720 further queries). The resulting
-fixed-point classifications and thresholds for $\alpha \in \{0.30, 0.55\}$
-were computed at the time of the campaign, and eight claims were selected by
-a rule fixed in the pre-registered instructions (at least four predicted bistable with interior
-thresholds, the remainder monostable, filled from the bistable pool where a
-category was empty --- no wrong-side-dominant claim existed among the twenty
-candidates). Collectives ran the full grid $\alpha \in \{0.30, 0.55\} \times
-x_0 \in \{2, 6, \ldots, 30\}/32$ with two replicates (256 episodes, protocol
-identical to the main cross-model campaign). Observed thresholds are defined
-under Statistics.
+Twenty further CLIMATE-FEVER claims, disjoint from all earlier sets, were
+calibrated under the full scaffold and measured single-shot with qwen3:8b;
+eight were selected by a rule fixed in the pre-registered instructions (at
+least four predicted bistable with interior thresholds, the remainder
+monostable; no wrong-side-dominant claim existed among the twenty).
+Collectives ran the full $\alpha \in \{0.30, 0.55\} \times x_0$ grid with two
+replicates (256 episodes; SI Section~S10).
 
 \subsection*{Statistics}
 
-All confidence intervals on measured coefficients are claim-clustered pairs
-bootstrap percentiles (1{,}000--2{,}000 resamples for the pooled
-coefficients, 200 for the identified per-$k$ coefficients and for the
-prediction-side intervals, 2{,}000 for the polarity ratios; claims are the
-clusters because episodes within a claim share its field). Attenuation-form comparison
-uses five-fold cross-validation with folds split by claim, alongside AIC; the
-form parameter ($\gamma$ for divisive normalization, the rate for load decay)
-is profiled on the full data ($\gamma = 0.9$) and re-profiled inside each
-training fold, and a held-out claim's fixed effect, which cannot be estimated
-from the training folds, is set to zero, so the cross-validated likelihood
-scores prediction for an unseen claim with an unknown field. The divisive
-$\astar$ of Section~\ref{sec:measurement} uses $\gamma$ profiled separately
-per variant (0.53 for A, 1.32 for B); Fig.~\ref{fig:neuron} uses the pooled
-$\gamma = 0.9$. Per-$k$ coefficients are identified by a joint logistic fit
+All confidence intervals on measured coefficients are claim-clustered
+pairs-bootstrap percentiles (claims are the clusters because episodes within
+a claim share their field; resample counts in SI Section~S10).
+Attenuation-form comparison uses five-fold cross-validation with folds split
+by claim, alongside AIC; the form parameter is profiled on the full data
+($\gamma = 0.9$) and re-profiled inside each training fold, with a held-out
+claim's fixed effect set to zero, so the cross-validated likelihood scores
+prediction for an unseen claim with an unknown field. The divisive $\astar$
+of Section~\ref{sec:measurement} uses $\gamma$ profiled per variant (0.53 for
+A, 1.32 for B). Per-$k$ coefficients are identified by a joint logistic fit
 over all inbox sizes with claim fixed effects anchored by the empty-inbox
-cells: at a single $k$ the columns $1$, $l$, and $k - l$ are collinear, so
-separate per-$k$ fits identify only $c_0 + k\beta_F$ and $\beta_T - \beta_F$.
-Per-claim response functions for the collective claims use the reduced form
-$c_0 + g(k)[\delta k + \bar\beta(2l - k)]$ ($+\theta s$ for variant B), with
-a weak ridge penalty ($10^{-3}$) where $k$ takes three values. For Fig.~\ref{fig:neuron}, one logistic fit per prompt variant
-with claim fixed effects and message weights $\beta_T g(k)$, $\beta_F g(k)$
-(divisive, $\gamma = 0.9$ fixed, or $g \equiv 1$) assigns each query a
-predicted probability; a design cell's net input $u$ is the logit of its mean
-predicted probability, and its observed correct-side rate is plotted against
-$u$ with a Wilson 95\% interval. Fixed points of the mean-field map are
-bracketed on an endpoint-inclusive grid of 4{,}001 points in $x$ with
-bisection refinement and classified by $|F'(x)| < 1$; a phase is bistable
-when an unstable interior point separates two stable ones, and $\astar$ is
-located by bisection in $\alpha$ on that classification, with the fold of $G$
-solved jointly from $G = x$ and $G_x = 1$. Prediction-side intervals resample
-each claim's single-shot outcomes within that claim and within each design
-cell (200 resamples; a within-claim bootstrap, not the claim-clustered
-bootstrap used for pooled coefficients) and recompute the fixed points. Reanalysis statistics on the public dataset use
-question-clustered bootstrap and CR0 sandwich errors.
+cells, because at a single $k$ the columns $1$, $l$, and $k - l$ are
+collinear; per-claim response functions for the collective claims use the
+reduced form $c_0 + g(k)[\delta k + \bar\beta(2l - k)]$ ($+\theta s$ for
+variant B). Fixed points of the mean-field map are bracketed on a grid in $x$
+with bisection refinement and classified by $|F'(x)| < 1$; a phase is
+bistable when an unstable interior point separates two stable ones, and
+$\astar$ is located by bisection in $\alpha$ on that classification.
+Prediction-side intervals resample each claim's single-shot outcomes within
+claim and design cell and recompute the fixed points.
 
 \emph{Outcome and threshold.} An episode's outcome is its correct-side
 fraction after eight rounds, $x_8$; $q(x_0)$ is the fraction of episodes with
-$x_8 \ge 0.6$, a finite-horizon quantity that we compare with the
-infinite-time fixed points only through surrogate rollouts. Observed
-thresholds are the 50\% crossings of a logistic fit of the correct outcome on
-$x_0$ with a weak ridge penalty (0.002) so that separated cells have a
-finite estimate; the slope is not constrained, a fit with a non-positive slope
-would be discarded, and none occurred in the reported cells. Intervals are
-episode-bootstrap percentiles (500 replicates); replicates without a finite
-crossing in $(-1, 2)$ are dropped, which retained all replicates in 12 of the
-17 cells observed bistable, 97--99\% in three, and 89\% and 65\% in the two
-cells whose crossing lies nearest the lowest seeded fraction (claims 656 and
-1146 at $\alpha = 0.55$). Rank correlations between predicted and observed thresholds are
-tested by permuting claim labels, claims being the exchangeable unit.
+$x_8 \ge 0.6$, a finite-horizon quantity compared with the infinite-time
+fixed points only through surrogate rollouts. Observed thresholds are the
+50\% crossings of a logistic fit of the correct outcome on $x_0$ with a weak
+ridge penalty; intervals are episode-bootstrap percentiles (500 replicates).
+Rank correlations between predicted and observed thresholds are tested by
+permuting claim labels, claims being the exchangeable unit. Fitting details,
+the construction of Fig.~\ref{fig:neuron}, and the bootstrap retention
+counts are in SI Section~S10.
 
 \subsection*{Pre-registration timeline}
 
-Throughout this paper, ``pre-registered'' means that a prediction or a
-decision rule, together with the criteria for judging it, was written to a
-file before the corresponding data were collected, and that the file's
-timestamp and SHA-256 hash are recorded in the project repository, so that
-the order of prediction and data is documented; these are local records, not
-a third-party time stamp. No external registry (such as OSF) was used. Three items were
-pre-registered: (i)~the $\astar = 0.435 \pm 0.03$ prediction and the decision
-criteria of the main collective experiment, before any collective episode
-(2026-08-23); (ii)~the three-hypothesis prediction table of the polarity
-discrimination experiment, before its data collection (2026-08-25);
-(iii)~the claim-selection rule of the eight-claim calibration campaign,
-written into the campaign instructions before its data were collected
-(2026-08-27). The single-agent measurements preceded the collective
-experiments. The claim-resolved predictions of
+``Pre-registered'' means throughout that a prediction or decision rule, with
+the criteria for judging it, was written to a file before the corresponding
+data were collected, with the file's timestamp and SHA-256 hash recorded in
+the project repository; these are local records, not a third-party registry.
+Three items were pre-registered: (i)~the $\astar = 0.435 \pm 0.03$ prediction
+and the decision criteria of the main collective experiment (2026-08-23);
+(ii)~the three-hypothesis prediction table of the polarity discrimination
+experiment (2026-08-25); (iii)~the claim-selection rule of the eight-claim
+calibration campaign (2026-08-27). The single-agent measurements preceded
+the collective experiments. The claim-resolved predictions of
 Sections~\ref{sec:results}--\ref{sec:generality} were computed after the
-collective experiments, with the estimation procedure described under
-Statistics, using only the single-agent data for parameter fitting; they were
-not prospectively registered. The one adaptive element (second-pass allocation of episodes)
-followed rules fixed in the pre-registered design.
+collective experiments from single-agent data alone and were not
+prospectively registered; the adaptive second-pass allocation followed rules
+fixed in the pre-registered design (SI Section~S10).
 
 \subsection*{Use of generative AI}
 
